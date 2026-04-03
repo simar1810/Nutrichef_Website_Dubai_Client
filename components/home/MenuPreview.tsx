@@ -21,7 +21,7 @@ const mockMeals = [
         protein: 35,
         carbs: 34,
         fat: 10,
-        image: 'https://calo.app/_next/image?url=https%3A%2F%2Fapi-blog.calo.app%2Fwp-content%2Fuploads%2F2025%2F10%2Fimaghe-37.webp&w=2048&q=75'
+        image: 'https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-37.webp'
     },
     {
         id: 2,
@@ -30,7 +30,7 @@ const mockMeals = [
         protein: 37,
         carbs: 58,
         fat: 29,
-        image: 'https://calo.app/_next/image?url=https%3A%2F%2Fapi-blog.calo.app%2Fwp-content%2Fuploads%2F2025%2F10%2Fimaghe-7.webp&w=2048&q=75'
+        image: 'https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-7.webp'
     },
     {
         id: 3,
@@ -39,7 +39,7 @@ const mockMeals = [
         protein: 64,
         carbs: 64,
         fat: 14,
-        image: 'https://calo.app/_next/image?url=https%3A%2F%2Fapi-blog.calo.app%2Fwp-content%2Fuploads%2F2025%2F10%2Fimaghe-9-1.webp&w=2048&q=75'
+        image: 'https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-9-1.webp'
     },
     {
         id: 4,
@@ -48,14 +48,14 @@ const mockMeals = [
         protein: 13,
         carbs: 65,
         fat: 5,
-        image: 'https://calo.app/_next/image?url=https%3A%2F%2Fapi-blog.calo.app%2Fwp-content%2Fuploads%2F2025%2F10%2Fimaghe-37.webp&w=2048&q=75'
+        image: 'https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-37.webp'
     },
     {
         id: 5,
         title: 'Steak & Mash',
         calories: null,
         customText: 'Customisable macros',
-        image: 'https://calo.app/_next/image?url=https%3A%2F%2Fapi-blog.calo.app%2Fwp-content%2Fuploads%2F2025%2F10%2Fimaghe-9-1.webp&w=2048&q=75'
+        image: 'https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-9-1.webp'
     },
     {
         id: 6,
@@ -64,7 +64,7 @@ const mockMeals = [
         protein: 33,
         carbs: 23,
         fat: 27,
-        image: 'https://calo.app/_next/image?url=https%3A%2F%2Fapi-blog.calo.app%2Fwp-content%2Fuploads%2F2025%2F10%2Fimaghe-7.webp&w=2048&q=75'
+        image: 'https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-7.webp'
     },
     {
         id: 7,
@@ -73,7 +73,7 @@ const mockMeals = [
         protein: 25,
         carbs: 40,
         fat: 12,
-        image: 'https://calo.app/_next/image?url=https%3A%2F%2Fapi-blog.calo.app%2Fwp-content%2Fuploads%2F2025%2F10%2Fimaghe-37.webp&w=2048&q=75'
+        image: 'https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-37.webp'
     }
 ];
 

@@ -5,12 +5,12 @@ const reviews = [
     {
         name: 'Safa Ebrahim',
         avatar: 'https://i.pravatar.cc/150?u=safa',
-        text: "As a busy mom, I've been subscribed to Calo for over a year and a half now, and I can't imagine being without it! I reached my goal weight, but I decided to keep my subscription. I like the meal variety and choices, but most of all, I love the flexibility and the outstanding customer service."
+        text: "As a busy mom, I've been subscribed to NutriChef for over a year and a half now, and I can't imagine being without it! I reached my goal weight, but I decided to keep my subscription. I like the meal variety and choices, but most of all, I love the flexibility and the outstanding customer service."
     },
     {
         name: 'Thomas George',
         avatar: 'https://i.pravatar.cc/150?u=thomas',
-        text: "Before, I found it hard to eat right even though I exercised regularly. But with CALO, that changed. Their tasty food made dieting easier and more enjoyable. Thanks to CALO, I lost 12kg! They really helped me eat better and get healthier."
+        text: "Before, I found it hard to eat right even though I exercised regularly. But with NutriChef, that changed. Their tasty food made dieting easier and more enjoyable. Thanks to NutriChef, I lost 12kg! They really helped me eat better and get healthier."
     },
     {
         name: 'Ali Alsadeq',
@@ -20,7 +20,7 @@ const reviews = [
     {
         name: 'Sara M.',
         avatar: 'https://i.pravatar.cc/150?u=sara',
-        text: "Calo is life-changing! The meals are so fresh and flavorful. I never feel like I'm on a diet. It's effortless to stick to my calorie goals and maintain my shape."
+        text: "NutriChef is life-changing! The meals are so fresh and flavorful. I never feel like I'm on a diet. It's effortless to stick to my calorie goals and maintain my shape."
     },
     {
         name: 'Michael T.',
@@ -30,12 +30,12 @@ const reviews = [
     {
         name: 'Nour El-Din',
         avatar: 'https://i.pravatar.cc/150?u=nour',
-        text: "Finally, a meal plan that actually tastes good! I've lost 5kg in two months without feeling deprived or hungry. Calo handles everything perfectly."
+        text: "Finally, a meal plan that actually tastes good! I've lost 5kg in two months without feeling deprived or hungry. NutriChef handles everything perfectly."
     },
     {
         name: 'Emily Watson',
         avatar: 'https://i.pravatar.cc/150?u=emily',
-        text: "Being a vegetarian, finding good meal prep was hard. Calo's vegetarian options are phenomenal, packed with flavor and plant based protein!"
+        text: "Being a vegetarian, finding good meal prep was hard. NutriChef's vegetarian options are phenomenal, packed with flavor and plant based protein!"
     },
     {
         name: 'Fahad K.',

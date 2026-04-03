@@ -2,13 +2,13 @@ import React from 'react';
 import Image from 'next/image';
 
 const instaPosts = [
-    { handle: 'sultanfalasi', img: 'https://calo.app/_next/image?url=https%3A%2F%2Fapi-blog.calo.app%2Fwp-content%2Fuploads%2F2025%2F10%2FRectangle-6495.webp&w=640&q=75', avatar: 'https://i.pravatar.cc/100?u=sultan' },
-    { handle: 's_mozakzak', img: 'https://calo.app/_next/image?url=https%3A%2F%2Fapi-blog.calo.app%2Fwp-content%2Fuploads%2F2025%2F10%2FRectangle-6496.webp&w=640&q=75', avatar: 'https://i.pravatar.cc/100?u=moz' },
-    { handle: 'laurazaraa', img: 'https://calo.app/_next/image?url=https%3A%2F%2Fapi-blog.calo.app%2Fwp-content%2Fuploads%2F2025%2F10%2Fimaghe-37.webp&w=640&q=75', avatar: 'https://i.pravatar.cc/100?u=laura' },
-    { handle: 'khadija.chahmoud', img: 'https://calo.app/_next/image?url=https%3A%2F%2Fapi-blog.calo.app%2Fwp-content%2Fuploads%2F2025%2F10%2Fimaghe-9-1.webp&w=640&q=75', avatar: 'https://i.pravatar.cc/100?u=khadija' },
-    { handle: 'nasegeh', img: 'https://calo.app/_next/image?url=https%3A%2F%2Fapi-blog.calo.app%2Fwp-content%2Fuploads%2F2025%2F10%2Fimaghe-7.webp&w=640&q=75', avatar: 'https://i.pravatar.cc/100?u=nasegeh' },
-    { handle: 'taatgorgulho', img: 'https://calo.app/_next/image?url=https%3A%2F%2Fapi-blog.calo.app%2Fwp-content%2Fuploads%2F2025%2F10%2FRectangle-6495.webp&w=640&q=75', avatar: 'https://i.pravatar.cc/100?u=taat' },
-    { handle: 'ommie10', img: 'https://calo.app/_next/image?url=https%3A%2F%2Fapi-blog.calo.app%2Fwp-content%2Fuploads%2F2025%2F10%2Fimaghe-37.webp&w=640&q=75', avatar: 'https://i.pravatar.cc/100?u=ommie' }
+    { handle: 'sultanfalasi', img: 'https://api-blog.calo.app/wp-content/uploads/2025/10/Rectangle-6495.webp', avatar: 'https://i.pravatar.cc/100?u=sultan' },
+    { handle: 's_mozakzak', img: 'https://api-blog.calo.app/wp-content/uploads/2025/10/Rectangle-6496.webp', avatar: 'https://i.pravatar.cc/100?u=moz' },
+    { handle: 'laurazaraa', img: 'https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-37.webp', avatar: 'https://i.pravatar.cc/100?u=laura' },
+    { handle: 'khadija.chahmoud', img: 'https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-9-1.webp', avatar: 'https://i.pravatar.cc/100?u=khadija' },
+    { handle: 'nasegeh', img: 'https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-7.webp', avatar: 'https://i.pravatar.cc/100?u=nasegeh' },
+    { handle: 'taatgorgulho', img: 'https://api-blog.calo.app/wp-content/uploads/2025/10/Rectangle-6495.webp', avatar: 'https://i.pravatar.cc/100?u=taat' },
+    { handle: 'ommie10', img: 'https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-37.webp', avatar: 'https://i.pravatar.cc/100?u=ommie' }
 ];
 
 export const InstagramFeed = () => {

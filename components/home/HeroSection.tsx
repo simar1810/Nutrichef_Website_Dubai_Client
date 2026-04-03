@@ -36,8 +36,8 @@ export const HeroSection = () => {
             {/* Right Background Image (50% bleed) */}
             <div className="absolute right-0 top-0 w-1/2 h-full hidden lg:block z-0">
                 <Image
-                    src="https://calo.app/_next/image?url=https%3A%2F%2Fcdncaloapp.com%2F28e125562515cd84cda748118c399f96ec409f93.webp&w=2048&q=75"
-                    alt="Calo freshly prepared meal"
+                    src="https://cdncaloapp.com/28e125562515cd84cda748118c399f96ec409f93.webp"
+                    alt="NutriChef freshly prepared meal"
                     fill
                     className="object-cover object-center"
                     priority

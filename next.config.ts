@@ -5,10 +5,6 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'calo.app',
-      },
-      {
-        protocol: 'https',
         hostname: 'cdn.calo.app',
       },
       {
@@ -17,8 +13,20 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'cdncaloapp.com',
+      },
+      {
+        protocol: 'https',
         hostname: 'i.pravatar.cc',
-      }
+      },
+      {
+        protocol: 'https',
+        hostname: '**.amazonaws.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
     ],
   },
 };

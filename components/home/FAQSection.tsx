@@ -45,7 +45,7 @@ const faqs = [
         answer: "Yes, you have full control to swap any meal you don't like with another option from our weekly menu."
     },
     {
-        question: "What makes the Calo experience in Kuwait unique?",
+        question: "What makes the NutriChef experience in Kuwait unique?",
         answer: "We offer completely personalized meal plans tuned to your unique macros, cooked with premium ingredients, and delivered fresh daily."
     }
 ];

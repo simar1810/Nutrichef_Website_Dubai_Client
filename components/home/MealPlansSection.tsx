@@ -10,7 +10,7 @@ const plans = [
         icon: '🍗',
         macros: { protein: 50, carbs: 40, fat: 10 },
         labels: { p: '50% Protein', c: '40% Carbs', f: '10% Fat' },
-        image: 'https://calo.app/_next/image?url=https%3A%2F%2Fapi-blog.calo.app%2Fwp-content%2Fuploads%2F2025%2F10%2Fimaghe-37.webp&w=1200&q=75'
+        image: 'https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-37.webp'
     },
     {
         id: 'balanced',
@@ -18,7 +18,7 @@ const plans = [
         icon: '⚖️',
         macros: { protein: 35, carbs: 55, fat: 10 },
         labels: { p: '35% Protein', c: '55% Carbs', f: '10% Fat' },
-        image: 'https://calo.app/_next/image?url=https%3A%2F%2Fapi-blog.calo.app%2Fwp-content%2Fuploads%2F2025%2F10%2Fimaghe-7.webp&w=1200&q=75'
+        image: 'https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-7.webp'
     },
     {
         id: 'vegetarian',
@@ -26,7 +26,7 @@ const plans = [
         icon: '🥦',
         macros: { protein: 25, carbs: 55, fat: 20 },
         labels: { p: '25% Protein', c: '55% Carbs', f: '20% Fat' },
-        image: 'https://calo.app/_next/image?url=https%3A%2F%2Fapi-blog.calo.app%2Fwp-content%2Fuploads%2F2025%2F10%2Fimaghe-9-1.webp&w=1200&q=75'
+        image: 'https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-9-1.webp'
     },
     {
         id: 'chefs-picks',
@@ -34,7 +34,7 @@ const plans = [
         icon: '👨‍🍳',
         macros: { protein: 35, carbs: 55, fat: 10 },
         labels: { p: '35% Protein', c: '55% Carbs', f: '10% Fat' },
-        image: 'https://calo.app/_next/image?url=https%3A%2F%2Fapi-blog.calo.app%2Fwp-content%2Fuploads%2F2025%2F10%2Fimaghe-37.webp&w=1200&q=75'
+        image: 'https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-37.webp'
     },
     {
         id: 'custom',
@@ -42,7 +42,7 @@ const plans = [
         icon: '🧮',
         macros: { protein: 45, carbs: 35, fat: 20 },
         labels: { p: '52g Protein', c: '38g Carbs', f: '29g Fat' },
-        image: 'https://calo.app/_next/image?url=https%3A%2F%2Fapi-blog.calo.app%2Fwp-content%2Fuploads%2F2025%2F10%2Fimaghe-7.webp&w=1200&q=75'
+        image: 'https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-7.webp'
     },
     {
         id: 'low-carb',
@@ -50,7 +50,7 @@ const plans = [
         icon: '🥑',
         macros: { protein: 35, carbs: 15, fat: 50 },
         labels: { p: '35% Protein', c: '15% Carbs', f: '50% Fat' },
-        image: 'https://calo.app/_next/image?url=https%3A%2F%2Fapi-blog.calo.app%2Fwp-content%2Fuploads%2F2025%2F10%2Fimaghe-9-1.webp&w=1200&q=75'
+        image: 'https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-9-1.webp'
     }
 ];
 

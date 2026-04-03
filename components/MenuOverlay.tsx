@@ -5,10 +5,9 @@ import Link from 'next/link';
 import { createPortal } from 'react-dom';
 
 const navLinks = [
-    { name: 'Homepage', hasChild: false },
-    { name: 'Plans & Packages', hasChild: false },
-    { name: 'Menu', hasChild: false },
-   
+    { name: 'Homepage', href: '/', hasChild: false },
+    { name: 'Plans & Packages', href: '/plans', hasChild: false },
+    { name: 'Menu', href: '/menu', hasChild: false },
 ];
 
 export const MenuOverlay = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
@@ -46,9 +45,9 @@ export const MenuOverlay = ({ isOpen, onClose }: { isOpen: boolean, onClose: () 
                             className="object-cover object-center" 
                             unoptimized
                         />
-                        {/* Calo Logo Overlay */}
+                        {/* NutriChef logo overlay */}
                         <div className="absolute top-[42px] left-12">
-                            <span className="text-white font-black text-[32px] tracking-[0.12em] uppercase drop-shadow-md">CALO</span>
+                            <span className="text-white font-black text-[32px] tracking-[0.12em] uppercase drop-shadow-md">NUTRICHEF</span>
                         </div>
                     </div>
                     
@@ -97,7 +96,7 @@ export const MenuOverlay = ({ isOpen, onClose }: { isOpen: boolean, onClose: () 
                     {/* Links List */}
                     <div className="flex flex-col gap-[28px] mt-2">
                         {navLinks.map((link, idx) => (
-                            <Link key={idx} href="#" className="flex items-center text-[#2F3337] hover:text-[#2B9D65] transition-colors group">
+                            <Link key={idx} href={link.href} onClick={onClose} className="flex items-center text-[#2F3337] hover:text-[#2B9D65] transition-colors group">
                                 <span className="text-[14px] font-[800] tracking-tight">{link.name}</span>
                                 {link.hasChild && (
                                     <svg className="ml-2 w-3.5 h-3.5 text-[#2F3337] group-hover:text-[#2B9D65] transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>

@@ -7,19 +7,19 @@ const steps = [
         id: 1,
         title: 'Find your perfect meal plan',
         description: 'We create your menu around your lifestyle, goals, and favorite foods.',
-        image: 'https://calo.app/_next/image?url=https%3A%2F%2Fapi-blog.calo.app%2Fwp-content%2Fuploads%2F2025%2F10%2Fimaghe-37.webp&w=2048&q=75' 
+        image: 'https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-37.webp' 
     },
     {
         id: 2,
         title: 'You choose, we cook',
         description: "Pick your favorite dishes, and we'll prepare them fresh and flavorful to fit your needs and schedule.",
-        image: 'https://calo.app/_next/image?url=https%3A%2F%2Fapi-blog.calo.app%2Fwp-content%2Fuploads%2F2025%2F10%2Fimaghe-9-1.webp&w=2048&q=75'
+        image: 'https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-9-1.webp'
     },
     {
         id: 3,
         title: 'Enjoy daily fresh deliveries',
         description: 'We deliver fresh meals every day. Just heat, eat and enjoy.',
-        image: 'https://calo.app/_next/image?url=https%3A%2F%2Fapi-blog.calo.app%2Fwp-content%2Fuploads%2F2025%2F10%2Fimaghe-7.webp&w=2048&q=75'
+        image: 'https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-7.webp'
     }
 ];
 
@@ -34,7 +34,7 @@ export const HowItWorks = () => {
                         How it works
                     </h2>
                     <p className="text-[17px] md:text-[18px] text-[#6B7280] font-semibold mb-8">
-                        Hit your goals effortlessly with Calo in 3 simple steps
+                        Hit your goals effortlessly with NutriChef in 3 simple steps
                     </p>
                     <Button className="bg-[#249B60] hover:bg-[#1E8351] text-white px-8 rounded-full h-[46px] text-[15px] shadow-sm font-bold border-none w-max">
                         See plans

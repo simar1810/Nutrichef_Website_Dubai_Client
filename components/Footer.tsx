@@ -12,7 +12,7 @@ export const Footer = () => {
                     {/* Left Brand and Links */}
                     <div className="flex flex-col gap-[36px] w-full lg:w-auto">
                         <div>
-                            <span className="text-[#249B60] font-black text-[32px] tracking-[0.1em] uppercase">Calo</span>
+                            <span className="text-[#249B60] font-black text-[32px] tracking-[0.1em] uppercase">NutriChef</span>
                         </div>
                         
                         <div className="flex flex-wrap gap-x-8 gap-y-3">
@@ -54,7 +54,7 @@ export const Footer = () => {
                         <div className="w-[54px] h-[54px] relative shrink-0">
                             {/* Generic QR Code */}
                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://calo.app&color=2F3337" alt="QR Code" className="w-full h-full object-contain rounded-md" />
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://nutrichef.com&color=2F3337" alt="QR Code" className="w-full h-full object-contain rounded-md" />
                         </div>
                         <div className="w-[120px]">
                             <p className="text-[11.5px] font-extrabold text-[#2F3337] leading-[1.35]">
@@ -68,7 +68,7 @@ export const Footer = () => {
                 <div className="flex flex-col md:flex-row justify-between items-center w-full gap-6">
                     {/* Copyright & Legal */}
                     <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-                        <span className="text-[11.5px] font-semibold text-[#A0A5AE]">© 2026 Calo Inc.</span>
+                        <span className="text-[11.5px] font-semibold text-[#A0A5AE]">© 2026 NutriChef</span>
                         <div className="flex gap-4">
                             <Link href="#" className="text-[11.5px] font-semibold text-[#A0A5AE] hover:text-[#2F3337] transition-colors">Privacy Policy</Link>
                             <Link href="#" className="text-[11.5px] font-semibold text-[#A0A5AE] hover:text-[#2F3337] transition-colors">Terms & Conditions</Link>
