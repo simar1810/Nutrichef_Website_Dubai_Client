@@ -4,74 +4,102 @@ import Link from 'next/link';
 
 export const Footer = () => {
     return (
-        <footer className="bg-[#2B3137] text-white pt-16 pb-8">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
-
-                    {/* Brand Column */}
-                    <div className="col-span-1 lg:col-span-1">
-                        <Image
-                            src="https://calo.app/_next/static/media/logo.svg"
-                            alt="Calo Logo"
-                            width={100}
-                            height={40}
-                            className="mb-6 brightness-0 invert"
-                        />
-                        <p className="text-gray-400 text-sm mb-6 max-w-xs">
-                            Calo provides meal plans tailored for busy people. It serves delicious food that&#39;s portioned to your requirements and fitness goals.
-                        </p>
-                        <div className="flex space-x-4">
-                            {/* Social Icons Placeholders */}
-                            {['TikTok', 'Insta', 'X', 'In'].map((social) => (
-                                <a key={social} href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors">
-                                    <span className="text-xs">{social}</span>
-                                </a>
-                            ))}
+        <footer className="bg-white pt-16 pb-12 w-full border-t border-gray-100 mt-auto">
+            <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 w-full flex flex-col">
+                
+                {/* Top Section */}
+                <div className="flex flex-col lg:flex-row justify-between items-start gap-12 w-full mb-[80px]">
+                    {/* Left Brand and Links */}
+                    <div className="flex flex-col gap-[36px] w-full lg:w-auto">
+                        <div>
+                            <span className="text-[#249B60] font-black text-[32px] tracking-[0.1em] uppercase">Calo</span>
                         </div>
-                    </div>
-
-                    {/* Links Columns */}
-                    <div>
-                        <h3 className="text-lg font-bold mb-6">Company</h3>
-                        <ul className="space-y-4">
-                            <li><Link href="#" className="text-gray-400 hover:text-white transition-colors">Plans & Packages</Link></li>
-                            <li><Link href="#" className="text-gray-400 hover:text-white transition-colors">Menu</Link></li>
-                            <li><Link href="#" className="text-gray-400 hover:text-white transition-colors">The Cafe</Link></li>
-                            <li><Link href="#" className="text-gray-400 hover:text-white transition-colors">Careers</Link></li>
-                            <li><Link href="#" className="text-gray-400 hover:text-white transition-colors">Blog</Link></li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h3 className="text-lg font-bold mb-6">Help</h3>
-                        <ul className="space-y-4">
-                            <li><Link href="#" className="text-gray-400 hover:text-white transition-colors">FAQ</Link></li>
-                            <li><Link href="#" className="text-gray-400 hover:text-white transition-colors">Contact Us</Link></li>
-                        </ul>
-                    </div>
-
-                    {/* Download Column */}
-                    <div>
-                        <h3 className="text-lg font-bold mb-6">Download the App</h3>
-                        <div className="bg-white/5 rounded-xl p-4 flex items-center gap-4">
-                            <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center text-black text-xs font-bold text-center">
-                                QR<br />Code
+                        
+                        <div className="flex flex-wrap gap-x-8 gap-y-3">
+                            <Link href="#" className="text-[#878E99] hover:text-[#249B60] font-semibold text-[13px] tracking-tight">Plans & Packages</Link>
+                            <Link href="#" className="text-[#878E99] hover:text-[#249B60] font-semibold text-[13px] tracking-tight">Menu</Link>
+                            <Link href="#" className="text-[#878E99] hover:text-[#249B60] font-semibold text-[13px] tracking-tight">The Cafe</Link>
+                            <Link href="#" className="text-[#878E99] hover:text-[#249B60] font-semibold text-[13px] tracking-tight">Careers</Link>
+                            <Link href="#" className="text-[#878E99] hover:text-[#249B60] font-semibold text-[13px] tracking-tight">Blog</Link>
+                        </div>
+                        
+                        <div className="flex items-center gap-4">
+                            {/* World Dropdown */}
+                            <div className="flex items-center justify-between border border-gray-200 rounded-[12px] px-4 py-2.5 w-[160px] cursor-pointer hover:bg-gray-50 transition-colors">
+                                <div className="flex items-center gap-2.5">
+                                    <div className="w-[18px] h-[14px] bg-red-600 rounded-[2px] overflow-hidden shrink-0 flex">
+                                        {/* Pure CSS approximation of UAE flag */}
+                                        <div className="w-[30%] h-full bg-red-600"></div>
+                                        <div className="w-[70%] h-full flex flex-col">
+                                            <div className="w-full h-1/3 bg-green-600"></div>
+                                            <div className="w-full h-1/3 bg-white"></div>
+                                            <div className="w-full h-1/3 bg-black"></div>
+                                        </div>
+                                    </div>
+                                    <span className="text-[13px] text-[#878E99] font-medium">World</span>
+                                </div>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#878E99" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
                             </div>
-                            <p className="text-sm text-gray-300">Scan to download the Calo app</p>
+                            
+                            {/* Language Dropdown */}
+                            <div className="flex items-center justify-between border border-gray-200 rounded-[12px] px-4 py-2.5 w-[160px] cursor-pointer hover:bg-gray-50 transition-colors">
+                                <span className="text-[13px] text-[#878E99] font-medium">English</span>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#878E99" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                            </div>
                         </div>
                     </div>
 
-                </div>
-
-                {/* Bottom Bar */}
-                <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
-                    <p>© {new Date().getFullYear()} Calo Inc. All rights reserved.</p>
-                    <div className="flex space-x-6 mt-4 md:mt-0">
-                        <Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link>
-                        <Link href="#" className="hover:text-white transition-colors">Terms & Conditions</Link>
-                        <Link href="#" className="hover:text-white transition-colors">Cookies</Link>
+                    {/* Right Download Card */}
+                    <div className="border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] rounded-[18px] p-4 pr-10 flex items-center gap-[18px] bg-white self-start">
+                        <div className="w-[54px] h-[54px] relative shrink-0">
+                            {/* Generic QR Code */}
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://calo.app&color=2F3337" alt="QR Code" className="w-full h-full object-contain rounded-md" />
+                        </div>
+                        <div className="w-[120px]">
+                            <p className="text-[11.5px] font-extrabold text-[#2F3337] leading-[1.35]">
+                                Scan the QR code to<br/>download app
+                            </p>
+                        </div>
                     </div>
                 </div>
+
+                {/* Bottom Section */}
+                <div className="flex flex-col md:flex-row justify-between items-center w-full gap-6">
+                    {/* Copyright & Legal */}
+                    <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+                        <span className="text-[11.5px] font-semibold text-[#A0A5AE]">© 2026 Calo Inc.</span>
+                        <div className="flex gap-4">
+                            <Link href="#" className="text-[11.5px] font-semibold text-[#A0A5AE] hover:text-[#2F3337] transition-colors">Privacy Policy</Link>
+                            <Link href="#" className="text-[11.5px] font-semibold text-[#A0A5AE] hover:text-[#2F3337] transition-colors">Terms & Conditions</Link>
+                            <Link href="#" className="text-[11.5px] font-semibold text-[#A0A5AE] hover:text-[#2F3337] transition-colors">Cookies</Link>
+                        </div>
+                    </div>
+
+                    {/* Socials */}
+                    <div className="flex items-center gap-5">
+                        <span className="text-[12px] font-extrabold text-[#2F3337]">Follow us</span>
+                        <div className="flex items-center gap-4">
+                             {/* TikTok */}
+                             <a href="#" className="text-[#A0A5AE] hover:text-[#2F3337] transition-colors">
+                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+                             </a>
+                             {/* Instagram */}
+                             <a href="#" className="text-[#A0A5AE] hover:text-[#2F3337] transition-colors">
+                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                             </a>
+                             {/* X (Twitter) */}
+                             <a href="#" className="text-[#A0A5AE] hover:text-[#2F3337] transition-colors">
+                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 1.15H22l-6.8 7.76 8 10.5h-6.28l-4.9-6.42-5.6 6.42H3.3l7.24-8.25-7.74-10.16h6.43l4.43 5.86 4.96-5.86h.3zm-1.07 16.4h1.72L7.33 3H5.5L17.83 17.55z"/></svg>
+                             </a>
+                             {/* LinkedIn */}
+                             <a href="#" className="text-[#A0A5AE] hover:text-[#2F3337] transition-colors">
+                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+                             </a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </footer>
     );

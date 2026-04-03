@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { Button } from '../Button';
 
 const faqs = [
@@ -8,75 +9,120 @@ const faqs = [
         answer: "No, you can pause or cancel your subscription at any time without any hidden fees."
     },
     {
-        question: "Can I exclude ingredients?",
-        answer: "Yes, you can easily filter meals by allergens or completely exclude specific ingredients from your menu preferences."
-    },
-    {
-        question: "What if I don't like a meal on my menu?",
-        answer: "You have full control to swap any meal you don't like with another option from our 80+ weekly changing menu before the cutoff time."
-    },
-    {
         question: "Can I enter my own macros?",
-        answer: "Yes! Our build-your-own feature allows you to customize the exact portions of protein, carbs, and fats to hit your specific goals."
+        answer: "Absolutely. We have a special custom macros plan for this. You enter your goal macros and we get working on a menu that matches them."
+    },
+    {
+        question: "Up to what point can I make changes to my delivery?",
+        answer: "You can make changes to your upcoming delivery up to 48 hours in advance through the app."
     },
     {
         question: "How long do the meals last?",
         answer: "Our meals are made fresh daily without preservatives. They are designed to stay fresh in the fridge for up to 3 days."
     },
     {
+        question: "What oils do you cook with?",
+        answer: "We use high-quality olive oil, coconut oil, and occasionally avocado oil. We never use refined seed oils in our cooking."
+    },
+    {
         question: "What type of packaging does your food come in?",
         answer: "We use eco-friendly containers made of bagasse (sugar cane byproduct) which are 100% compostable and microwave safe."
+    },
+    {
+        question: "How do I pause my subscription?",
+        answer: "You can pause your subscription anytime directly from your dashboard under 'Manage Subscription'."
+    },
+    {
+        question: "Do you deliver to all areas in Kuwait?",
+        answer: "We deliver to most areas within Kuwait. You can check if your specific area is covered when entering your address at checkout."
+    },
+    {
+        question: "What are the delivery times and is weekend delivery available?",
+        answer: "We deliver daily between 6 AM and 10 AM. Yes, weekend delivery is available depending on your selected plan."
+    },
+    {
+        question: "Can I swap meals on the menu or change certain ingredients?",
+        answer: "Yes, you have full control to swap any meal you don't like with another option from our weekly menu."
+    },
+    {
+        question: "What makes the Calo experience in Kuwait unique?",
+        answer: "We offer completely personalized meal plans tuned to your unique macros, cooked with premium ingredients, and delivered fresh daily."
     }
 ];
 
 export const FAQSection = () => {
-    const [openIndex, setOpenIndex] = useState<number | null>(0);
+    const [openIndex, setOpenIndex] = useState<number | null>(1); // Default open second item to match image
 
     const toggleFaq = (index: number) => {
         setOpenIndex(openIndex === index ? null : index);
     };
 
     return (
-        <section className="py-24 bg-white">
-            <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="py-24 bg-white w-full">
+            <div className="max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-12 lg:gap-20 items-start">
 
-                <div className="text-center mb-16">
-                    <h2 className="text-[32px] md:text-[48px] font-bold text-foreground mb-6">
-                        Still hungry? Checkout our FAQ
+                {/* Left Side: FAQ List */}
+                <div className="w-full lg:flex-1">
+                    <h2 className="text-[36px] md:text-[44px] font-extrabold text-[#2F3337] mb-10 leading-[1.1] tracking-tight">
+                        Still hungry?<br />Checkout our FAQ
                     </h2>
+
+                    <div className="flex flex-col gap-3">
+                        {faqs.map((faq, idx) => {
+                            const isOpen = openIndex === idx;
+                            return (
+                                <div
+                                    key={idx}
+                                    className={`transition-all duration-300 rounded-[16px] border ${isOpen ? 'bg-white border-gray-200' : 'bg-[#F7F7F8] border-transparent hover:bg-gray-100'} cursor-pointer`}
+                                    onClick={() => toggleFaq(idx)}
+                                >
+                                    <div className="w-full flex justify-between items-center text-left py-[18px] px-6 select-none">
+                                        <span className="text-[15px] font-extrabold text-[#2F3337] pr-4">
+                                            {faq.question}
+                                        </span>
+                                        <span className="flex-shrink-0 text-[#249B60] text-[28px] font-light leading-none flex items-center justify-center">
+                                            {isOpen ? '−' : '+'}
+                                        </span>
+                                    </div>
+
+                                    <div
+                                        className={`overflow-hidden transition-all duration-300 px-6 ${isOpen ? 'max-h-96 pb-[22px] opacity-100' : 'max-h-0 opacity-0'}`}
+                                    >
+                                        <p className="text-[#878E99] font-medium text-[13px] leading-[1.6]">
+                                            {faq.answer}
+                                        </p>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
 
-                <div className="space-y-4">
-                    {faqs.map((faq, idx) => (
-                        <div
-                            key={idx}
-                            className={`border-b border-gray-100 pb-4 transition-all duration-300 ${openIndex === idx ? 'bg-gray-50 rounded-2xl p-6 border-b-0' : 'p-4'}`}
-                        >
-                            <button
-                                className="w-full flex justify-between items-center text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg"
-                                onClick={() => toggleFaq(idx)}
-                            >
-                                <span className={`text-lg font-bold ${openIndex === idx ? 'text-primary' : 'text-foreground'}`}>
-                                    {faq.question}
-                                </span>
-                                <span className={`ml-6 flex-shrink-0 transition-transform duration-300 ${openIndex === idx ? 'rotate-180 text-primary' : 'text-gray-400'}`}>
-                                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                                    </svg>
-                                </span>
-                            </button>
-
-                            <div
-                                className={`mt-4 text-secondary-text leading-relaxed transition-all duration-300 overflow-hidden ${openIndex === idx ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
-                            >
-                                <p>{faq.answer}</p>
-                            </div>
+                {/* Right Side: Sticky Support Card */}
+                <div className="w-full lg:w-[340px] shrink-0 sticky top-32">
+                    <div className="bg-[#EFF4F1] rounded-[24px] p-8 flex flex-col">
+                        <h3 className="font-extrabold text-[18px] text-[#2F3337] mb-2 tracking-tight">Got more questions?</h3>
+                        <p className="text-[#878E99] font-semibold text-[13px] leading-[1.6] mb-6">
+                            Start a live chat with us or fill out the form.<br/>We're here to help.
+                        </p>
+                        
+                        {/* Avatars */}
+                        <div className="flex -space-x-2 mb-6">
+                           <div className="w-9 h-9 rounded-full border-[3px] border-[#EFF4F1] bg-gray-200 overflow-hidden relative z-30">
+                               <Image src="https://i.pravatar.cc/100?u=a1" fill alt="Support agent" className="object-cover" />
+                           </div>
+                           <div className="w-9 h-9 rounded-full border-[3px] border-[#EFF4F1] bg-gray-200 overflow-hidden relative z-20">
+                               <Image src="https://i.pravatar.cc/100?u=a2" fill alt="Support agent" className="object-cover" />
+                           </div>
+                           <div className="w-9 h-9 rounded-full border-[3px] border-[#EFF4F1] bg-gray-200 overflow-hidden relative z-10">
+                               <Image src="https://i.pravatar.cc/100?u=a3" fill alt="Support agent" className="object-cover" />
+                           </div>
                         </div>
-                    ))}
-                </div>
 
-                <div className="mt-12 text-center">
-                    <Button variant="outline" className="font-bold">Got more questions?</Button>
+                        <Button className="bg-[#249B60] hover:bg-[#1E8351] text-white px-7 rounded-full h-[42px] text-[14px] shadow-sm font-bold border-none w-max">
+                            Chat with us
+                        </Button>
+                    </div>
                 </div>
 
             </div>
