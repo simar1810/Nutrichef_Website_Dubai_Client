@@ -99,31 +99,7 @@ export const FAQSection = () => {
                 </div>
 
                 {/* Right Side: Sticky Support Card */}
-                <div className="w-full lg:w-[340px] shrink-0 sticky top-32">
-                    <div className="bg-[#EFF4F1] rounded-[24px] p-8 flex flex-col">
-                        <h3 className="font-extrabold text-[18px] text-[#2F3337] mb-2 tracking-tight">Got more questions?</h3>
-                        <p className="text-[#878E99] font-semibold text-[13px] leading-[1.6] mb-6">
-                            Start a live chat with us or fill out the form.<br/>We're here to help.
-                        </p>
-                        
-                        {/* Avatars */}
-                        <div className="flex -space-x-2 mb-6">
-                           <div className="w-9 h-9 rounded-full border-[3px] border-[#EFF4F1] bg-gray-200 overflow-hidden relative z-30">
-                               <Image src="https://i.pravatar.cc/100?u=a1" fill alt="Support agent" className="object-cover" />
-                           </div>
-                           <div className="w-9 h-9 rounded-full border-[3px] border-[#EFF4F1] bg-gray-200 overflow-hidden relative z-20">
-                               <Image src="https://i.pravatar.cc/100?u=a2" fill alt="Support agent" className="object-cover" />
-                           </div>
-                           <div className="w-9 h-9 rounded-full border-[3px] border-[#EFF4F1] bg-gray-200 overflow-hidden relative z-10">
-                               <Image src="https://i.pravatar.cc/100?u=a3" fill alt="Support agent" className="object-cover" />
-                           </div>
-                        </div>
-
-                        <Button className="bg-[#249B60] hover:bg-[#1E8351] text-white px-7 rounded-full h-[42px] text-[14px] shadow-sm font-bold border-none w-max">
-                            Chat with us
-                        </Button>
-                    </div>
-                </div>
+                
 
             </div>
         </section>

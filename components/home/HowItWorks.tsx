@@ -1,5 +1,8 @@
+"use client";
+
 import React from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { Button } from '../Button';
 
 const steps = [
@@ -24,6 +27,7 @@ const steps = [
 ];
 
 export const HowItWorks = () => {
+    const router = useRouter();
     return (
         <section className="py-24 bg-white w-full">
             <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -36,7 +40,11 @@ export const HowItWorks = () => {
                     <p className="text-[17px] md:text-[18px] text-[#6B7280] font-semibold mb-8">
                         Hit your goals effortlessly with NutriChef in 3 simple steps
                     </p>
-                    <Button className="bg-[#249B60] hover:bg-[#1E8351] text-white px-8 rounded-full h-[46px] text-[15px] shadow-sm font-bold border-none w-max">
+                    <Button
+                        type="button"
+                        onClick={() => router.push('/plans')}
+                        className="bg-[#249B60] hover:bg-[#1E8351] text-white px-8 rounded-full h-[46px] text-[15px] shadow-sm font-bold border-none w-max"
+                    >
                         See plans
                     </Button>
                 </div>

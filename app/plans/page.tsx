@@ -477,15 +477,7 @@ export default function PlansPage() {
                 })}
               </div>
 
-              <div className="flex justify-between items-center w-full">
-                <p className="text-[#878E99] text-[12px] font-semibold max-w-[280px] leading-[1.35]">
-                  Pay in 4 interest- free payments for our 3-month and monthly
-                  plans.
-                </p>
-                <div className="bg-[#3DDEA5] text-[#2F3337] text-[18px] tracking-tight font-[900] px-3.5 py-1.5 rounded-md italic">
-                  tabby
-                </div>
-              </div>
+             
             </section>
           </div>
 

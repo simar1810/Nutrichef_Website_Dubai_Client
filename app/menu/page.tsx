@@ -7,7 +7,6 @@ import { FilterBar } from "../../components/menu/FilterBar";
 import { MenuCard } from "../../components/menu/MenuCard";
 import { fallbackMenuItems, type MenuItem } from "./data";
 import { api } from "@/lib/api";
-import { useRequireAuth } from "@/lib/useRequireAuth";
 
 interface BackendRecipe {
   _id: string;
@@ -45,7 +44,6 @@ function mapRecipeToMenuItem(recipe: BackendRecipe): MenuItem {
 }
 
 export default function MenuPage() {
-  const { isAuthenticated, isLoading: authLoading } = useRequireAuth();
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [filteredItems, setFilteredItems] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -54,12 +52,12 @@ export default function MenuPage() {
 
   const fetchMenu = useCallback(async () => {
     try {
-      const res = await api.get<{ recipes: BackendRecipe[] }>("/menu/list?type=recipes");
+      const res = await api.get<{ recipes: BackendRecipe[] }>("/menu/list?type=recipes", {
+        noAuth: true,
+      });
       const recipes = res.data?.recipes || [];
       if (recipes.length > 0) {
-        const items = recipes
-          .filter((r) => r.status !== "draft")
-          .map(mapRecipeToMenuItem);
+        const items = recipes.map(mapRecipeToMenuItem);
         setMenuItems(items);
 
         const cats = [...new Set(items.map((i) => i.category).filter(Boolean))] as string[];
@@ -75,10 +73,8 @@ export default function MenuPage() {
   }, []);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      fetchMenu();
-    }
-  }, [isAuthenticated, fetchMenu]);
+    void fetchMenu();
+  }, [fetchMenu]);
 
   useEffect(() => {
     if (activeFilter === "all") {
@@ -93,14 +89,6 @@ export default function MenuPage() {
       );
     }
   }, [activeFilter, menuItems]);
-
-  if (authLoading) {
-    return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="w-8 h-8 border-3 border-[#249B60] border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-white text-[#343B42]">

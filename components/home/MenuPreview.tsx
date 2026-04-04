@@ -1,7 +1,9 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { Button } from '../Button';
+import { api } from '@/lib/api';
 
 const tabs = [
     { id: 'All', label: 'All', icon: null },
@@ -13,75 +15,112 @@ const tabs = [
     { id: 'Low Carb', label: 'Low Carb', icon: '🥑' },
 ];
 
-const mockMeals = [
-    {
-        id: 1,
-        title: 'Fiesta Chicken Bowl',
-        calories: '371',
-        protein: 35,
-        carbs: 34,
-        fat: 10,
-        image: 'https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-37.webp'
-    },
-    {
-        id: 2,
-        title: 'Mexican Chicken Enchilada',
-        calories: '639',
-        protein: 37,
-        carbs: 58,
-        fat: 29,
-        image: 'https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-7.webp'
-    },
-    {
-        id: 3,
-        title: 'Basil Chicken Alfredo Linguine',
-        calories: '641',
-        protein: 64,
-        carbs: 64,
-        fat: 14,
-        image: 'https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-9-1.webp'
-    },
-    {
-        id: 4,
-        title: 'Koshari',
-        calories: '360',
-        protein: 13,
-        carbs: 65,
-        fat: 5,
-        image: 'https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-37.webp'
-    },
-    {
-        id: 5,
-        title: 'Steak & Mash',
-        calories: null,
-        customText: 'Customisable macros',
-        image: 'https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-9-1.webp'
-    },
-    {
-        id: 6,
-        title: 'Beef and Parm Cannelloni',
-        calories: '462',
-        protein: 33,
-        carbs: 23,
-        fat: 27,
-        image: 'https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-7.webp'
-    },
-    {
-        id: 7,
-        title: 'Fettucine al...',
-        calories: '351',
-        protein: 25,
-        carbs: 40,
-        fat: 12,
-        image: 'https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-37.webp'
+const FALLBACK_IMAGE =
+    'https://cdn.calo.app/food/46cfb754-32c1-4f59-93fa-026430ae9918/square@3x.jpg';
+
+interface ApiRecipe {
+    _id: string;
+    title: string;
+    nutrition?: {
+        calories?: number;
+        protein?: number;
+        carbs?: number;
+        fat?: number;
+    };
+    tags?: string[];
+    media?: string[];
+}
+
+interface PreviewMeal {
+    id: string;
+    title: string;
+    image: string;
+    calories: string | null;
+    protein?: number;
+    carbs?: number;
+    fat?: number;
+    customText?: string;
+    tags: string[];
+}
+
+function mapRecipeToMeal(recipe: ApiRecipe): PreviewMeal {
+    const n = recipe.nutrition;
+    const hasCalories = n?.calories != null && Number.isFinite(n.calories);
+    const p = n?.protein;
+    const c = n?.carbs;
+    const f = n?.fat;
+    const hasP = p != null && Number.isFinite(p);
+    const hasC = c != null && Number.isFinite(c);
+    const hasF = f != null && Number.isFinite(f);
+    const hasAnyMacro = hasP || hasC || hasF;
+
+    return {
+        id: recipe._id,
+        title: recipe.title,
+        image: recipe.media?.[0] || FALLBACK_IMAGE,
+        calories: hasCalories ? String(Math.round(n!.calories!)) : null,
+        protein: hasP ? p : undefined,
+        carbs: hasC ? c : undefined,
+        fat: hasF ? f : undefined,
+        customText: !hasAnyMacro ? 'Macros on request' : undefined,
+        tags: recipe.tags ?? [],
+    };
+}
+
+function mealMatchesTab(meal: PreviewMeal, tabId: string): boolean {
+    if (tabId === 'All') return true;
+    const tags = meal.tags.map((t) => t.toLowerCase().replace(/\s+/g, '-'));
+    switch (tabId) {
+        case 'High Protein':
+            return tags.some((t) => t === 'high-protein' || t.includes('high-protein'));
+        case 'Balanced':
+            return tags.includes('balanced');
+        case 'Vegetarian':
+            return tags.includes('vegetarian') || tags.includes('veggie');
+        case "Chef's Picks":
+            return tags.includes('chefs-pick') || tags.includes('chef-pick') || tags.includes('chefs-picks');
+        case 'Custom Macros':
+            return tags.includes('custom-macros') || tags.includes('custom');
+        case 'Low Carb':
+            return tags.includes('low-carb') || tags.includes('lowcarb');
+        default:
+            return true;
     }
-];
+}
 
 export const MenuPreview = () => {
+    const router = useRouter();
     const [activeTab, setActiveTab] = useState('All');
+    const [meals, setMeals] = useState<PreviewMeal[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    const fetchRecipes = useCallback(async () => {
+        setLoading(true);
+        try {
+            const res = await api.get<{ recipes: ApiRecipe[]; templates?: unknown[] }>(
+                '/menu/list?type=recipes',
+                { noAuth: true }
+            );
+            const recipes = res.data?.recipes ?? [];
+            setMeals(recipes.map(mapRecipeToMeal));
+        } catch {
+            setMeals([]);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        void fetchRecipes();
+    }, [fetchRecipes]);
+
+    const visibleMeals = useMemo(
+        () => meals.filter((m) => mealMatchesTab(m, activeTab)),
+        [meals, activeTab]
+    );
 
     return (
-        <section className="py-24 bg-white overflow-hidden w-full">
+        <section id="menu-preview" className="py-24 bg-white overflow-hidden w-full">
             <div className="w-full flex flex-col items-center">
                 
                 {/* Header Section */}
@@ -119,16 +158,40 @@ export const MenuPreview = () => {
                         </div>
                     </div>
                     
-                    <Button className="bg-[#249B60] hover:bg-[#1E8351] text-white px-8 rounded-full mb-10 h-11 text-[15px] shadow-sm font-semibold border-none" size="md">
+                    <Button
+                        type="button"
+                        onClick={() => router.push('/menu')}
+                        className="bg-[#249B60] hover:bg-[#1E8351] text-white px-8 rounded-full mb-10 h-11 text-[15px] shadow-sm font-semibold border-none"
+                        size="md"
+                    >
                         See full menu
                     </Button>
                 </div>
 
                 {/* Cards Section */}
                 <div className="w-full">
-                    {/* Centered container but scrollable all the way to edges */}
-                    <div className="flex overflow-x-auto gap-4 md:gap-[18px] pb-10 snap-x hide-scrollbar px-6 md:px-12 xl:justify-center w-full max-w-[100vw]">
-                        {mockMeals.map((meal) => (
+                    {loading ? (
+                        <div className="flex overflow-x-auto gap-4 md:gap-[18px] pb-10 snap-x hide-scrollbar px-6 md:px-12 w-full max-w-[100vw]">
+                            {Array.from({ length: 4 }).map((_, i) => (
+                                <div
+                                    key={i}
+                                    className="min-w-[260px] md:min-w-[280px] w-[260px] md:w-[280px] shrink-0 animate-pulse"
+                                >
+                                    <div className="h-[260px] md:h-[280px] rounded-[28px] bg-[#E5E7EB] mb-[14px]" />
+                                    <div className="h-4 bg-[#E5E7EB] rounded w-3/4 mb-2" />
+                                    <div className="h-3 bg-[#E5E7EB] rounded w-1/2" />
+                                </div>
+                            ))}
+                        </div>
+                    ) : visibleMeals.length === 0 ? (
+                        <p className="text-center text-[15px] text-[#6B7280] font-medium px-6 pb-10">
+                            {meals.length === 0
+                                ? 'No recipes in the menu yet.'
+                                : 'No dishes match this filter.'}
+                        </p>
+                    ) : (
+                    <div className="flex justify-start overflow-x-auto gap-4 md:gap-[18px] pb-10 snap-x hide-scrollbar px-6 md:px-12 w-full max-w-[100vw] scroll-pl-6 md:scroll-pl-12">
+                        {visibleMeals.map((meal) => (
                             <div key={meal.id} className="min-w-[260px] md:min-w-[280px] w-[260px] md:w-[280px] snap-center group cursor-pointer text-left flex flex-col pt-2">
                                 <div className="relative h-[260px] md:h-[280px] w-full rounded-[28px] overflow-hidden mb-[14px] bg-[#F7F7F8]">
                                     <Image
@@ -157,23 +220,30 @@ export const MenuPreview = () => {
                                     </div>
                                 ) : (
                                     <div className="flex flex-wrap items-center gap-[10px] text-[11px] font-bold text-[#6B7280]">
+                                        {meal.protein != null && (
                                         <div className="flex items-center gap-[4px]">
                                             <div className="w-[5px] h-[5px] rounded-full bg-[#8b5cf6]"></div>
-                                            <span>{meal.protein}g Protein</span>
+                                            <span>{Math.round(meal.protein)}g Protein</span>
                                         </div>
+                                        )}
+                                        {meal.carbs != null && (
                                         <div className="flex items-center gap-[4px]">
                                             <div className="w-[5px] h-[5px] rounded-full bg-[#f59e0b]"></div>
-                                            <span>{meal.carbs}g Carbs</span>
+                                            <span>{Math.round(meal.carbs)}g Carbs</span>
                                         </div>
+                                        )}
+                                        {meal.fat != null && (
                                         <div className="flex items-center gap-[4px]">
                                             <div className="w-[5px] h-[5px] rounded-full bg-[#3b82f6]"></div>
-                                            <span>{meal.fat}g Fat</span>
+                                            <span>{Math.round(meal.fat)}g Fat</span>
                                         </div>
+                                        )}
                                     </div>
                                 )}
                             </div>
                         ))}
                     </div>
+                    )}
                 </div>
 
                 {/* Bottom Tabs */}

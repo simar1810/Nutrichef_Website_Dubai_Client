@@ -1,8 +1,18 @@
+"use client";
+
 import React from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { Button } from '../Button';
 
+const MENU_SECTION_ID = 'menu-preview';
+
+function scrollToMenuSection() {
+    document.getElementById(MENU_SECTION_ID)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
 export const HeroSection = () => {
+    const router = useRouter();
     return (
         <section className="relative w-full h-[100vh] min-h-[700px] flex mx-auto bg-[#F4F5F7] overflow-hidden">
 
@@ -17,18 +27,28 @@ export const HeroSection = () => {
                         Designed by nutritionists, crafted by chefs, personalized to your goals. Fresh daily. Just heat and eat.
                     </p>
 
-                    <Button size="lg" className="w-[180px] h-[56px] text-[18px] mb-8 font-semibold shadow-[0_8px_16px_rgba(36,161,112,0.3)] hover:-translate-y-1 transition-transform">
+                    <Button
+                        type="button"
+                        size="lg"
+                        onClick={() => router.push('/plans')}
+                        className="w-[180px] h-[56px] text-[18px] mb-8 font-semibold shadow-[0_8px_16px_rgba(36,161,112,0.3)] hover:-translate-y-1 transition-transform"
+                    >
                         See plans
                     </Button>
 
                     {/* Sticky Stats Bottom Left */}
-                    <div className="absolute bottom-12 left-6 lg:left-[10%] flex items-center space-x-2 text-[15px] font-bold text-primary">
+                    <div className="relative top-12 flex items-center space-x-2 text-[15px] font-bold text-primary">
                         <span>290K happy customers in Worldwide</span>
                         <span className="text-primary">•</span>
                         <span>19M meals delivered</span>
-                        <div className="ml-4 w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm text-gray-400">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
-                        </div>
+                        <button
+                            type="button"
+                            onClick={scrollToMenuSection}
+                            aria-label="Scroll to menu"
+                            className="ml-4 w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm text-gray-400 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                        >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                        </button>
                     </div>
                 </div>
             </div>

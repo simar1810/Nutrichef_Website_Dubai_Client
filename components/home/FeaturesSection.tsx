@@ -57,30 +57,7 @@ export const FeaturesSection = () => {
                         </div>
                     </div>
 
-                    {/* Logos Section */}
-                    <div className="flex flex-wrap justify-center items-center gap-[40px] md:gap-[80px] pt-4 pb-8 max-w-6xl mx-auto">
-                        <div className="text-[28px] md:text-[34px] font-black tracking-tighter text-[#1C1C1C]">
-                            Bloomberg
-                        </div>
-                        <div className="flex items-center">
-                            <div className="bg-[#1C1C1C] text-white text-[16px] md:text-[18px] font-black px-1.5 py-0.5 mr-2 tracking-tighter">TC</div>
-                            <span className="text-[22px] md:text-[26px] font-black text-[#1C1C1C] tracking-tight">TechCrunch</span>
-                        </div>
-                        <div className="flex items-center gap-2.5">
-                            <div className="text-[16px] md:text-[18px] font-black leading-[1] text-[#1C1C1C] tracking-tight text-right">
-                                Arabian<br/>Business
-                            </div>
-                            <div className="text-[18px] md:text-[22px] font-bold text-[#1C1C1C]">
-                                /
-                            </div>
-                            <div className="text-[20px] md:text-[24px] font-bold text-[#1C1C1C] mb-1">
-                                العربية
-                            </div>
-                        </div>
-                        <div className="text-[24px] md:text-[28px] font-bold tracking-tighter text-[#1C1C1C] lowercase">
-                            menabytes
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         </section>
