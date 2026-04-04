@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { Navbar } from "../../components/Navbar";
-import { Footer } from "../../components/Footer";
 import { FilterBar } from "../../components/menu/FilterBar";
 import { MenuCard } from "../../components/menu/MenuCard";
 import { fallbackMenuItems, type MenuItem } from "./data";
@@ -92,9 +90,7 @@ export default function MenuPage() {
 
   return (
     <div className="min-h-screen bg-white text-[#343B42]">
-      <Navbar />
-
-      <main className="max-w-[1440px] mx-auto px-6 lg:px-12 pt-32 pb-24">
+      <main className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 pt-28 sm:pt-32 pb-16 sm:pb-24">
         {/* Hero Section */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8">
           <div>
@@ -150,8 +146,6 @@ export default function MenuPage() {
           </div>
         )}
       </main>
-
-      {/* <Footer /> */}
     </div>
   );
 }

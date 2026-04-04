@@ -418,23 +418,26 @@ export default function PlansPage() {
               <p className="text-[#878E99] font-medium text-[14px] mb-8">
                 Select a minimum of 5 days
               </p>
-              <div className="flex gap-[12px]">
-                {DAYS.map((day, idx) => {
-                  const isActive = selectedDays.includes(idx);
-                  return (
-                    <button
-                      key={idx}
-                      onClick={() => toggleDay(idx)}
-                      className={`w-[46px] h-[46px] rounded-full flex items-center justify-center text-[15px] font-[800] transition-all duration-200 ${
-                        isActive
-                          ? "bg-[#249B60] text-white shadow-sm"
-                          : "bg-[#F2F4F7] text-[#878E99] hover:bg-gray-200"
-                      }`}
-                    >
-                      {day}
-                    </button>
-                  );
-                })}
+              <div className="-mx-1 px-1 overflow-x-auto pb-1 [scrollbar-width:thin]">
+                <div className="flex w-max gap-2 sm:w-full sm:justify-between sm:gap-3 md:gap-[12px]">
+                  {DAYS.map((day, idx) => {
+                    const isActive = selectedDays.includes(idx);
+                    return (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => toggleDay(idx)}
+                        className={`w-10 h-10 sm:w-[46px] sm:h-[46px] shrink-0 rounded-full flex items-center justify-center text-[14px] sm:text-[15px] font-[800] transition-all duration-200 ${
+                          isActive
+                            ? "bg-[#249B60] text-white shadow-sm"
+                            : "bg-[#F2F4F7] text-[#878E99] hover:bg-gray-200"
+                        }`}
+                      >
+                        {day}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </section>
 

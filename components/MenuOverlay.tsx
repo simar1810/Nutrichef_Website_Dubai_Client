@@ -84,12 +84,13 @@ export const MenuOverlay = ({ isOpen, onClose }: { isOpen: boolean, onClose: () 
                 </div>
 
                 {/* RIGHT SIDE */}
-                <div className="w-full lg:w-[40%] xl:w-[35%] h-full bg-white relative flex flex-col pt-[84px] px-12 lg:px-14 pb-[42px] overflow-y-auto">
+                <div className="w-full lg:w-[40%] xl:w-[35%] h-full bg-white relative flex flex-col pt-[max(5.25rem,env(safe-area-inset-top)+3rem)] px-5 sm:px-8 md:px-12 lg:px-14 pb-[max(2.625rem,env(safe-area-inset-bottom))] overflow-y-auto">
                     
                     {/* Close Button */}
                     <button 
                         onClick={onClose}
-                        className="fixed top-12 right-12 text-[#2F3337] hover:bg-gray-100 p-2 rounded-full transition-colors z-[110]"
+                        type="button"
+                        className="fixed top-[max(3rem,env(safe-area-inset-top)+0.75rem)] right-[max(1.25rem,env(safe-area-inset-right))] text-[#2F3337] hover:bg-gray-100 p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full transition-colors z-[110]"
                     >
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                     </button>

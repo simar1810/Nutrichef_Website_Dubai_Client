@@ -81,9 +81,9 @@ export const CommunitySection = () => {
                 }
             `}</style>
             
-            {/* Top Massive Banner Section */}
-            <section className="bg-[#2B9D65] w-full py-24 md:py-36 flex justify-center items-center px-4">
-                <h2 className="text-white text-[48px] md:text-[64px] lg:text-[76px] font-black uppercase text-center leading-[1.05] tracking-[-0.02em] shrink-0">
+            {/* Top Massive Banner Section — type scales down on narrow viewports to avoid horizontal clip */}
+            <section className="bg-[#2B9D65] w-full min-w-0 overflow-x-hidden py-16 sm:py-24 md:py-36 flex justify-center items-center px-4 sm:px-6">
+                <h2 className="w-full max-w-[100%] mx-auto text-white text-[clamp(1.375rem,6.5vw,4.75rem)] sm:text-[40px] md:text-[56px] lg:text-[68px] xl:text-[76px] font-black uppercase text-center leading-[1.08] tracking-tight sm:tracking-[-0.02em] break-words [word-break:break-word]">
                     Slammed schedule?<br />
                     Personalised meals.<br />
                     Ready to eat.
@@ -91,7 +91,7 @@ export const CommunitySection = () => {
             </section>
 
             {/* Bottom Testimonials Section */}
-            <section className="bg-[#EFF4F1] w-full pt-20 pb-28 overflow-hidden">
+            <section className="bg-[#EFF4F1] w-full min-w-0 overflow-x-hidden pt-20 pb-28">
                 <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 mb-10">
                     <p className="text-[#2B9D65] font-extrabold text-[12px] uppercase tracking-wider mb-2">
                         290K happy customers in Worldwide . 19M meals delivered
