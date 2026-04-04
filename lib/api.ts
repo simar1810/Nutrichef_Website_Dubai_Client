@@ -1,4 +1,6 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:1111/api/v1";
+/** Same-origin via app/api-backend proxy; set BACKEND_PROXY_TARGET server-side. Avoids CORS to ngrok/another port. */
+const BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL || "/api-backend/api/v1";
 const TENANT_ID = process.env.NEXT_PUBLIC_TENANT_ID || "";
 
 function getAccessToken(): string | null {
