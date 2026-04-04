@@ -4,6 +4,8 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Button } from '../Button';
 import { api } from '@/lib/api';
+import { useTenant } from '@/contexts/TenantContext';
+import { formatMajorUnits } from '@/lib/formatCurrency';
 
 const GOAL_EMOJIS: Record<string, string> = {
     balanced: '⚖️',
@@ -178,6 +180,7 @@ function templateToCard(t: ApiTemplate): PlanCard {
 
 export const MealPlansSection = () => {
     const router = useRouter();
+    const { currency } = useTenant();
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const [plans, setPlans] = useState<PlanCard[]>([]);
     const [loading, setLoading] = useState(true);
@@ -218,7 +221,9 @@ export const MealPlansSection = () => {
                     Find your perfect meal plan
                 </h2>
                 <p className="text-[#878E99] font-bold text-[15px] mb-8">
-                    Starting at KWD 2.5/meal and KWD 1.5/breakfast
+                    Starting at {formatMajorUnits(2.5, currency, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+                    /meal and {formatMajorUnits(1.5, currency, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+                    /breakfast
                 </p>
                 
                 <div className="flex justify-between items-center w-full">

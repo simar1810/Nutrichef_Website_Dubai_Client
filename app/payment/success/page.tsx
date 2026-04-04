@@ -4,6 +4,7 @@ import React, { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { api } from "@/lib/api";
+import { formatMinorUnits } from "@/lib/formatCurrency";
 
 interface SessionData {
   id: string;
@@ -113,8 +114,7 @@ function PaymentSuccessContent() {
             </p>
             {session && session.amount_total != null && (
               <p className="text-[#2F3337] text-[18px] font-extrabold mb-8">
-                {(session.currency || "inr").toUpperCase()}{" "}
-                {(session.amount_total / 100).toFixed(2)} paid
+                {formatMinorUnits(session.amount_total, session.currency || "inr")} paid
               </p>
             )}
             <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6">

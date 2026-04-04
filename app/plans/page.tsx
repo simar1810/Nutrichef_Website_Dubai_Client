@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 import { useRequireAuth } from "@/lib/useRequireAuth";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTenant } from "@/contexts/TenantContext";
+import { formatMinorUnits, formatMajorUnits } from "@/lib/formatCurrency";
 
 const GOAL_EMOJIS: Record<string, string> = {
   balanced: "⚖️",
@@ -71,7 +73,11 @@ const FALLBACK_CYCLES: Cycle[] = [
   { id: "4 weeks", title: "Monthly", subtext: "Per month", priceDisplay: "/month", save: null, amount: 0 },
 ];
 
-function buildCycles(pricing: BackendPlan["pricing"], selectedMeals: string[]): Cycle[] {
+function buildCycles(
+  pricing: BackendPlan["pricing"],
+  selectedMeals: string[],
+  currency: string
+): Cycle[] {
   if (!pricing) return FALLBACK_CYCLES;
 
   const durationKeys = new Set<string>();
@@ -107,11 +113,12 @@ function buildCycles(pricing: BackendPlan["pricing"], selectedMeals: string[]): 
     const perWeek = total / weeks;
     if (perWeek < cheapestPerUnit) cheapestPerUnit = perWeek;
 
+    const perWeekRounded = Math.round(total / weeks);
     return {
       id: dur,
       title: dur.charAt(0).toUpperCase() + dur.slice(1),
-      subtext: `${total} per ${dur}`,
-      priceDisplay: `${Math.round(total / weeks)}/week`,
+      subtext: `${formatMajorUnits(total, currency)} per ${dur}`,
+      priceDisplay: `${formatMajorUnits(perWeekRounded, currency)}/week`,
       save: null,
       amount: Math.round(total * 100),
     };
@@ -124,7 +131,10 @@ function buildCycles(pricing: BackendPlan["pricing"], selectedMeals: string[]): 
       const thisPerWeek = cycles[i].amount / 100 / weeks;
       const saving = Math.round((basePerWeek - thisPerWeek) * weeks);
       if (saving > 0) {
-        cycles[i].save = `${saving}`;
+        cycles[i].save = formatMajorUnits(saving, currency, {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        });
       }
     }
   }
@@ -136,6 +146,7 @@ export default function PlansPage() {
   const router = useRouter();
   const { isAuthenticated, isLoading: authLoading } = useRequireAuth();
   const { isAuthenticated: loggedIn } = useAuth();
+  const { currency } = useTenant();
 
   const [backendPlans, setBackendPlans] = useState<BackendPlan[]>([]);
   const [planTypes, setPlanTypes] = useState<PlanType[]>(FALLBACK_PLAN_TYPES);
@@ -186,13 +197,13 @@ export default function PlansPage() {
   useEffect(() => {
     const plan = backendPlans.find((p) => p._id === selectedPlan);
     if (plan?.pricing) {
-      const c = buildCycles(plan.pricing, selectedMeals);
+      const c = buildCycles(plan.pricing, selectedMeals, currency);
       setCycles(c);
       if (c.length > 0 && !c.find((cy) => cy.id === selectedCycle)) {
         setSelectedCycle(c[0].id);
       }
     }
-  }, [selectedPlan, selectedMeals, backendPlans, selectedCycle]);
+  }, [selectedPlan, selectedMeals, backendPlans, selectedCycle, currency]);
 
   const toggleMeal = (meal: string) => {
     setSelectedMeals((prev) =>
@@ -228,7 +239,7 @@ export default function PlansPage() {
         {
           templateId,
           amount: cycle.amount,
-          currency: "inr",
+          currency: currency.toLowerCase(),
           productName: `${getSelectedPlanTitle()} - ${cycle.title}`,
           successUrl: `${window.location.origin}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
           cancelUrl: `${window.location.origin}/payment/cancel`,
@@ -563,7 +574,7 @@ export default function PlansPage() {
                     </span>
                     <span className="text-[#2F3337] text-[13px] font-[800]">
                       {getCurrentCycle()
-                        ? `₹${(getCurrentCycle()!.amount / 100).toFixed(0)}`
+                        ? formatMinorUnits(getCurrentCycle()!.amount, currency)
                         : "--"}
                     </span>
                   </div>
@@ -571,7 +582,9 @@ export default function PlansPage() {
                     <span className="text-[#878E99] text-[13px] font-semibold tracking-tight">
                       Delivery fee
                     </span>
-                    <span className="text-[#2F3337] text-[13px] font-[800]">₹0</span>
+                    <span className="text-[#2F3337] text-[13px] font-[800]">
+                      {formatMinorUnits(0, currency)}
+                    </span>
                   </div>
                   <div className="flex justify-between items-center pt-2">
                     <span className="text-[#2F3337] text-[16px] font-black tracking-tight">
@@ -579,7 +592,7 @@ export default function PlansPage() {
                     </span>
                     <span className="text-[#2F3337] text-[16px] font-black tracking-tight">
                       {getCurrentCycle()
-                        ? `₹${(getCurrentCycle()!.amount / 100).toFixed(0)}`
+                        ? formatMinorUnits(getCurrentCycle()!.amount, currency)
                         : "--"}
                     </span>
                   </div>

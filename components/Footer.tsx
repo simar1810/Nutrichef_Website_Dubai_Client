@@ -1,6 +1,6 @@
 import React from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
+import { GoogleTranslate } from '@/components/GoogleTranslate';
 
 export const Footer = () => {
     return (
@@ -18,34 +18,10 @@ export const Footer = () => {
                         <div className="flex flex-wrap gap-x-8 gap-y-3">
                             <Link href="#" className="text-[#878E99] hover:text-[#249B60] font-semibold text-[13px] tracking-tight">Plans & Packages</Link>
                             <Link href="#" className="text-[#878E99] hover:text-[#249B60] font-semibold text-[13px] tracking-tight">Menu</Link>
-                            <Link href="#" className="text-[#878E99] hover:text-[#249B60] font-semibold text-[13px] tracking-tight">The Cafe</Link>
-                            <Link href="#" className="text-[#878E99] hover:text-[#249B60] font-semibold text-[13px] tracking-tight">Careers</Link>
-                            <Link href="#" className="text-[#878E99] hover:text-[#249B60] font-semibold text-[13px] tracking-tight">Blog</Link>
                         </div>
                         
                         <div className="flex items-center gap-4">
-                            {/* World Dropdown */}
-                            <div className="flex items-center justify-between border border-gray-200 rounded-[12px] px-4 py-2.5 w-[160px] cursor-pointer hover:bg-gray-50 transition-colors">
-                                <div className="flex items-center gap-2.5">
-                                    <div className="w-[18px] h-[14px] bg-red-600 rounded-[2px] overflow-hidden shrink-0 flex">
-                                        {/* Pure CSS approximation of UAE flag */}
-                                        <div className="w-[30%] h-full bg-red-600"></div>
-                                        <div className="w-[70%] h-full flex flex-col">
-                                            <div className="w-full h-1/3 bg-green-600"></div>
-                                            <div className="w-full h-1/3 bg-white"></div>
-                                            <div className="w-full h-1/3 bg-black"></div>
-                                        </div>
-                                    </div>
-                                    <span className="text-[13px] text-[#878E99] font-medium">World</span>
-                                </div>
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#878E99" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-                            </div>
-                            
-                            {/* Language Dropdown */}
-                            <div className="flex items-center justify-between border border-gray-200 rounded-[12px] px-4 py-2.5 w-[160px] cursor-pointer hover:bg-gray-50 transition-colors">
-                                <span className="text-[13px] text-[#878E99] font-medium">English</span>
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#878E99" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-                            </div>
+                            <GoogleTranslate />
                         </div>
                     </div>
 

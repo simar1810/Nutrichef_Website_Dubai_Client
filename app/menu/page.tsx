@@ -151,7 +151,7 @@ export default function MenuPage() {
         )}
       </main>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

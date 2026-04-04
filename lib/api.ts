@@ -1,6 +1,29 @@
-/** Same-origin via app/api-backend proxy; set BACKEND_PROXY_TARGET server-side. Avoids CORS to ngrok/another port. */
-const BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "/api-backend/api/v1";
+/**
+ * Same-origin requests go through app/api-backend (server adds ngrok-skip-browser-warning).
+ * If NEXT_PUBLIC_API_BASE_URL is still an absolute URL (e.g. ngrok) on Vercel, the browser
+ * would hit ngrok directly → ERR_NGROK_6024 / CORS. Always use the proxy for cross-origin env URLs.
+ */
+const PROXY_BASE = "/api-backend/api/v1";
+
+function apiBaseUrl(): string {
+  const env = process.env.NEXT_PUBLIC_API_BASE_URL || PROXY_BASE;
+  if (typeof window === "undefined") {
+    return env;
+  }
+  if (env.startsWith("/")) {
+    return env;
+  }
+  try {
+    const u = new URL(env);
+    if (u.origin !== window.location.origin) {
+      return PROXY_BASE;
+    }
+    return env;
+  } catch {
+    return PROXY_BASE;
+  }
+}
+
 const TENANT_ID = process.env.NEXT_PUBLIC_TENANT_ID || "";
 
 function getAccessToken(): string | null {
@@ -28,7 +51,7 @@ async function refreshAccessToken(): Promise<string | null> {
   if (!refreshToken) return null;
 
   try {
-    const res = await fetch(`${BASE_URL}/auth/refresh`, {
+    const res = await fetch(`${apiBaseUrl()}/auth/refresh`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ refreshToken }),
@@ -84,14 +107,15 @@ async function request<T = unknown>(
     fetchOpts.body = JSON.stringify(body);
   }
 
-  let res = await fetch(`${BASE_URL}${path}`, fetchOpts);
+  const base = apiBaseUrl();
+  let res = await fetch(`${base}${path}`, fetchOpts);
 
   if (res.status === 401 && !opts.noAuth) {
     const newToken = await refreshAccessToken();
     if (newToken) {
       headers["Authorization"] = `Bearer ${newToken}`;
       fetchOpts.headers = headers;
-      res = await fetch(`${BASE_URL}${path}`, fetchOpts);
+      res = await fetch(`${base}${path}`, fetchOpts);
     }
   }
 

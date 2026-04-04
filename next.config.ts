@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
-
+/**
+ * API proxy: app/api-backend/[[...path]]/route.ts (server adds ngrok-skip-browser-warning).
+ * Required on Vercel: BACKEND_PROXY_TARGET=https://your-ngrok-host (no /api/v1).
+ * lib/api.ts forces same-origin /api-backend when NEXT_PUBLIC_API_BASE_URL is a cross-origin URL.
+ */
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
