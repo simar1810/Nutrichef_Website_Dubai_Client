@@ -22,7 +22,7 @@ function VerifyContent() {
   const { login } = useAuth();
 
   const phone = searchParams.get("phone") || "";
-  const countryCode = searchParams.get("countryCode") || "91";
+  const countryCode = searchParams.get("countryCode") || "971";
   const redirect = searchParams.get("redirect") || "/";
 
   const [otp, setOtp] = useState<string[]>(Array(OTP_LENGTH).fill(""));

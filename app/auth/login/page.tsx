@@ -4,17 +4,13 @@ import React, { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { api, TENANT_ID } from "@/lib/api";
-
-const COUNTRY_CODES = [
-  { code: "+91", label: "IN +91" },
-  { code: "+971", label: "AE +971" },
-  { code: "+1", label: "US +1" },
-  { code: "+44", label: "UK +44" },
-  { code: "+965", label: "KW +965" },
-  { code: "+966", label: "SA +966" },
-  { code: "+973", label: "BH +973" },
-  { code: "+974", label: "QA +974" },
-];
+import { CountryCodeSelect } from "@/components/CountryCodeSelect";
+import {
+  DEFAULT_COUNTRY_CODE_SELECTION,
+  DEFAULT_DIAL_CODE,
+  dialCodeForApi,
+  findRowBySelection,
+} from "@/lib/countryCodes";
 
 export default function LoginPage() {
   return (
@@ -30,7 +26,7 @@ function LoginContent() {
   const redirect = searchParams.get("redirect") || "/";
 
   const [phone, setPhone] = useState("");
-  const [countryCode, setCountryCode] = useState("+91");
+  const [countrySelection, setCountrySelection] = useState(DEFAULT_COUNTRY_CODE_SELECTION);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -44,12 +40,15 @@ function LoginContent() {
     setLoading(true);
     setError("");
 
+    const row = findRowBySelection(countrySelection);
+    const countryCodeDigits = dialCodeForApi(row?.dialCode ?? DEFAULT_DIAL_CODE);
+
     try {
       await api.post(
         "/auth/otp",
         {
           phone: phone.trim(),
-          countryCode: countryCode.replace("+", ""),
+          countryCode: countryCodeDigits,
           tenantId: TENANT_ID,
         },
         { noAuth: true }
@@ -57,7 +56,7 @@ function LoginContent() {
 
       const params = new URLSearchParams({
         phone: phone.trim(),
-        countryCode: countryCode.replace("+", ""),
+        countryCode: countryCodeDigits,
         redirect,
       });
       router.push(`/auth/verify?${params.toString()}`);
@@ -94,17 +93,7 @@ function LoginContent() {
               Phone Number
             </label>
             <div className="flex gap-3">
-              <select
-                value={countryCode}
-                onChange={(e) => setCountryCode(e.target.value)}
-                className="w-[110px] border border-gray-200 rounded-[14px] px-3 py-3.5 text-[14px] font-bold text-[#2F3337] bg-white focus:outline-none focus:ring-2 focus:ring-[#249B60] appearance-none cursor-pointer"
-              >
-                {COUNTRY_CODES.map((c) => (
-                  <option key={c.code} value={c.code}>
-                    {c.label}
-                  </option>
-                ))}
-              </select>
+              <CountryCodeSelect value={countrySelection} onChange={setCountrySelection} />
               <input
                 type="tel"
                 value={phone}

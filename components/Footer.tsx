@@ -25,11 +25,8 @@ export const Footer = () => {
                         </div>
                     </div>
 
-                    {/* Right Download Card */}
                     <div className="border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] rounded-[18px] p-4 pr-10 flex items-center gap-[18px] bg-white self-start">
                         <div className="w-[54px] h-[54px] relative shrink-0">
-                            {/* Generic QR Code */}
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://nutrichef.com&color=2F3337" alt="QR Code" className="w-full h-full object-contain rounded-md" />
                         </div>
                         <div className="w-[120px]">
