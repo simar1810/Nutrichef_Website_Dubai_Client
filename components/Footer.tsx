@@ -1,78 +1,116 @@
-import React from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+import React from "react";
+import Link from "next/link";
+import { NutrichefWordmark } from "@/components/NutrichefWordmark";
 
 export const Footer = () => {
-    return (
-        <footer className="bg-[#2B3137] text-white pt-16 pb-8">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
-
-                    {/* Brand Column */}
-                    <div className="col-span-1 lg:col-span-1">
-                        <Image
-                            src="https://calo.app/_next/static/media/logo.svg"
-                            alt="Calo Logo"
-                            width={100}
-                            height={40}
-                            className="mb-6 brightness-0 invert"
-                        />
-                        <p className="text-gray-400 text-sm mb-6 max-w-xs">
-                            Calo provides meal plans tailored for busy people. It serves delicious food that&#39;s portioned to your requirements and fitness goals.
-                        </p>
-                        <div className="flex space-x-4">
-                            {/* Social Icons Placeholders */}
-                            {['TikTok', 'Insta', 'X', 'In'].map((social) => (
-                                <a key={social} href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors">
-                                    <span className="text-xs">{social}</span>
-                                </a>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Links Columns */}
-                    <div>
-                        <h3 className="text-lg font-bold mb-6">Company</h3>
-                        <ul className="space-y-4">
-                            <li><Link href="#" className="text-gray-400 hover:text-white transition-colors">Plans & Packages</Link></li>
-                            <li><Link href="#" className="text-gray-400 hover:text-white transition-colors">Menu</Link></li>
-                            <li><Link href="#" className="text-gray-400 hover:text-white transition-colors">The Cafe</Link></li>
-                            <li><Link href="#" className="text-gray-400 hover:text-white transition-colors">Careers</Link></li>
-                            <li><Link href="#" className="text-gray-400 hover:text-white transition-colors">Blog</Link></li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h3 className="text-lg font-bold mb-6">Help</h3>
-                        <ul className="space-y-4">
-                            <li><Link href="#" className="text-gray-400 hover:text-white transition-colors">FAQ</Link></li>
-                            <li><Link href="#" className="text-gray-400 hover:text-white transition-colors">Contact Us</Link></li>
-                        </ul>
-                    </div>
-
-                    {/* Download Column */}
-                    <div>
-                        <h3 className="text-lg font-bold mb-6">Download the App</h3>
-                        <div className="bg-white/5 rounded-xl p-4 flex items-center gap-4">
-                            <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center text-black text-xs font-bold text-center">
-                                QR<br />Code
-                            </div>
-                            <p className="text-sm text-gray-300">Scan to download the Calo app</p>
-                        </div>
-                    </div>
-
-                </div>
-
-                {/* Bottom Bar */}
-                <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
-                    <p>© {new Date().getFullYear()} Calo Inc. All rights reserved.</p>
-                    <div className="flex space-x-6 mt-4 md:mt-0">
-                        <Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link>
-                        <Link href="#" className="hover:text-white transition-colors">Terms & Conditions</Link>
-                        <Link href="#" className="hover:text-white transition-colors">Cookies</Link>
-                    </div>
-                </div>
+  return (
+    <footer className="border-t border-border-subtle bg-foreground text-background">
+      <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:px-10 lg:py-20">
+        <div className="grid gap-14 lg:grid-cols-12 lg:gap-10">
+          <div className="lg:col-span-4">
+            <Link href="/" className="mb-8 inline-block text-3xl">
+              <NutrichefWordmark variant="onDark" />
+            </Link>
+            <p className="max-w-sm text-[0.9375rem] leading-relaxed text-background/70">
+              Nutrichef provides meal plans tailored for busy people. It serves
+              delicious food that&apos;s portioned to your requirements and
+              fitness goals.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-2">
+              {["TikTok", "Insta", "X", "In"].map((social) => (
+                <a
+                  key={social}
+                  href="#"
+                  className="rounded-lg border border-background/15 px-3 py-2 text-xs font-medium text-background/80 transition hover:border-primary hover:text-background"
+                >
+                  {social}
+                </a>
+              ))}
             </div>
-        </footer>
-    );
+          </div>
+
+          <div className="grid gap-10 sm:grid-cols-3 lg:col-span-8 lg:grid-cols-3">
+            <div>
+              <h3 className="font-heading mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-background/50">
+                Company
+              </h3>
+              <ul className="space-y-3 text-sm">
+                {[
+                  "Plans & Packages",
+                  "Menu",
+                  "The Cafe",
+                  "Careers",
+                  "Blog",
+                ].map((label) => (
+                  <li key={label}>
+                    <Link
+                      href="#"
+                      className="text-background/75 transition hover:text-primary"
+                    >
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-heading mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-background/50">
+                Help
+              </h3>
+              <ul className="space-y-3 text-sm">
+                <li>
+                  <Link
+                    href="#"
+                    className="text-background/75 transition hover:text-primary"
+                  >
+                    FAQ
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="#"
+                    className="text-background/75 transition hover:text-primary"
+                  >
+                    Contact Us
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-heading mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-background/50">
+                Download the App
+              </h3>
+              <div className="flex items-start gap-4 rounded-2xl border border-background/10 bg-background/[0.06] p-4">
+                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-background text-center text-[0.65rem] font-bold leading-tight text-foreground">
+                  QR
+                  <br />
+                  Code
+                </div>
+                <p className="pt-1 text-sm leading-relaxed text-background/70">
+                  Scan to download the Nutrichef app
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-14 flex flex-col gap-6 border-t border-background/10 pt-10 text-sm text-background/55 md:flex-row md:items-center md:justify-between">
+          <p>
+            © {new Date().getFullYear()} Nutrichef. All rights reserved.
+          </p>
+          <div className="flex flex-wrap gap-x-8 gap-y-2">
+            <Link href="#" className="transition hover:text-background">
+              Privacy Policy
+            </Link>
+            <Link href="#" className="transition hover:text-background">
+              Terms & Conditions
+            </Link>
+            <Link href="#" className="transition hover:text-background">
+              Cookies
+            </Link>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
 };

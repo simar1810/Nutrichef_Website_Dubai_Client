@@ -1,30 +1,35 @@
 @import "tailwindcss";
 
+html {
+  color-scheme: light;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #343B42;
-  --primary-brand: #24A170;
-  --primary-brand-hover: #1E8C61;
-  --secondary-text: #6C757D;
-  --light-bg: #F8F9FA;
+  --background: #f4f1eb;
+  --surface: #ffffff;
+  --foreground: #121816;
+  --primary-brand: #0d7a52;
+  --primary-brand-hover: #0a6343;
+  --secondary-text: #4a524e;
+  --light-bg: #ebe6dc;
+  --accent-warm: #c2410c;
+  --border-subtle: rgba(18, 24, 22, 0.08);
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary-brand);
   --color-primary-hover: var(--primary-brand-hover);
   --color-text-secondary: var(--secondary-text);
   --color-bg-light: var(--light-bg);
-  --font-sans: "__enFontExtended", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-accent-warm: var(--accent-warm);
+  --color-border-subtle: var(--border-subtle);
+  --font-sans: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-display), ui-serif, Georgia, "Times New Roman", serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
 }
 
 body {
@@ -33,18 +38,26 @@ body {
   font-family: var(--font-sans);
 }
 
-/* Custom Scrollbar */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Custom Scrollbar (main page) */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f1f1; 
+  background: var(--light-bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: #ccc; 
+  background: rgba(18, 24, 22, 0.2);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-brand); 
+  background: var(--primary-brand);
 }
