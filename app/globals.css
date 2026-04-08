@@ -5,15 +5,16 @@ html {
 }
 
 :root {
-  --background: #f4f1eb;
+  /* Brand: forest wordmark + leaf accent (Nutrichef logo) */
+  --background: #fafaf8;
   --surface: #ffffff;
-  --foreground: #121816;
-  --primary-brand: #0d7a52;
-  --primary-brand-hover: #0a6343;
-  --secondary-text: #4a524e;
-  --light-bg: #ebe6dc;
-  --accent-warm: #c2410c;
-  --border-subtle: rgba(18, 24, 22, 0.08);
+  --foreground: #1b3022;
+  --primary-brand: #7db146;
+  --primary-brand-hover: #689938;
+  --secondary-text: #4a5c52;
+  --light-bg: #eef2ed;
+  --accent-leaf-muted: #a3c978;
+  --border-subtle: rgba(27, 48, 34, 0.1);
 }
 
 @theme inline {
@@ -24,7 +25,7 @@ html {
   --color-primary-hover: var(--primary-brand-hover);
   --color-text-secondary: var(--secondary-text);
   --color-bg-light: var(--light-bg);
-  --color-accent-warm: var(--accent-warm);
+  --color-accent-warm: var(--accent-leaf-muted);
   --color-border-subtle: var(--border-subtle);
   --font-sans: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-display), ui-serif, Georgia, "Times New Roman", serif;
@@ -46,7 +47,6 @@ body {
   display: none;
 }
 
-/* Custom Scrollbar (main page) */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -55,7 +55,7 @@ body {
   background: var(--light-bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(18, 24, 22, 0.2);
+  background: rgba(27, 48, 34, 0.22);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {

@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { NutrichefWordmark } from "@/components/NutrichefWordmark";
+import { NutrichefLogo } from "@/components/NutrichefLogo";
 
 export const Footer = () => {
   return (
@@ -8,8 +8,8 @@ export const Footer = () => {
       <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:px-10 lg:py-20">
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-4">
-            <Link href="/" className="mb-8 inline-block text-3xl">
-              <NutrichefWordmark variant="onDark" />
+            <Link href="/" className="mb-8 inline-block">
+              <NutrichefLogo onDark />
             </Link>
             <p className="max-w-sm text-[0.9375rem] leading-relaxed text-background/70">
               Nutrichef provides meal plans tailored for busy people. It serves

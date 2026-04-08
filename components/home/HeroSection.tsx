@@ -54,7 +54,7 @@ export const HeroSection = () => {
 
           <div className="relative lg:col-span-7 xl:col-span-7">
             <div className="relative mx-auto aspect-[5/6] w-full max-w-md sm:max-w-none sm:aspect-[16/11] lg:aspect-[11/10] lg:max-w-none">
-              <div className="absolute -inset-3 -z-10 rounded-[2.25rem] bg-gradient-to-br from-primary/20 via-transparent to-accent-warm/15 blur-2xl" />
+                <div className="absolute -inset-3 -z-10 rounded-[2.25rem] bg-gradient-to-br from-primary/25 via-transparent to-foreground/10 blur-2xl" />
               <div className="relative h-full overflow-hidden rounded-[1.75rem] border border-border-subtle bg-surface shadow-[0_24px_80px_-24px_rgba(18,24,22,0.35)] sm:rounded-[2rem]">
                 <Image
                   src={HERO_IMAGE}
