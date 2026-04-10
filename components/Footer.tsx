@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { NutrichefLogo } from "@/components/NutrichefLogo";
 import { GoogleTranslate } from "@/components/GoogleTranslate";
@@ -144,10 +145,13 @@ export const Footer = () => {
               </h3>
               <div className="flex max-w-sm items-start gap-4 rounded-2xl border border-background/10 bg-background/[0.06] p-4">
                 <div className="relative h-[54px] w-[54px] shrink-0">
-                  <img
+                  <Image
                     src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://nutrichef.com&color=ffffff"
                     alt="QR code to download app"
-                    className="h-full w-full rounded-md object-contain"
+                    width={54}
+                    height={54}
+                    unoptimized
+                    className="rounded-md object-contain"
                   />
                 </div>
                 <p className="pt-1 text-sm leading-relaxed text-background/70">
