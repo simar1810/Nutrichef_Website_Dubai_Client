@@ -48,3 +48,73 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--primary-brand); 
 }
+
+/* Google Website Translator: remove top promo bar & layout shift */
+iframe.goog-te-banner-frame,
+.goog-te-banner-frame,
+.goog-te-balloon-frame,
+.goog-tooltip,
+.goog-tooltip:hover {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  width: 0 !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+}
+
+body {
+  top: 0 !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  position: relative !important;
+}
+
+html {
+  margin-top: 0 !important;
+}
+
+/* After translate runs, keep site typography/colors from being overridden */
+html.translated-ltr body,
+html.translated-rtl body {
+  font-family: var(--font-sans) !important;
+  color: var(--foreground) !important;
+  background: var(--background) !important;
+}
+
+/*
+  Google gadget: keep it off-screen + visibility-hidden so the native “Select Language”
+  UI (logo, label, bordered box) never paints. The hidden <select> stays in the DOM
+  for programmatic updates / cookie flow (see GoogleTranslate.tsx).
+*/
+.google-translate-gadget-layer {
+  position: absolute !important;
+  left: -9999px !important;
+  top: 0 !important;
+  width: 280px !important;
+  height: 44px !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+#google_translate_element .goog-te-gadget-icon,
+#google_translate_element .goog-te-gadget-simple img,
+#google_translate_element .goog-te-gadget-simple a,
+#google_translate_element a.goog-logo-link {
+  display: none !important;
+}
+
+#google_translate_element .goog-te-gadget-simple span {
+  display: none !important;
+}
+
+#google_translate_element .goog-te-gadget-simple {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
