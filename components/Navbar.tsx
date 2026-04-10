@@ -1,120 +1,302 @@
 "use client";
-import React, { useState, useRef, useEffect } from 'react';
-import Link from 'next/link';
-import { MenuOverlay } from './MenuOverlay';
-import { useAuth } from '@/contexts/AuthContext';
+
+import React, { useEffect, useId, useRef, useState } from "react";
+import Link from "next/link";
+import { NutrichefLogo } from "@/components/NutrichefLogo";
+import { useAuth } from "@/contexts/AuthContext";
+
+const navLinks = [
+  { href: "/plans", label: "Plans" },
+  { href: "/menu", label: "Menu" },
+  { href: "/#features", label: "Why us" },
+  { href: "/#community", label: "Community" },
+  { href: "/#faq", label: "FAQ" },
+] as const;
+
+const LG = "(min-width: 1024px)";
+
+const DRAWER_TOP = "calc(env(safe-area-inset-top, 0px) + 4.25rem)";
 
 export const Navbar = () => {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const dropdownRef = useRef<HTMLDivElement>(null);
-    const { user, isAuthenticated, logout } = useAuth();
+  const [open, setOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const panelCloseRef = useRef<HTMLButtonElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const menuId = useId();
+  const { user, isAuthenticated, logout } = useAuth();
 
-    useEffect(() => {
-        const handleClickOutside = (e: MouseEvent) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-                setIsDropdownOpen(false);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
+  const initials = user?.name
+    ? user.name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2)
+    : "U";
 
-    const initials = user?.name
-        ? user.name
-              .split(" ")
-              .map((n) => n[0])
-              .join("")
-              .toUpperCase()
-              .slice(0, 2)
-        : "U";
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
-    return (
+  useEffect(() => {
+    const mq = window.matchMedia(LG);
+    const closeIfDesktop = () => {
+      if (mq.matches) setOpen(false);
+    };
+    closeIfDesktop();
+    mq.addEventListener("change", closeIfDesktop);
+    return () => mq.removeEventListener("change", closeIfDesktop);
+  }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    const t = window.setTimeout(() => panelCloseRef.current?.focus(), 0);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.clearTimeout(t);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const authControls = (
+    <>
+      {isAuthenticated ? (
+        <div className="relative" ref={dropdownRef}>
+          <button
+            type="button"
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            className="flex items-center gap-2 rounded-full bg-primary px-2.5 py-1.5 text-white shadow-sm transition hover:bg-primary-hover"
+          >
+            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20 text-[11px] font-extrabold">
+              {initials}
+            </div>
+            <span className="hidden max-w-[100px] truncate text-[13px] font-bold sm:inline">
+              {user?.name || "Account"}
+            </span>
+            <svg
+              className={`h-3.5 w-3.5 shrink-0 transition-transform ${isDropdownOpen ? "rotate-180" : ""}`}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+
+          {isDropdownOpen && (
+            <div className="absolute right-0 top-full z-[80] mt-2 w-[220px] rounded-2xl border border-border-subtle bg-surface py-2 shadow-lg">
+              <div className="border-b border-border-subtle px-4 py-3">
+                <p className="truncate text-[13px] font-extrabold text-foreground">
+                  {user?.name || "User"}
+                </p>
+                <p className="truncate text-[11px] font-medium text-text-secondary">
+                  {user?.email ||
+                    (user?.phone
+                      ? `+${user.countryCode} ${user.phone}`
+                      : "")}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  logout();
+                  setIsDropdownOpen(false);
+                }}
+                className="w-full px-4 py-2.5 text-left text-[13px] font-bold text-red-600 transition hover:bg-bg-light"
+              >
+                Log out
+              </button>
+            </div>
+          )}
+        </div>
+      ) : (
+        <Link
+          href="/auth/login"
+          className="inline-flex items-center justify-center rounded-full bg-primary px-3.5 py-2 text-[12px] font-extrabold text-white shadow-sm transition hover:bg-primary-hover sm:px-5 sm:text-[13px]"
+        >
+          Sign Up
+        </Link>
+      )}
+    </>
+  );
+
+  return (
+    <header className="fixed top-0 z-50 w-full pt-[env(safe-area-inset-top,0px)]">
+      {open ? (
         <>
-            <nav className="absolute top-0 left-0 right-0 w-full z-40 pt-[env(safe-area-inset-top)]">
-                <div className="w-full px-3 sm:px-6 lg:px-12 mt-10">
-                    <div className="flex justify-between items-center rounded-full px-4 sm:px-8 py-3.5 min-h-[56px] sm:h-[64px] max-w-[1400px] mx-auto">
-                        {/* Logo */}
-                        <div className="flex-shrink-0 flex items-center">
-                            <Link href="/" className="text-[#249B60] font-black text-[18px] sm:text-[22px] tracking-[0.1em] uppercase leading-none mt-1">
-                                NUTRICHEF
-                            </Link>
-                        </div>
-
-                        {/* Right side */}
-                        <div className="flex items-center gap-2 sm:gap-4 shrink-0">
-                            {isAuthenticated ? (
-                                <div className="relative" ref={dropdownRef}>
-                                    <button
-                                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                                        className="flex items-center gap-2 bg-[#249B60] text-white px-3 py-1.5 rounded-full hover:bg-[#1E8351] transition-colors"
-                                    >
-                                        <div className="w-[28px] h-[28px] rounded-full bg-white/20 flex items-center justify-center text-[12px] font-extrabold">
-                                            {initials}
-                                        </div>
-                                        <span className="text-[13px] font-bold hidden sm:inline max-w-[100px] truncate">
-                                            {user?.name || "Account"}
-                                        </span>
-                                        <svg
-                                            className={`w-3.5 h-3.5 transition-transform ${isDropdownOpen ? "rotate-180" : ""}`}
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2.5"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        >
-                                            <path d="m6 9 6 6 6-6" />
-                                        </svg>
-                                    </button>
-
-                                    {isDropdownOpen && (
-                                        <div className="absolute right-0 top-full mt-2 w-[200px] bg-white rounded-[16px] shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-gray-100 py-2 z-50">
-                                            <div className="px-4 py-3 border-b border-gray-100">
-                                                <p className="text-[13px] font-extrabold text-[#2F3337] truncate">
-                                                    {user?.name || "User"}
-                                                </p>
-                                                <p className="text-[11px] text-[#878E99] font-medium truncate">
-                                                    {user?.email || (user?.phone ? `+${user.countryCode} ${user.phone}` : "")}
-                                                </p>
-                                            </div>
-                                            <button
-                                                onClick={() => {
-                                                    logout();
-                                                    setIsDropdownOpen(false);
-                                                }}
-                                                className="w-full text-left px-4 py-2.5 text-[13px] font-bold text-red-500 hover:bg-red-50 transition-colors"
-                                            >
-                                                Log out
-                                            </button>
-                                        </div>
-                                    )}
-                                </div>
-                            ) : (
-                                <Link
-                                    href="/auth/login"
-                                    className="bg-[#249B60] hover:bg-[#1E8351] text-white px-3.5 sm:px-5 py-2 rounded-full text-[12px] sm:text-[13px] font-extrabold transition-colors shadow-sm whitespace-nowrap"
-                                >
-                                    Sign Up
-                                </Link>
-                            )}
-
-                            <button 
-                                onClick={() => setIsMenuOpen(true)}
-                                className="flex items-center justify-center w-[36px] h-[36px] rounded-full bg-white hover:bg-gray-50 transition-colors"
-                            >
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2F3337" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                                    <line x1="3" y1="18" x2="21" y2="18"></line>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+          <button
+            type="button"
+            aria-label="Close menu"
+            className="fixed inset-0 z-[55] bg-foreground/25 backdrop-blur-[2px] lg:hidden"
+            onClick={() => setOpen(false)}
+          />
+          <div
+            id={menuId}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site navigation"
+            className="fixed right-0 z-[60] flex w-full max-w-[min(100vw,20rem)] flex-col overflow-hidden rounded-l-2xl border-l border-t border-border-subtle bg-surface shadow-[0_24px_64px_-16px_rgba(27,48,34,0.18)] sm:max-w-[19rem] lg:hidden"
+            style={{
+              top: DRAWER_TOP,
+              height:
+                "calc(100dvh - env(safe-area-inset-top, 0px) - 4.25rem - env(safe-area-inset-bottom, 0px))",
+            }}
+          >
+            <div className="flex items-center justify-between gap-3 border-b border-border-subtle bg-bg-light/50 px-4 py-3.5 sm:px-5">
+              <NutrichefLogo className="!h-[1.85rem] max-w-[min(150px,48vw)] sm:!h-8" />
+              <button
+                ref={panelCloseRef}
+                type="button"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-background text-foreground transition hover:bg-bg-light"
+                aria-label="Close menu"
+                onClick={() => setOpen(false)}
+              >
+                <svg
+                  className="h-5 w-5 shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+            <nav
+              className="flex flex-1 flex-col gap-0.5 overflow-y-auto overscroll-contain px-3 py-4 pb-[calc(1.25rem+env(safe-area-inset-bottom,0px))] sm:px-4"
+              aria-label="Mobile menu"
+            >
+              {navLinks.map(({ href, label }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className="font-heading flex min-h-12 items-center rounded-xl px-4 text-base font-medium text-foreground/90 transition hover:bg-bg-light hover:text-foreground"
+                  onClick={() => setOpen(false)}
+                >
+                  {label}
+                </Link>
+              ))}
+              <Link
+                href="/plans"
+                className="mt-4 flex min-h-11 items-center justify-center rounded-full bg-primary px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-hover"
+                onClick={() => setOpen(false)}
+              >
+                See plans
+              </Link>
             </nav>
-
-            <MenuOverlay isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+          </div>
         </>
-    );
+      ) : null}
+
+      <nav
+        className={`relative z-[70] border-b border-border-subtle bg-background transition-shadow duration-300 ${
+          open ? "shadow-sm" : ""
+        }`}
+        aria-label="Main"
+      >
+        <div className="mx-auto flex h-[4.25rem] max-w-7xl items-center justify-between gap-3 px-5 sm:gap-4 sm:px-8 lg:px-10">
+          <Link
+            href="/"
+            className="flex min-h-10 min-w-0 shrink-0 items-center py-1"
+            onClick={() => setOpen(false)}
+          >
+            <NutrichefLogo
+              priority
+              className="!h-8 max-w-[min(190px,58vw)] sm:!h-9 lg:!h-10"
+            />
+          </Link>
+
+          <div className="hidden items-center gap-1 lg:flex">
+            {navLinks.map(({ href, label }) => (
+              <Link
+                key={href}
+                href={href}
+                className="rounded-full px-3 py-2 text-sm font-medium text-foreground/65 transition hover:bg-bg-light hover:text-foreground"
+              >
+                {label}
+              </Link>
+            ))}
+            <Link
+              href="/plans"
+              className="ml-2 inline-flex h-10 items-center justify-center rounded-full bg-primary px-6 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-hover"
+            >
+              See plans
+            </Link>
+          </div>
+
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+            {authControls}
+            <button
+              type="button"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-bg-light text-foreground transition hover:bg-bg-light/80 lg:hidden"
+              aria-expanded={open}
+              aria-controls={open ? menuId : undefined}
+              aria-label={open ? "Close menu" : "Open menu"}
+              onClick={() => setOpen((v) => !v)}
+            >
+              {open ? (
+                <svg
+                  className="h-5 w-5 shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  className="h-5 w-5 shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              )}
+            </button>
+          </div>
+        </div>
+      </nav>
+    </header>
+  );
 };

@@ -1,107 +1,146 @@
 "use client";
-import React, { useState } from 'react';
-import Image from 'next/image';
-import { Button } from '../Button';
+
+import React, { useState } from "react";
+import { Button } from "../Button";
 
 const faqs = [
-    {
-        question: "Am I tied into a contract?",
-        answer: "No, you can pause or cancel your subscription at any time without any hidden fees."
-    },
-    {
-        question: "Can I enter my own macros?",
-        answer: "Absolutely. We have a special custom macros plan for this. You enter your goal macros and we get working on a menu that matches them."
-    },
-    {
-        question: "Up to what point can I make changes to my delivery?",
-        answer: "You can make changes to your upcoming delivery up to 48 hours in advance through the app."
-    },
-    {
-        question: "How long do the meals last?",
-        answer: "Our meals are made fresh daily without preservatives. They are designed to stay fresh in the fridge for up to 3 days."
-    },
-    {
-        question: "What oils do you cook with?",
-        answer: "We use high-quality olive oil, coconut oil, and occasionally avocado oil. We never use refined seed oils in our cooking."
-    },
-    {
-        question: "What type of packaging does your food come in?",
-        answer: "We use eco-friendly containers made of bagasse (sugar cane byproduct) which are 100% compostable and microwave safe."
-    },
-    {
-        question: "How do I pause my subscription?",
-        answer: "You can pause your subscription anytime directly from your dashboard under 'Manage Subscription'."
-    },
-    {
-        question: "Do you deliver to all areas in Kuwait?",
-        answer: "We deliver to most areas within Kuwait. You can check if your specific area is covered when entering your address at checkout."
-    },
-    {
-        question: "What are the delivery times and is weekend delivery available?",
-        answer: "We deliver daily between 6 AM and 10 AM. Yes, weekend delivery is available depending on your selected plan."
-    },
-    {
-        question: "Can I swap meals on the menu or change certain ingredients?",
-        answer: "Yes, you have full control to swap any meal you don't like with another option from our weekly menu."
-    },
-    {
-        question: "What makes the NutriChef experience in Kuwait unique?",
-        answer: "We offer completely personalized meal plans tuned to your unique macros, cooked with premium ingredients, and delivered fresh daily."
-    }
+  {
+    question: "Am I tied into a contract?",
+    answer:
+      "No, you can pause or cancel your subscription at any time without any hidden fees.",
+  },
+  {
+    question: "Can I enter my own macros?",
+    answer:
+      "Absolutely. We have a special custom macros plan for this. You enter your goal macros and we get working on a menu that matches them.",
+  },
+  {
+    question: "Up to what point can I make changes to my delivery?",
+    answer:
+      "You can make changes to your upcoming delivery up to 48 hours in advance through the app.",
+  },
+  {
+    question: "How long do the meals last?",
+    answer:
+      "Our meals are made fresh daily without preservatives. They are designed to stay fresh in the fridge for up to 3 days.",
+  },
+  {
+    question: "What oils do you cook with?",
+    answer:
+      "We use high-quality olive oil, coconut oil, and occasionally avocado oil. We never use refined seed oils in our cooking.",
+  },
+  {
+    question: "What type of packaging does your food come in?",
+    answer:
+      "We use eco-friendly containers made of bagasse (sugar cane byproduct) which are 100% compostable and microwave safe.",
+  },
+  {
+    question: "How do I pause my subscription?",
+    answer:
+      "You can pause your subscription anytime directly from your dashboard under 'Manage Subscription'.",
+  },
+  {
+    question: "Do you deliver to all areas in Kuwait?",
+    answer:
+      "We deliver to most areas within Kuwait. You can check if your specific area is covered when entering your address at checkout.",
+  },
+  {
+    question: "What are the delivery times and is weekend delivery available?",
+    answer:
+      "We deliver daily between 6 AM and 10 AM. Yes, weekend delivery is available depending on your selected plan.",
+  },
+  {
+    question: "Can I swap meals on the menu or change certain ingredients?",
+    answer:
+      "Yes, you have full control to swap any meal you don't like with another option from our weekly menu.",
+  },
+  {
+    question: "What makes the NutriChef experience in Kuwait unique?",
+    answer:
+      "We offer completely personalized meal plans tuned to your unique macros, cooked with premium ingredients, and delivered fresh daily.",
+  },
 ];
 
 export const FAQSection = () => {
-    const [openIndex, setOpenIndex] = useState<number | null>(1); // Default open second item to match image
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
 
-    const toggleFaq = (index: number) => {
-        setOpenIndex(openIndex === index ? null : index);
-    };
+  const toggleFaq = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
 
-    return (
-        <section className="py-24 bg-white w-full">
-            <div className="max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-12 lg:gap-20 items-start">
+  return (
+    <section
+      id="faq"
+      className="border-t border-border-subtle bg-background py-20 sm:py-24 lg:py-28"
+    >
+      <div className="mx-auto max-w-3xl px-5 sm:px-8 lg:max-w-6xl lg:px-10">
+        <div className="lg:grid lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-4 lg:pt-2">
+            <p className="font-heading text-xs font-semibold uppercase tracking-[0.28em] text-secondary-text">
+              Support
+            </p>
+            <h2 className="font-heading mt-3 text-3xl font-semibold leading-tight tracking-tight text-foreground sm:text-4xl">
+              Still hungry? Checkout our FAQ
+            </h2>
+          </div>
 
-                {/* Left Side: FAQ List */}
-                <div className="w-full lg:flex-1">
-                    <h2 className="text-[36px] md:text-[44px] font-extrabold text-[#2F3337] mb-10 leading-[1.1] tracking-tight">
-                        Still hungry?<br />Checkout our FAQ
-                    </h2>
-
-                    <div className="flex flex-col gap-3">
-                        {faqs.map((faq, idx) => {
-                            const isOpen = openIndex === idx;
-                            return (
-                                <div
-                                    key={idx}
-                                    className={`transition-all duration-300 rounded-[16px] border ${isOpen ? 'bg-white border-gray-200' : 'bg-[#F7F7F8] border-transparent hover:bg-gray-100'} cursor-pointer`}
-                                    onClick={() => toggleFaq(idx)}
-                                >
-                                    <div className="w-full flex justify-between items-center text-left py-[18px] px-6 select-none">
-                                        <span className="text-[15px] font-extrabold text-[#2F3337] pr-4">
-                                            {faq.question}
-                                        </span>
-                                        <span className="flex-shrink-0 text-[#249B60] text-[28px] font-light leading-none flex items-center justify-center">
-                                            {isOpen ? '−' : '+'}
-                                        </span>
-                                    </div>
-
-                                    <div
-                                        className={`overflow-hidden transition-all duration-300 px-6 ${isOpen ? 'max-h-96 pb-[22px] opacity-100' : 'max-h-0 opacity-0'}`}
-                                    >
-                                        <p className="text-[#878E99] font-medium text-[13px] leading-[1.6]">
-                                            {faq.answer}
-                                        </p>
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
+          <div className="mt-12 border-t border-border-subtle lg:col-span-8 lg:mt-0">
+            {faqs.map((faq, idx) => {
+              const open = openIndex === idx;
+              return (
+                <div key={faq.question} className="border-b border-border-subtle">
+                  <button
+                    type="button"
+                    className="flex w-full items-start gap-4 py-6 text-left transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:gap-6 sm:py-7"
+                    onClick={() => toggleFaq(idx)}
+                    aria-expanded={open}
+                  >
+                    <span
+                      className={`mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border text-sm font-bold transition sm:h-9 sm:w-9 ${
+                        open
+                          ? "border-primary bg-primary text-white"
+                          : "border-border-subtle bg-surface text-secondary-text"
+                      }`}
+                      aria-hidden
+                    >
+                      {open ? "−" : "+"}
+                    </span>
+                    <span className="flex-1">
+                      <span
+                        className={`font-heading block text-lg font-semibold leading-snug sm:text-xl ${
+                          open ? "text-primary" : "text-foreground"
+                        }`}
+                      >
+                        {faq.question}
+                      </span>
+                      <div
+                        className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+                          open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                        }`}
+                      >
+                        <div className="min-h-0 overflow-hidden">
+                          <p className="pt-4 text-[0.9375rem] leading-relaxed text-secondary-text sm:text-base">
+                            {faq.answer}
+                          </p>
+                        </div>
+                      </div>
+                    </span>
+                  </button>
                 </div>
+              );
+            })}
+          </div>
+        </div>
 
-                {/* Right Side: Sticky Support Card */}
-                
-
-            </div>
-        </section>
-    );
+        <div className="mt-14 lg:mt-16 lg:grid lg:grid-cols-12 lg:gap-16">
+          <div className="hidden lg:col-span-4" aria-hidden />
+          <div className="flex justify-center lg:col-span-8 lg:justify-start">
+            <Button variant="outline" size="lg" type="button">
+              Got more questions?
+            </Button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 };
