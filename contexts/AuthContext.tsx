@@ -68,12 +68,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [fetchProfile]);
 
   useEffect(() => {
-    const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
-    if (token) {
-      fetchProfile().finally(() => setIsLoading(false));
-    } else {
-      setIsLoading(false);
-    }
+    const id = window.setTimeout(() => {
+      const token = localStorage.getItem("accessToken");
+      if (token) {
+        void fetchProfile().finally(() => setIsLoading(false));
+      } else {
+        setIsLoading(false);
+      }
+    }, 0);
+    return () => window.clearTimeout(id);
   }, [fetchProfile]);
 
   return (

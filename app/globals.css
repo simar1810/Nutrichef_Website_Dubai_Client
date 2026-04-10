@@ -1,30 +1,36 @@
 @import "tailwindcss";
 
+html {
+  color-scheme: light;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #343B42;
-  --primary-brand: #24A170;
-  --primary-brand-hover: #1E8C61;
-  --secondary-text: #6C757D;
-  --light-bg: #F8F9FA;
+  /* Brand: forest wordmark + leaf accent (Nutrichef logo) */
+  --background: #fafaf8;
+  --surface: #ffffff;
+  --foreground: #1b3022;
+  --primary-brand: #7db146;
+  --primary-brand-hover: #689938;
+  --secondary-text: #4a5c52;
+  --light-bg: #eef2ed;
+  --accent-leaf-muted: #a3c978;
+  --border-subtle: rgba(27, 48, 34, 0.1);
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary-brand);
   --color-primary-hover: var(--primary-brand-hover);
   --color-text-secondary: var(--secondary-text);
   --color-bg-light: var(--light-bg);
-  --font-sans: "__enFontExtended", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-accent-warm: var(--accent-leaf-muted);
+  --color-border-subtle: var(--border-subtle);
+  --font-sans: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-display), ui-serif, Georgia, "Times New Roman", serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
 }
 
 body {
@@ -33,20 +39,27 @@ body {
   font-family: var(--font-sans);
 }
 
-/* Custom Scrollbar */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f1f1; 
+  background: var(--light-bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: #ccc; 
+  background: rgba(27, 48, 34, 0.22);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-brand); 
+  background: var(--primary-brand);
 }
 
 /* Google Website Translator: remove top promo bar & layout shift */

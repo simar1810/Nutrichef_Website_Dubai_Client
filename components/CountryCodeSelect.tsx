@@ -67,7 +67,7 @@ export function CountryCodeSelect({ value, onChange, className = "", id }: Count
   };
 
   const triggerClasses =
-    "w-[110px] shrink-0 border border-gray-200 rounded-[14px] px-3 py-3.5 text-[14px] font-bold text-[#2F3337] bg-white focus:outline-none focus:ring-2 focus:ring-[#249B60] cursor-pointer text-left flex items-center justify-between gap-1";
+    "flex w-[110px] shrink-0 cursor-pointer items-center justify-between gap-1 rounded-xl border border-border-subtle bg-surface px-3 py-3.5 text-left text-[14px] font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background";
 
   return (
     <div ref={rootRef} className={`relative ${className}`}>
@@ -80,7 +80,7 @@ export function CountryCodeSelect({ value, onChange, className = "", id }: Count
         onClick={() => setOpen((o) => !o)}
       >
         <span className="truncate">{displayDial || "—"}</span>
-        <span className="text-[10px] text-[#878E99] shrink-0" aria-hidden>
+        <span className="shrink-0 text-[10px] text-secondary-text" aria-hidden>
           ▼
         </span>
       </button>
@@ -89,7 +89,7 @@ export function CountryCodeSelect({ value, onChange, className = "", id }: Count
         <div
           id={listboxId}
           role="listbox"
-          className="absolute left-0 top-full z-50 mt-1 w-[min(100vw-2rem,280px)] rounded-[14px] border border-gray-200 bg-white py-2 shadow-lg"
+          className="absolute left-0 top-full z-50 mt-1 w-[min(100vw-2rem,280px)] rounded-xl border border-border-subtle bg-surface py-2 shadow-lg"
         >
           <div className="px-2 pb-2">
             <input
@@ -98,7 +98,7 @@ export function CountryCodeSelect({ value, onChange, className = "", id }: Count
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search country or code"
-              className="w-full rounded-[10px] border border-gray-200 px-3 py-2 text-[13px] font-medium text-[#2F3337] placeholder:text-[#A0A5AE] focus:outline-none focus:ring-2 focus:ring-[#249B60]"
+              className="w-full rounded-lg border border-border-subtle px-3 py-2 text-[13px] font-medium text-foreground placeholder:text-secondary-text/70 focus:outline-none focus:ring-2 focus:ring-primary"
               autoComplete="off"
               aria-label="Search country codes"
             />
@@ -108,7 +108,7 @@ export function CountryCodeSelect({ value, onChange, className = "", id }: Count
             role="presentation"
           >
             {filtered.length === 0 ? (
-              <li className="px-3 py-2 text-[13px] text-[#878E99]">No matches</li>
+              <li className="px-3 py-2 text-[13px] text-secondary-text">No matches</li>
             ) : (
               filtered.map((row) => {
                 const encoded = encodeCountryCodeSelection(row.isoCode, row.dialCode);
@@ -119,13 +119,17 @@ export function CountryCodeSelect({ value, onChange, className = "", id }: Count
                       type="button"
                       role="option"
                       aria-selected={isSelected}
-                      className={`flex w-full flex-col items-start gap-0.5 rounded-[10px] px-3 py-2 text-left text-[13px] transition-colors ${
-                        isSelected ? "bg-[#249B60]/10 font-bold text-[#249B60]" : "hover:bg-gray-50 text-[#2F3337]"
+                      className={`flex w-full flex-col items-start gap-0.5 rounded-lg px-3 py-2 text-left text-[13px] transition-colors ${
+                        isSelected
+                          ? "bg-primary/10 font-semibold text-primary"
+                          : "text-foreground hover:bg-bg-light"
                       }`}
                       onClick={() => pick(row)}
                     >
                       <span className="font-semibold">{row.dialCode}</span>
-                      <span className="text-[12px] font-medium text-[#878E99]">{row.name}</span>
+                      <span className="text-[12px] font-medium text-secondary-text">
+                        {row.name}
+                      </span>
                     </button>
                   </li>
                 );

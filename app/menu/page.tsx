@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
 import { FilterBar } from "../../components/menu/FilterBar";
 import { MenuCard } from "../../components/menu/MenuCard";
 import { fallbackMenuItems, type MenuItem } from "./data";
@@ -89,26 +90,28 @@ export default function MenuPage() {
   }, [activeFilter, menuItems]);
 
   return (
-    <div className="min-h-screen bg-white text-[#343B42]">
-      <main className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 pt-28 sm:pt-32 pb-16 sm:pb-24">
-        {/* Hero Section */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8">
+    <div className="min-h-screen bg-background text-foreground">
+      <main className="mx-auto max-w-[1440px] px-4 pb-16 pt-28 sm:px-6 sm:pb-24 sm:pt-32 lg:px-12">
+        <div className="mb-8 flex flex-col justify-between md:flex-row md:items-end">
           <div>
-            <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-[#EAF5F0] text-[#114B34] text-sm font-bold mb-6">
+            <div className="mb-6 inline-flex items-center rounded-full bg-primary/10 px-3 py-1.5 text-sm font-semibold text-primary">
               <span className="mr-2">📅</span>
-              This Week&apos;s Menu
+              This week&apos;s menu
             </div>
-            <h1 className="text-4xl md:text-5xl font-extrabold text-[#343B42] mb-3 tracking-tight">
+            <h1 className="font-heading mb-3 text-4xl font-semibold tracking-tight md:text-5xl">
               Check out this week&apos;s menu
             </h1>
-            <p className="text-lg text-gray-500">
+            <p className="text-lg text-secondary-text">
               Here&apos;s a taste of what&apos;s included when you subscribe
             </p>
           </div>
           <div className="mt-8 md:mt-0">
-            <button className="bg-[#24A170] hover:bg-[#1E8C61] text-white px-8 py-3.5 rounded-full font-bold text-base transition-colors shadow-[0_4px_14px_0_rgba(36,161,112,0.39)]">
-              Order Now
-            </button>
+            <Link
+              href="/plans"
+              className="inline-flex rounded-full bg-primary px-8 py-3.5 text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary-hover"
+            >
+              Order now
+            </Link>
           </div>
         </div>
 
@@ -121,17 +124,17 @@ export default function MenuPage() {
 
         {/* Menu Grid */}
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-10 mt-8">
+          <div className="mt-8 grid grid-cols-1 gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
             {Array.from({ length: 8 }).map((_, i) => (
               <div key={i} className="flex flex-col animate-pulse">
-                <div className="w-full aspect-square bg-gray-200 rounded-[32px] mb-4" />
-                <div className="h-4 bg-gray-200 rounded w-3/4 mb-2 mx-2" />
-                <div className="h-3 bg-gray-200 rounded w-1/2 mx-2" />
+                <div className="mb-4 aspect-square w-full rounded-[2rem] bg-bg-light" />
+                <div className="mx-2 mb-2 h-4 w-3/4 rounded bg-bg-light" />
+                <div className="mx-2 h-3 w-1/2 rounded bg-bg-light" />
               </div>
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-10 mt-8">
+          <div className="mt-8 grid grid-cols-1 gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
             {filteredItems.map((item) => (
               <MenuCard key={item.id} item={item} />
             ))}
@@ -139,8 +142,8 @@ export default function MenuPage() {
         )}
 
         {!loading && filteredItems.length === 0 && (
-          <div className="text-center py-20">
-            <p className="text-[#878E99] text-lg font-medium">
+          <div className="py-20 text-center">
+            <p className="text-lg font-medium text-secondary-text">
               No dishes found for this filter.
             </p>
           </div>
