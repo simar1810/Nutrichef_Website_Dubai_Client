@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useSyncExternalStore } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { createPortal } from 'react-dom';
@@ -11,11 +11,19 @@ const navLinks = [
     { name: 'Menu', href: '/menu', hasChild: false },
 ];
 
+function useIsClient() {
+    return useSyncExternalStore(
+        () => () => {},
+        () => true,
+        () => false,
+    );
+}
+
 export const MenuOverlay = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
-    const [mounted, setMounted] = useState(false);
+    const mounted = useIsClient();
 
     useEffect(() => {
-        setMounted(true);
+        if (!mounted) return;
         if (isOpen) {
             document.body.style.overflow = 'hidden';
         } else {
@@ -24,7 +32,7 @@ export const MenuOverlay = ({ isOpen, onClose }: { isOpen: boolean, onClose: () 
         return () => {
             document.body.style.overflow = '';
         };
-    }, [isOpen]);
+    }, [isOpen, mounted]);
 
     if (!mounted) return null;
 
@@ -32,12 +40,12 @@ export const MenuOverlay = ({ isOpen, onClose }: { isOpen: boolean, onClose: () 
         <div 
             className={`fixed inset-0 z-[100] flex transition-opacity duration-300 ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
         >
-            <div className="w-full h-full bg-white flex flex-col lg:flex-row">
+            <div className="flex h-full w-full flex-col bg-surface lg:flex-row">
                 
                 {/* LEFT SIDE (Hidden on mobile) */}
                 <div className="hidden lg:flex lg:w-[60%] xl:w-[65%] h-full relative flex-col border-r border-gray-100/50 shadow-xl z-10">
                     {/* The large image taking remaining space above the green bar */}
-                    <div className="flex-1 relative overflow-hidden bg-[#F6F4F1]">
+                    <div className="relative flex-1 overflow-hidden bg-bg-light">
                         {/* Generic Unsplash Image imitating the two users in the screenshot */}
                         <Image 
                             src="https://images.unsplash.com/photo-1543353071-873f17a7a088?q=80&w=2070&auto=format&fit=crop" 
@@ -53,9 +61,9 @@ export const MenuOverlay = ({ isOpen, onClose }: { isOpen: boolean, onClose: () 
                     </div>
                     
                     {/* Green Footer bar */}
-                    <div className="bg-[#2B9D65] h-[160px] relative px-12 py-8 flex flex-col justify-end shrink-0">
+                    <div className="relative flex h-[160px] shrink-0 flex-col justify-end bg-primary px-12 py-8">
                         {/* Float Join Us badge */}
-                        <div className="absolute top-[-18px] left-12 bg-[#2B9D65] text-white pl-3.5 pr-4 py-2 rounded-full flex items-center gap-1.5 text-[12px] font-extrabold shadow-[0_-4px_10px_rgba(0,0,0,0.05)] rounded-bl-none z-10">
+                        <div className="absolute left-12 top-[-18px] z-10 flex items-center gap-1.5 rounded-full rounded-bl-none bg-primary py-2 pl-3.5 pr-4 text-[12px] font-extrabold text-white shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
                            <span className="text-[14px]">✨</span> Join us
                         </div>
                         
@@ -90,7 +98,7 @@ export const MenuOverlay = ({ isOpen, onClose }: { isOpen: boolean, onClose: () 
                     <button 
                         onClick={onClose}
                         type="button"
-                        className="fixed top-[max(3rem,env(safe-area-inset-top)+0.75rem)] right-[max(1.25rem,env(safe-area-inset-right))] text-[#2F3337] hover:bg-gray-100 p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full transition-colors z-[110]"
+                        className="fixed right-[max(1.25rem,env(safe-area-inset-right))] top-[max(3rem,env(safe-area-inset-top)+0.75rem)] z-[110] flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full p-2.5 text-foreground transition-colors hover:bg-bg-light"
                     >
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                     </button>
@@ -98,10 +106,10 @@ export const MenuOverlay = ({ isOpen, onClose }: { isOpen: boolean, onClose: () 
                     {/* Links List */}
                     <div className="flex flex-col gap-[28px] mt-2">
                         {navLinks.map((link, idx) => (
-                            <Link key={idx} href={link.href} onClick={onClose} className="flex items-center text-[#2F3337] hover:text-[#2B9D65] transition-colors group">
+                            <Link key={idx} href={link.href} onClick={onClose} className="group flex items-center text-foreground transition-colors hover:text-primary">
                                 <span className="text-[14px] font-[800] tracking-tight">{link.name}</span>
                                 {link.hasChild && (
-                                    <svg className="ml-2 w-3.5 h-3.5 text-[#2F3337] group-hover:text-[#2B9D65] transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                                    <svg className="ml-2 h-3.5 w-3.5 text-foreground transition-colors group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                                 )}
                             </Link>
                         ))}
@@ -109,7 +117,7 @@ export const MenuOverlay = ({ isOpen, onClose }: { isOpen: boolean, onClose: () 
 
                     {/* Language — same control as footer (single Google gadget site-wide) */}
                     <div className="mt-auto pt-16 w-full flex flex-col gap-3">
-                        <div className="flex items-center gap-2 text-[#2F3337]">
+                        <div className="flex items-center gap-2 text-foreground">
                             <span className="text-[12px] font-[800]">Language / اللغة</span>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                                 <circle cx="12" cy="12" r="10" />

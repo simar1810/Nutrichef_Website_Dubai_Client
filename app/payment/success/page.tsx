@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { api } from "@/lib/api";
 import { formatMinorUnits } from "@/lib/formatCurrency";
+import { AuthPageShell } from "@/components/AuthPageShell";
 
 interface SessionData {
   id: string;
@@ -14,9 +15,24 @@ interface SessionData {
   status: string;
 }
 
+function LoadingSpinner() {
+  return (
+    <div
+      className="h-10 w-10 animate-spin rounded-full border-2 border-primary border-t-transparent"
+      aria-hidden
+    />
+  );
+}
+
 export default function PaymentSuccessPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-white flex items-center justify-center"><div className="w-8 h-8 border-3 border-[#249B60] border-t-transparent rounded-full animate-spin" /></div>}>
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-background pt-24">
+          <LoadingSpinner />
+        </div>
+      }
+    >
       <PaymentSuccessContent />
     </Suspense>
   );
@@ -39,7 +55,7 @@ function PaymentSuccessContent() {
       try {
         const res = await api.get<SessionData>(
           `/checkout/session/${sessionId}`,
-          { noAuth: true }
+          { noAuth: true },
         );
         setSession(res.data);
       } catch {
@@ -53,87 +69,97 @@ function PaymentSuccessContent() {
   }, [sessionId]);
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center px-4 pt-24 pb-12">
-      <div className="w-full max-w-[480px] text-center">
+    <AuthPageShell maxWidthClass="max-w-[480px]">
+      <div className="text-center">
         {loading ? (
-          <div className="flex flex-col items-center gap-4">
-            <div className="w-10 h-10 border-3 border-[#249B60] border-t-transparent rounded-full animate-spin" />
-            <p className="text-[#878E99] text-[15px] font-medium">
+          <div className="flex flex-col items-center gap-4 py-4">
+            <LoadingSpinner />
+            <p className="text-sm font-medium text-secondary-text">
               Verifying your payment...
             </p>
           </div>
         ) : error ? (
           <>
-            <div className="w-[72px] h-[72px] bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="mx-auto mb-6 flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-full bg-red-50">
               <svg
-                className="w-8 h-8 text-red-500"
+                className="h-8 w-8 text-red-500"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+                aria-hidden
               >
                 <circle cx="12" cy="12" r="10" />
                 <line x1="15" y1="9" x2="9" y2="15" />
                 <line x1="9" y1="9" x2="15" y2="15" />
               </svg>
             </div>
-            <h1 className="text-[28px] font-extrabold text-[#2F3337] mb-3">
+            <h1 className="font-heading mb-3 text-2xl font-semibold text-foreground">
               Something went wrong
             </h1>
-            <p className="text-[#878E99] text-[15px] font-medium mb-8">{error}</p>
+            <p className="mb-8 text-sm font-medium text-secondary-text">
+              {error}
+            </p>
             <Link
               href="/plans"
-              className="inline-block bg-[#249B60] hover:bg-[#1E8351] text-white px-8 py-3.5 rounded-full font-bold text-[15px] transition-colors"
+              className="inline-block rounded-xl bg-primary px-8 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-hover"
             >
-              Back to Plans
+              Back to plans
             </Link>
           </>
         ) : (
           <>
-            <div className="w-[72px] h-[72px] bg-[#EEF3F0] rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="mx-auto mb-6 flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-full bg-primary/15">
               <svg
-                className="w-8 h-8 text-[#249B60]"
+                className="h-8 w-8 text-primary"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+                aria-hidden
               >
                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
                 <polyline points="22 4 12 14.01 9 11.01" />
               </svg>
             </div>
-            <h1 className="text-[28px] font-extrabold text-[#2F3337] mb-3">
-              Payment Successful!
+            <h1 className="font-heading mb-3 text-2xl font-semibold text-foreground">
+              Payment successful
             </h1>
-            <p className="text-[#878E99] text-[15px] font-medium mb-2">
+            <p className="mb-2 text-sm font-medium text-secondary-text">
               Your meal plan has been activated.
             </p>
-            {session && session.amount_total != null && (
-              <p className="text-[#2F3337] text-[18px] font-extrabold mb-8">
-                {formatMinorUnits(session.amount_total, session.currency || "inr")} paid
+            {session && session.amount_total != null ? (
+              <p className="mb-8 font-heading text-lg font-semibold text-foreground">
+                {formatMinorUnits(
+                  session.amount_total,
+                  session.currency || "inr",
+                )}{" "}
+                paid
               </p>
+            ) : (
+              <div className="mb-8" />
             )}
-            <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6">
+            <div className="mt-2 flex flex-col justify-center gap-3 sm:flex-row">
               <Link
                 href="/"
-                className="bg-[#249B60] hover:bg-[#1E8351] text-white px-8 py-3.5 rounded-full font-bold text-[15px] transition-colors"
+                className="rounded-xl bg-primary px-8 py-3.5 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-primary-hover"
               >
-                Go to Home
+                Go to home
               </Link>
               <Link
                 href="/menu"
-                className="bg-[#F2F4F7] hover:bg-gray-200 text-[#2F3337] px-8 py-3.5 rounded-full font-bold text-[15px] transition-colors"
+                className="rounded-xl border border-border-subtle bg-background px-8 py-3.5 text-center text-sm font-semibold text-foreground transition hover:bg-bg-light"
               >
-                View Menu
+                View menu
               </Link>
             </div>
           </>
         )}
       </div>
-    </div>
+    </AuthPageShell>
   );
 }

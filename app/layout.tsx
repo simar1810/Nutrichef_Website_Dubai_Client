@@ -1,14 +1,27 @@
 import type { Metadata, Viewport } from "next";
+import { Fraunces, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { TenantProvider } from "@/contexts/TenantContext";
 
+const fontUi = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-ui",
+  display: "swap",
+});
+
+const fontDisplay = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "NutriChef | Meal plans for busy people",
+  title: "Nutrichef | Meal plans for busy people",
   description:
-    "NutriChef provides meal plans tailored for busy people. It serves delicious food that's portioned to your requirements and fitness goals. You can choose your meals from the daily menu or build your own.",
+    "Nutrichef provides meal plans tailored for busy people. It serves delicious food that's portioned to your requirements and fitness goals. You can choose your meals from the daily menu or build your own.",
 };
 
 export const viewport: Viewport = {
@@ -23,14 +36,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
-      <body className="antialiased text-foreground bg-background font-sans flex flex-col min-h-screen">
+    <html
+      lang="en"
+      className={`${fontUi.variable} ${fontDisplay.variable} scroll-smooth`}
+      suppressHydrationWarning
+    >
+      <body
+        className={`${fontUi.className} flex min-h-screen flex-col antialiased bg-background text-foreground`}
+      >
         <AuthProvider>
           <TenantProvider>
             <Navbar />
-            <main className="flex-grow">
-              {children}
-            </main>
+            <main className="flex-grow">{children}</main>
             <Footer />
           </TenantProvider>
         </AuthProvider>

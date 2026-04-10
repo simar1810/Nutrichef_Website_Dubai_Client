@@ -50,7 +50,7 @@ export const FilterBar = ({
       : DEFAULT_FILTERS;
 
   return (
-    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 my-10 sticky top-0 bg-white/90 backdrop-blur-md z-40 py-4">
+    <div className="sticky top-0 z-40 my-10 flex flex-col justify-between gap-4 bg-background/90 py-4 backdrop-blur-md md:flex-row md:items-center">
       <div className="flex w-full md:w-auto overflow-x-auto no-scrollbar gap-3 pb-2 md:pb-0">
         {filters.map((filter) => {
           const isActive = activeFilter === filter.id;
@@ -58,10 +58,10 @@ export const FilterBar = ({
             <button
               key={filter.id}
               onClick={() => onFilterChange(filter.id)}
-              className={`whitespace-nowrap flex items-center justify-center px-6 py-3 rounded-full text-sm font-semibold transition-all duration-300 ${
+              className={`flex items-center justify-center whitespace-nowrap rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 ${
                 isActive
-                  ? "bg-[#114B34] text-white shadow-md"
-                  : "bg-[#F5F6F7] text-[#343B42] hover:bg-[#E2E4E6]"
+                  ? "bg-primary text-white shadow-sm"
+                  : "bg-bg-light text-foreground hover:bg-foreground/10"
               }`}
             >
               {filter.icon && <span className="mr-2 text-lg">{filter.icon}</span>}
@@ -72,7 +72,10 @@ export const FilterBar = ({
       </div>
 
       <div className="hidden md:flex ml-4">
-        <button className="flex items-center justify-between px-6 py-3 rounded-full bg-[#F5F6F7] text-[#343B42] text-sm font-semibold hover:bg-[#E2E4E6] transition-colors w-48">
+        <button
+          type="button"
+          className="flex w-48 items-center justify-between rounded-full bg-bg-light px-6 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-foreground/10"
+        >
           <span>Type of meal</span>
           <svg
             className="w-4 h-4 ml-2"

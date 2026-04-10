@@ -1,65 +1,112 @@
-import React from 'react';
-import Image from 'next/image';
+import React from "react";
+
+const features = [
+  {
+    title: "Total Control",
+    description:
+      "Pause, cancel or change your plan at any time. Address change? No problem. Complete flexibility at your fingertips.",
+    iconPath:
+      "M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z",
+  },
+  {
+    title: "Chef Crafted",
+    description:
+      "We don't believe in boring diet food. Our rotating menu is designed by chefs and cooked fresh using high quality ingredients.",
+    iconPath:
+      "M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4",
+  },
+  {
+    title: "Daily Fresh Deliveries",
+    description:
+      "Your meals are prepared fresh and delivered safely to your door or office every morning in temperature-controlled bags.",
+    iconPath:
+      "M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4",
+  },
+  {
+    title: "Eco-friendly Packaging",
+    description:
+      "Eat your meals with peace of mind. Our containers are made of bagasse, a compostable byproduct of sugar cane.",
+    iconPath:
+      "M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+  },
+];
 
 export const FeaturesSection = () => {
-    return (
-        <section className="py-24 bg-[#FAFAFA] w-full">
-            <div className="max-w-[1400px] mx-auto">
-                <div className="px-4 sm:px-6 lg:px-12 w-full">
-                    {/* Split Layout */}
-                    <div className="flex flex-col lg:flex-row mb-24 md:mb-32">
-                        {/* Left Column */}
-                        <div className="w-full lg:w-1/2 pr-0 lg:pr-12 xl:pr-32 flex flex-col justify-center max-w-2xl mx-auto lg:mx-0 xl:ml-auto">
-                            <h2 className="text-[40px] md:text-[56px] font-extrabold text-[#2F3337] leading-[1.05] tracking-tight mb-16">
-                                Total control.<br />Full flexibility.
-                            </h2>
-                            
-                            <div className="flex flex-col space-y-12 pl-2">
-                                <p className="text-[16px] md:text-[17px] font-extrabold text-[#878E99]">
-                                    Calories and macros that match your goals
-                                </p>
-                                
-                                <p className="text-[16px] md:text-[17px] font-extrabold text-[#878E99]">
-                                    Choose what you like. Swap what you don&#39;t.
-                                </p>
-                                
-                                <div className="bg-white p-7 md:p-8 rounded-[24px] shadow-[0_8px_30px_rgba(0,0,0,0.03)] w-full lg:max-w-[440px] -ml-2">
-                                    <h3 className="text-[16px] md:text-[17px] font-extrabold text-[#2F3337] mb-2">Pause. Skip. Change. Anytime.</h3>
-                                    <p className="text-[13px] md:text-[14px] font-bold text-[#878E99] leading-[1.6]">
-                                        Life changes and your plan can too. Adjust up to 24 hours before delivery with no hassle.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        {/* Right Column */}
-                        <div className="w-full lg:w-1/2 mt-16 lg:mt-0 relative aspect-[4/3] lg:aspect-[1.25/1] overflow-hidden">
-                            <Image
-                                src="https://api-blog.calo.app/wp-content/uploads/2025/10/imaghe-37.webp" 
-                                alt="NutriChef meals bag"
-                                fill
-                                className="object-cover object-center" 
-                                sizes="(max-width: 1024px) 100vw, 50vw"
-                            />
-                            {/* The white prompt overlay */}
-                            <div className="absolute top-[35%] left-0 bg-white py-6 md:py-8 px-6 md:px-10 w-[260px] md:w-[320px] shadow-sm">
-                                <h4 className="text-[20px] md:text-[24px] font-extrabold text-[#2F3337] leading-[1.2] tracking-tight">
-                                    Which days do you<br/>want NutriChef meals?
-                                </h4>
-                            </div>
-                            {/* The pause button overlay */}
-                            <div className="absolute bottom-8 left-8 w-[44px] h-[44px] bg-white rounded-full flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.1)] cursor-pointer hover:scale-105 transition-transform">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="text-[#2F3337]">
-                                    <rect x="5" y="3" width="4.5" height="18" rx="1" />
-                                    <rect x="14.5" y="3" width="4.5" height="18" rx="1" />
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
+  return (
+    <section
+      id="features"
+      className="border-y border-border-subtle bg-bg-light py-20 sm:py-24 lg:py-28"
+    >
+      <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
+        <div className="max-w-3xl">
+          <p className="font-heading text-xs font-semibold uppercase tracking-[0.28em] text-secondary-text">
+            Why Nutrichef
+          </p>
+          <h2 className="font-heading mt-3 text-3xl font-semibold leading-tight tracking-tight text-foreground sm:text-4xl lg:text-[2.75rem]">
+            Total control. Full flexibility.
+          </h2>
+          <p className="mt-4 text-xl font-semibold text-primary sm:text-2xl">
+            Calories and macros that match your goals
+          </p>
+          <ul className="mt-8 flex flex-col gap-3 text-base font-medium text-foreground sm:flex-row sm:flex-wrap sm:gap-x-10 sm:gap-y-2">
+            <li className="flex items-center gap-2">
+              <span className="text-primary" aria-hidden>
+                ✓
+              </span>
+              Choose what you like.
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="text-primary" aria-hidden>
+                ✓
+              </span>
+              Swap what you don&apos;t.
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="text-primary" aria-hidden>
+                ✓
+              </span>
+              Pause. Skip. Change.
+            </li>
+          </ul>
+        </div>
 
-                    
+        <div className="mt-16 grid gap-px overflow-hidden rounded-2xl border border-border-subtle bg-border-subtle sm:grid-cols-2 lg:grid-cols-4">
+          {features.map((feature, idx) => (
+            <div
+              key={feature.title}
+              className="group relative bg-surface p-8 transition hover:bg-background sm:p-9"
+            >
+              <span className="font-heading absolute right-6 top-6 text-5xl font-semibold tabular-nums text-foreground/[0.06] transition group-hover:text-primary/15 sm:text-6xl">
+                {String(idx + 1).padStart(2, "0")}
+              </span>
+              <div className="relative">
+                <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl border border-border-subtle bg-bg-light text-primary">
+                  <svg
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    aria-hidden
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d={feature.iconPath}
+                    />
+                  </svg>
                 </div>
+                <h3 className="font-heading text-xl font-semibold text-foreground">
+                  {feature.title}
+                </h3>
+                <p className="mt-3 text-[0.9375rem] leading-relaxed text-secondary-text">
+                  {feature.description}
+                </p>
+              </div>
             </div>
-        </section>
-    );
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 };

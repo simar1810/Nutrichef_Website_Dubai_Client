@@ -130,8 +130,8 @@ function gramsToDisplay(g: { p: number; c: number; f: number }): {
         };
     }
 
-    let pp = Math.round((g.p / total) * 100);
-    let pc = Math.round((g.c / total) * 100);
+    const pp = Math.round((g.p / total) * 100);
+    const pc = Math.round((g.c / total) * 100);
     let pf = Math.round((g.f / total) * 100);
     const drift = 100 - (pp + pc + pf);
     if (drift !== 0) {

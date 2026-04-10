@@ -2,15 +2,21 @@
 
 import React, { useState, useRef, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
 import { api, TENANT_ID } from "@/lib/api";
 import { useAuth } from "@/contexts/AuthContext";
+import { AuthPageShell } from "@/components/AuthPageShell";
 
 const OTP_LENGTH = 6;
 
 export default function VerifyPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-white" />}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-background pt-28">
+          <div className="mx-auto h-10 max-w-[440px] animate-pulse rounded-2xl bg-bg-light" />
+        </div>
+      }
+    >
       <VerifyContent />
     </Suspense>
   );
@@ -58,7 +64,10 @@ function VerifyContent() {
 
   const handlePaste = (e: React.ClipboardEvent) => {
     e.preventDefault();
-    const text = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, OTP_LENGTH);
+    const text = e.clipboardData
+      .getData("text")
+      .replace(/\D/g, "")
+      .slice(0, OTP_LENGTH);
     const newOtp = [...otp];
     for (let i = 0; i < text.length; i++) {
       newOtp[i] = text[i];
@@ -94,7 +103,7 @@ function VerifyContent() {
           otp: otpString,
           tenantId: TENANT_ID,
         },
-        { noAuth: true }
+        { noAuth: true },
       );
 
       const data = res.data;
@@ -129,7 +138,7 @@ function VerifyContent() {
           countryCode,
           tenantId: TENANT_ID,
         },
-        { noAuth: true }
+        { noAuth: true },
       );
       setOtp(Array(OTP_LENGTH).fill(""));
       inputRefs.current[0]?.focus();
@@ -140,70 +149,66 @@ function VerifyContent() {
     }
   };
 
+  const digitClass =
+    "h-14 w-12 rounded-xl border-2 border-border-subtle bg-background text-center text-lg font-semibold text-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/25 sm:h-[3.5rem] sm:w-[3.25rem] sm:text-xl";
+
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center px-4 pt-24 pb-12">
-      <div className="w-full max-w-[420px]">
-        <div className="text-center mb-10">
-          <Link
-            href="/"
-            className="text-[#249B60] font-black text-[28px] tracking-[0.1em] uppercase inline-block mb-6"
-          >
-            NUTRICHEF
-          </Link>
-          <h1 className="text-[28px] font-extrabold text-[#2F3337] tracking-tight mb-2">
-            Verify your number
-          </h1>
-          <p className="text-[#878E99] text-[15px] font-medium">
-            Enter the code sent to{" "}
-            <span className="text-[#2F3337] font-bold">
-              +{countryCode} {phone}
-            </span>
+    <AuthPageShell
+      title="Verify your number"
+      subtitle={
+        <>
+          Enter the code sent to{" "}
+          <span className="font-semibold text-foreground">
+            +{countryCode} {phone}
+          </span>
+        </>
+      }
+    >
+      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+        <div className="flex justify-center gap-2 sm:gap-3" onPaste={handlePaste}>
+          {otp.map((digit, index) => (
+            <input
+              key={index}
+              ref={(el) => {
+                inputRefs.current[index] = el;
+              }}
+              type="text"
+              inputMode="numeric"
+              maxLength={1}
+              value={digit}
+              onChange={(e) => handleChange(index, e.target.value)}
+              onKeyDown={(e) => handleKeyDown(index, e)}
+              className={digitClass}
+              autoFocus={index === 0}
+            />
+          ))}
+        </div>
+
+        {error ? (
+          <p className="rounded-xl bg-red-50 px-4 py-2.5 text-center text-sm font-medium text-red-600">
+            {error}
           </p>
-        </div>
+        ) : null}
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-          <div className="flex justify-center gap-3" onPaste={handlePaste}>
-            {otp.map((digit, index) => (
-              <input
-                key={index}
-                ref={(el) => { inputRefs.current[index] = el; }}
-                type="text"
-                inputMode="numeric"
-                maxLength={1}
-                value={digit}
-                onChange={(e) => handleChange(index, e.target.value)}
-                onKeyDown={(e) => handleKeyDown(index, e)}
-                className="w-[50px] h-[56px] text-center text-[20px] font-extrabold text-[#2F3337] border-2 border-gray-200 rounded-[14px] focus:outline-none focus:border-[#249B60] focus:ring-2 focus:ring-[#249B60]/20 transition-all"
-                autoFocus={index === 0}
-              />
-            ))}
-          </div>
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full rounded-xl bg-primary py-4 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-hover disabled:pointer-events-none disabled:opacity-50"
+        >
+          {loading ? "Verifying..." : "Verify"}
+        </button>
+      </form>
 
-          {error && (
-            <p className="text-red-500 text-[13px] font-medium bg-red-50 px-4 py-2.5 rounded-[12px] text-center">
-              {error}
-            </p>
-          )}
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-[#249B60] hover:bg-[#1E8351] disabled:bg-[#249B60]/60 text-white font-extrabold text-[15px] py-4 rounded-full transition-colors shadow-[0_4px_14px_0_rgba(36,161,112,0.3)]"
-          >
-            {loading ? "Verifying..." : "Verify"}
-          </button>
-        </form>
-
-        <div className="text-center mt-6">
-          <button
-            onClick={handleResend}
-            disabled={resending}
-            className="text-[#249B60] font-bold text-[14px] hover:underline disabled:opacity-50"
-          >
-            {resending ? "Resending..." : "Resend code"}
-          </button>
-        </div>
+      <div className="mt-6 text-center">
+        <button
+          type="button"
+          onClick={handleResend}
+          disabled={resending}
+          className="text-sm font-semibold text-primary hover:underline disabled:opacity-50"
+        >
+          {resending ? "Resending..." : "Resend code"}
+        </button>
       </div>
-    </div>
+    </AuthPageShell>
   );
 }

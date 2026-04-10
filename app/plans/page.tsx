@@ -260,18 +260,18 @@ export default function PlansPage() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="w-8 h-8 border-3 border-[#249B60] border-t-transparent rounded-full animate-spin" />
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
       </div>
     );
   }
 
   return (
-    <div className="bg-white min-h-screen pt-[140px] pb-24 w-full">
+    <div className="min-h-screen w-full bg-background pb-24 pt-28 sm:pt-32">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
         {/* Header */}
         <div className="mb-14">
-          <h1 className="text-[34px] md:text-[44px] font-extrabold text-[#2F3337] leading-[1.05] tracking-tight">
+          <h1 className="font-heading text-[34px] font-semibold leading-[1.05] tracking-tight text-foreground md:text-[44px]">
             Customize Your
             <br />
             Perfect Meal Plan
@@ -284,13 +284,16 @@ export default function PlansPage() {
           <div className="flex-1 flex flex-col gap-14">
             {/* Section 1: Plan Preferences */}
             <section>
-              <h2 className="text-[26px] font-extrabold text-[#2F3337] mb-6 tracking-tight">
+              <h2 className="font-heading mb-6 text-[26px] font-semibold tracking-tight text-foreground">
                 What kind of meals do you prefer?
               </h2>
               {loading ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-[18px]">
                   {Array.from({ length: 4 }).map((_, i) => (
-                    <div key={i} className="rounded-[24px] p-[22px] border-2 border-gray-100 min-h-[170px] animate-pulse bg-gray-50" />
+                    <div
+                      key={i}
+                      className="min-h-[170px] animate-pulse rounded-[24px] border-2 border-border-subtle bg-bg-light p-[22px]"
+                    />
                   ))}
                 </div>
               ) : (
@@ -301,30 +304,30 @@ export default function PlansPage() {
                       <div
                         key={plan.id}
                         onClick={() => setSelectedPlan(plan.id)}
-                        className={`relative rounded-[24px] p-[22px] border-2 cursor-pointer transition-all flex flex-col justify-between min-h-[170px] ${
+                        className={`relative flex min-h-[170px] cursor-pointer flex-col justify-between rounded-[24px] border-2 p-[22px] transition-all ${
                           isActive
-                            ? "border-[#249B60] bg-[#EEF3F0] shadow-sm"
-                            : "border-gray-100 bg-white hover:border-gray-200 shadow-sm"
+                            ? "border-primary bg-primary/10 shadow-sm"
+                            : "border-border-subtle bg-surface shadow-sm hover:border-foreground/15"
                         }`}
                       >
                         <div className="flex justify-between items-start mb-6">
                           <div className="pr-4">
-                            <h3 className="text-[17px] font-extrabold text-[#2F3337] mb-1.5">
+                            <h3 className="mb-1.5 text-[17px] font-semibold text-foreground">
                               {plan.title}
                             </h3>
-                            <p className="text-[13px] text-[#878E99] font-medium leading-[1.4] pr-1">
+                            <p className="pr-1 text-[13px] font-medium leading-[1.4] text-secondary-text">
                               {plan.desc}
                             </p>
                           </div>
                           <div className="text-[42px] leading-none">{plan.emoji}</div>
                         </div>
                         <div className="flex justify-between items-center mt-auto pt-2">
-                          <span className="text-[#249B60] font-bold text-[13px] flex items-center gap-1">
+                          <span className="flex items-center gap-1 text-[13px] font-semibold text-primary">
                             Learn More{" "}
                             <span className="text-[12px] font-medium">&rarr;</span>
                           </span>
                           {isActive ? (
-                            <div className="bg-[#1E8351] text-white px-3 py-[7px] rounded-full flex items-center gap-1.5 shadow-sm">
+                            <div className="flex items-center gap-1.5 rounded-full bg-primary-hover px-3 py-[7px] text-white shadow-sm">
                               <svg
                                 className="w-3 h-3 ml-0.5"
                                 viewBox="0 0 24 24"
@@ -341,13 +344,13 @@ export default function PlansPage() {
                               </span>
                             </div>
                           ) : plan.style === "custom" ? (
-                            <div className="bg-[#EEF3F0] text-[#249B60] px-[18px] py-[7px] rounded-full">
-                              <span className="text-[12px] font-[800] tracking-tight">
+                            <div className="rounded-full bg-primary/10 px-[18px] py-[7px] text-primary">
+                              <span className="text-[12px] font-semibold tracking-tight">
                                 Build my plan
                               </span>
                             </div>
                           ) : (
-                            <div className="bg-[#EEF3F0] text-[#249B60] px-[18px] py-[7px] rounded-full hover:bg-[#E2ECE6] transition-colors">
+                            <div className="rounded-full bg-primary/10 px-[18px] py-[7px] text-primary transition-colors hover:bg-primary/15">
                               <span className="text-[12px] font-[800] tracking-tight">
                                 Select Plan
                               </span>
@@ -363,10 +366,10 @@ export default function PlansPage() {
 
             {/* Section 2: Meal Count */}
             <section>
-              <h2 className="text-[26px] font-extrabold text-[#2F3337] mb-2 tracking-tight">
+              <h2 className="font-heading mb-2 text-[26px] font-semibold tracking-tight text-foreground">
                 How many meals per day?
               </h2>
-              <p className="text-[#878E99] font-medium text-[14px] mb-6">
+              <p className="mb-6 text-[14px] font-medium text-secondary-text">
                 Select a minimum of 2 meals, including lunch or dinner.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-[18px]">
@@ -376,17 +379,17 @@ export default function PlansPage() {
                     <div
                       key={meal}
                       onClick={() => toggleMeal(meal)}
-                      className={`rounded-[16px] px-5 py-[18px] border-2 cursor-pointer transition-colors flex justify-between items-center ${
+                      className={`flex cursor-pointer items-center justify-between rounded-[16px] border-2 px-5 py-[18px] transition-colors ${
                         isActive
-                          ? "border-[#249B60] bg-[#EEF3F0]"
-                          : "border-gray-100 bg-white hover:border-gray-200 shadow-sm"
+                          ? "border-primary bg-primary/10"
+                          : "border-border-subtle bg-surface shadow-sm hover:border-foreground/15"
                       }`}
                     >
-                      <span className="text-[#2F3337] font-extrabold text-[15px]">
+                      <span className="text-[15px] font-semibold text-foreground">
                         {meal}
                       </span>
                       {isActive ? (
-                        <div className="w-6 h-6 rounded-full bg-[#249B60] flex flex-shrink-0 items-center justify-center border-2 border-[#249B60]">
+                        <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full border-2 border-primary bg-primary">
                           <svg
                             className="w-3.5 h-3.5 text-white"
                             viewBox="0 0 24 24"
@@ -400,7 +403,7 @@ export default function PlansPage() {
                           </svg>
                         </div>
                       ) : (
-                        <div className="w-6 h-6 rounded-full border-2 border-gray-200 flex-shrink-0 bg-white"></div>
+                        <div className="h-6 w-6 flex-shrink-0 rounded-full border-2 border-border-subtle bg-surface" />
                       )}
                     </div>
                   );
@@ -410,12 +413,12 @@ export default function PlansPage() {
 
             {/* Section 3: Days a Week */}
             <section>
-              <h2 className="text-[26px] font-extrabold text-[#2F3337] mb-2 tracking-tight">
+              <h2 className="font-heading mb-2 text-[26px] font-semibold tracking-tight text-foreground">
                 How many days a week are you eating
                 <br />
-                NutriChef?
+                Nutrichef?
               </h2>
-              <p className="text-[#878E99] font-medium text-[14px] mb-8">
+              <p className="mb-8 text-[14px] font-medium text-secondary-text">
                 Select a minimum of 5 days
               </p>
               <div className="-mx-1 px-1 overflow-x-auto pb-1 [scrollbar-width:thin]">
@@ -427,10 +430,10 @@ export default function PlansPage() {
                         key={idx}
                         type="button"
                         onClick={() => toggleDay(idx)}
-                        className={`w-10 h-10 sm:w-[46px] sm:h-[46px] shrink-0 rounded-full flex items-center justify-center text-[14px] sm:text-[15px] font-[800] transition-all duration-200 ${
+                        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-[14px] font-semibold transition-all duration-200 sm:h-[46px] sm:w-[46px] sm:text-[15px] ${
                           isActive
-                            ? "bg-[#249B60] text-white shadow-sm"
-                            : "bg-[#F2F4F7] text-[#878E99] hover:bg-gray-200"
+                            ? "bg-primary text-white shadow-sm"
+                            : "bg-bg-light text-secondary-text hover:bg-foreground/10"
                         }`}
                       >
                         {day}
@@ -443,8 +446,8 @@ export default function PlansPage() {
 
             {/* Section 4: Payment Cycle */}
             <section>
-              <h2 className="text-[26px] font-extrabold text-[#2F3337] mb-[26px] tracking-tight">
-                Payment Cycle
+              <h2 className="font-heading mb-[26px] text-[26px] font-semibold tracking-tight text-foreground">
+                Payment cycle
               </h2>
               <div className="flex flex-col gap-[18px] mb-[24px]">
                 {cycles.map((cycle) => {
@@ -453,37 +456,37 @@ export default function PlansPage() {
                     <div
                       key={cycle.id}
                       onClick={() => setSelectedCycle(cycle.id)}
-                      className={`rounded-[16px] px-6 py-5 border-2 cursor-pointer transition-colors flex justify-between items-center ${
+                      className={`flex cursor-pointer items-center justify-between rounded-[16px] border-2 px-6 py-5 transition-colors ${
                         isActive
-                          ? "border-[#249B60] bg-[#EEF3F0]"
-                          : "border-gray-100 bg-white hover:border-gray-200 shadow-sm"
+                          ? "border-primary bg-primary/10"
+                          : "border-border-subtle bg-surface shadow-sm hover:border-foreground/15"
                       }`}
                     >
                       <div className="flex flex-col">
                         <div className="flex items-center gap-[12px] mb-1.5">
-                          <span className="text-[#2F3337] font-extrabold text-[15px]">
+                          <span className="text-[15px] font-semibold text-foreground">
                             {cycle.title}
                           </span>
                           {cycle.save && (
-                            <span className="bg-[#249B60] text-white text-[10px] font-extrabold px-[10px] py-[3px] rounded-full uppercase tracking-tight">
+                            <span className="rounded-full bg-primary px-[10px] py-[3px] text-[10px] font-semibold uppercase tracking-tight text-white">
                               Save {cycle.save}
                             </span>
                           )}
                         </div>
-                        <span className="text-[#A0A5AE] text-[12px] font-semibold tracking-tight">
+                        <span className="text-[12px] font-semibold tracking-tight text-secondary-text">
                           {cycle.subtext}
                         </span>
                       </div>
                       <div className="flex items-center gap-[14px]">
-                        <span className="text-[#2F3337] font-extrabold text-[13px]">
+                        <span className="text-[13px] font-semibold text-foreground">
                           {cycle.priceDisplay}
                         </span>
                         {isActive ? (
-                          <div className="w-[22px] h-[22px] rounded-full bg-[#249B60] flex flex-shrink-0 items-center justify-center border-[5px] border-white ring-1 ring-[#249B60]">
-                            <div className="w-full h-full bg-[#249B60] rounded-full"></div>
+                          <div className="flex h-[22px] w-[22px] flex-shrink-0 items-center justify-center rounded-full border-[5px] border-surface bg-primary ring-1 ring-primary">
+                            <div className="h-full w-full rounded-full bg-primary" />
                           </div>
                         ) : (
-                          <div className="w-[22px] h-[22px] rounded-full border-2 border-gray-200 flex-shrink-0 bg-white"></div>
+                          <div className="h-[22px] w-[22px] flex-shrink-0 rounded-full border-2 border-border-subtle bg-surface" />
                         )}
                       </div>
                     </div>
@@ -497,21 +500,21 @@ export default function PlansPage() {
 
           {/* Right Column (Sticky Sidebar) */}
           <div className="w-full lg:w-[360px] shrink-0">
-            <div className="sticky top-[140px] w-full">
-              <div className="bg-[#FCFCFC] rounded-[32px] p-7 mb-6 shadow-[0px_4px_24px_rgba(0,0,0,0.04)] ring-1 ring-gray-100">
-                <div className="flex justify-between items-start mb-8">
+            <div className="sticky top-28 w-full lg:top-32">
+              <div className="mb-6 rounded-[32px] border border-border-subtle bg-bg-light p-7 shadow-[0px_4px_24px_rgba(27,48,34,0.06)]">
+                <div className="mb-8 flex items-start justify-between">
                   <div className="flex-1 pr-[18px]">
-                    <h3 className="text-[20px] font-[800] text-[#2F3337] tracking-tight mb-[14px]">
+                    <h3 className="font-heading mb-[14px] text-[20px] font-semibold tracking-tight text-foreground">
                       Your package, your way
                     </h3>
-                    <p className="text-[#878E99] text-[13.5px] font-semibold leading-[1.6]">
+                    <p className="text-[13.5px] font-semibold leading-[1.6] text-secondary-text">
                       {getSelectedPlanTitle()},{" "}
                       {selectedMeals.length} Meal
                       {selectedMeals.length !== 1 ? "s" : ""},{" "}
                       {selectedDays.length} days per week
                     </p>
                   </div>
-                  <div className="w-[64px] h-[64px] shrink-0 bg-[#F2F4F7] rounded-[16px] relative flex items-center justify-center font-black">
+                  <div className="relative flex h-[64px] w-[64px] shrink-0 items-center justify-center rounded-[16px] bg-surface font-black shadow-sm">
                     <span className="text-[36px]">🛍️</span>
                   </div>
                 </div>
@@ -521,7 +524,7 @@ export default function PlansPage() {
                   <div className="flex-1 relative">
                     <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
                       <svg
-                        className="w-[18px] h-[18px] text-[#A0A5AE] rotate-90"
+                        className="h-[18px] w-[18px] rotate-90 text-secondary-text"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
@@ -538,62 +541,65 @@ export default function PlansPage() {
                     <input
                       type="text"
                       placeholder="Add promotion code"
-                      className="w-full border border-gray-200 text-[13px] font-bold rounded-[14px] pl-[38px] pr-4 py-[15px] placeholder:text-[#A0A5AE] focus:outline-none focus:ring-2 focus:ring-[#2B9D65] transition-shadow bg-white"
+                      className="w-full rounded-[14px] border border-border-subtle bg-surface py-[15px] pl-[38px] pr-4 text-[13px] font-semibold text-foreground placeholder:text-secondary-text/70 transition-shadow focus:outline-none focus:ring-2 focus:ring-primary"
                     />
                   </div>
-                  <button className="bg-[#F2F4F7] text-[#A0A5AE] font-extrabold tracking-tight text-[13px] px-6 py-[15px] rounded-[14px] hover:bg-gray-200 transition-colors">
+                  <button
+                    type="button"
+                    className="rounded-[14px] bg-bg-light px-6 py-[15px] text-[13px] font-semibold tracking-tight text-secondary-text transition-colors hover:bg-foreground/10"
+                  >
                     Apply
                   </button>
                 </div>
 
                 {/* Subscription Coupon */}
-                <div className="border border-gray-200 border-dashed rounded-[14px] p-4 bg-white mb-10 flex items-center justify-between">
+                <div className="mb-10 flex items-center justify-between rounded-[14px] border border-dashed border-border-subtle bg-surface p-4">
                   <div className="flex items-center gap-3.5">
-                    <div className="bg-[#249B60] text-white text-[8px] font-black italic px-[6px] py-[1.5px] rounded-sm transform -rotate-12 mt-1">
+                    <div className="mt-1 -rotate-12 transform rounded-sm bg-primary px-[6px] py-[1.5px] text-[8px] font-black italic text-white">
                       🎟️
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-[12.5px] text-[#2F3337] font-[800] leading-[1.3] mb-0.5">
+                      <span className="mb-0.5 text-[12.5px] font-semibold leading-[1.3] text-foreground">
                         10% off subscription
                       </span>
-                      <span className="text-[11px] text-[#878E99] font-semibold tracking-tight">
+                      <span className="text-[11px] font-semibold tracking-tight text-secondary-text">
                         with 6+ days/week on your package.
                       </span>
                     </div>
                   </div>
-                  <div className="w-[30px] h-[30px] rounded-full bg-[#EEF3F0] text-[#2B9D65] flex items-center justify-center font-bold text-[18px] cursor-pointer shrink-0 ml-2">
+                  <div className="ml-2 flex h-[30px] w-[30px] shrink-0 cursor-pointer items-center justify-center rounded-full bg-primary/15 text-[18px] font-bold text-primary">
                     +
                   </div>
                 </div>
 
                 {/* Payment Summary */}
                 <div className="flex flex-col gap-[14px] mb-[28px]">
-                  <h4 className="text-[14px] font-[800] text-[#2F3337] mb-1 tracking-tight">
+                  <h4 className="mb-1 text-[14px] font-semibold tracking-tight text-foreground">
                     Payment summary
                   </h4>
-                  <div className="flex justify-between items-center">
-                    <span className="text-[#878E99] text-[13px] font-semibold tracking-tight">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[13px] font-semibold tracking-tight text-secondary-text">
                       Plan price
                     </span>
-                    <span className="text-[#2F3337] text-[13px] font-[800]">
+                    <span className="text-[13px] font-semibold text-foreground">
                       {getCurrentCycle()
                         ? formatMinorUnits(getCurrentCycle()!.amount, currency)
                         : "--"}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center border-b border-gray-100 pb-[18px]">
-                    <span className="text-[#878E99] text-[13px] font-semibold tracking-tight">
+                  <div className="flex items-center justify-between border-b border-border-subtle pb-[18px]">
+                    <span className="text-[13px] font-semibold tracking-tight text-secondary-text">
                       Delivery fee
                     </span>
-                    <span className="text-[#2F3337] text-[13px] font-[800]">
+                    <span className="text-[13px] font-semibold text-foreground">
                       {formatMinorUnits(0, currency)}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center pt-2">
-                    <span className="text-[#2F3337] text-[16px] font-black tracking-tight">
+                  <div className="flex items-center justify-between pt-2">
+                    <span className="font-heading text-[16px] font-semibold tracking-tight text-foreground">
                       Total
                     </span>
-                    <span className="text-[#2F3337] text-[16px] font-black tracking-tight">
+                    <span className="font-heading text-[16px] font-semibold tracking-tight text-foreground">
                       {getCurrentCycle()
                         ? formatMinorUnits(getCurrentCycle()!.amount, currency)
                         : "--"}
@@ -603,9 +609,10 @@ export default function PlansPage() {
 
                 {/* Checkout Btn */}
                 <button
+                  type="button"
                   onClick={handleCheckout}
                   disabled={checkoutLoading || !selectedCycle}
-                  className="w-full bg-[#2B9D65] hover:bg-[#1E8351] disabled:bg-[#2B9D65]/60 text-white font-[800] text-[15px] py-[16px] rounded-full transition-colors shadow-[0_4px_12px_rgba(36,155,96,0.2)]"
+                  className="w-full rounded-full bg-primary py-[16px] text-[15px] font-semibold text-white shadow-sm transition-colors hover:bg-primary-hover disabled:bg-primary/60"
                 >
                   {checkoutLoading ? "Processing..." : "Continue"}
                 </button>

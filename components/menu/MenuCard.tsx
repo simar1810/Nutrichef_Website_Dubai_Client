@@ -1,6 +1,6 @@
-import React from 'react';
-import Image from 'next/image';
-import { MenuItem } from '../../app/menu/data';
+import React from "react";
+import Image from "next/image";
+import { MenuItem } from "../../app/menu/data";
 
 interface MenuCardProps {
   item: MenuItem;
@@ -8,45 +8,45 @@ interface MenuCardProps {
 
 export const MenuCard: React.FC<MenuCardProps> = ({ item }) => {
   return (
-    <div className="group flex flex-col cursor-pointer transition-transform duration-300 hover:-translate-y-2">
-      {/* Image Container */}
-      <div className="relative w-full aspect-square bg-gray-100 rounded-[32px] overflow-hidden mb-4">
-        <Image 
-          src={item.imageUrl} 
-          alt={item.title} 
+    <div className="group flex cursor-pointer flex-col transition-transform duration-300 hover:-translate-y-2">
+      <div className="relative mb-4 aspect-square w-full overflow-hidden rounded-[2rem] bg-bg-light">
+        <Image
+          src={item.imageUrl}
+          alt={item.title}
           fill
           unoptimized
           className="object-cover"
         />
-        
-        {/* Calories Badge Overlay */}
-        <div className="absolute top-4 left-4 bg-white/70 backdrop-blur-md rounded-full px-3 py-1 text-sm font-semibold text-[#343B42]">
+
+        <div className="absolute left-4 top-4 rounded-full bg-surface/85 px-3 py-1 text-sm font-semibold text-foreground backdrop-blur-md">
           {item.calories} kcal
         </div>
       </div>
 
-      {/* Content */}
-      <div className="flex flex-col flex-grow px-2">
-        {item.isNew && (
-          <span className="text-[#FF5C39] text-xs font-bold uppercase tracking-wider mb-2">
+      <div className="flex flex-grow flex-col px-2">
+        {item.isNew ? (
+          <span className="mb-2 text-xs font-semibold uppercase tracking-wider text-primary">
             New
           </span>
-        )}
-        <h3 className="text-lg font-bold text-[#343B42] leading-tight mb-1 group-hover:text-[#114B34] transition-colors">{item.title}</h3>
-        <p className="text-sm text-gray-500 mb-6 flex-grow">{item.description}</p>
-        
-        {/* Macros */}
-        <div className="flex items-center space-x-6 text-sm font-medium text-[#343B42] mt-auto">
+        ) : null}
+        <h3 className="mb-1 text-lg font-semibold leading-tight text-foreground transition-colors group-hover:text-primary">
+          {item.title}
+        </h3>
+        <p className="mb-6 flex-grow text-sm text-secondary-text">
+          {item.description}
+        </p>
+
+        <div className="mt-auto flex items-center space-x-6 text-sm font-medium text-foreground">
           <div className="flex items-center">
-            <span className="w-3 h-3 rounded-full bg-[#7C6EFF] mr-2"></span>
+            <span className="mr-2 h-3 w-3 rounded-full bg-violet-500" />
             {item.macros.protein}g Pro
           </div>
           <div className="flex items-center">
-            <span className="w-3 h-3 rounded-full bg-[#FFB340] mr-2"></span>
+            <span className="mr-2 h-3 w-3 rounded-full bg-amber-400" />
             {item.macros.carbs}g Carbs
           </div>
           <div className="flex items-center">
-            <span className="w-3 h-3 rounded-full bg-[#40B3FF] mr-2"></span>
+            <span className="mr-2 h-3 w-3 rounded-full bg-sky-400" />
             {item.macros.fat}g Fat
           </div>
         </div>

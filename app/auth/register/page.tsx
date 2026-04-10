@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
 import { api } from "@/lib/api";
 import { useAuth } from "@/contexts/AuthContext";
+import { AuthPageShell } from "@/components/AuthPageShell";
 
 const GOALS = [
   { id: "lose_weight", label: "Lose Weight" },
@@ -29,9 +29,20 @@ const DIET_PREFERENCES = [
   { id: "high_protein", label: "High Protein" },
 ];
 
+const chipOn =
+  "border-primary bg-primary/10 text-primary shadow-sm ring-1 ring-primary/20";
+const chipOff =
+  "border-border-subtle bg-background text-foreground hover:border-foreground/20";
+
 export default function RegisterPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-white" />}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-background pt-28">
+          <div className="mx-auto h-10 max-w-[480px] animate-pulse rounded-2xl bg-bg-light" />
+        </div>
+      }
+    >
       <RegisterContent />
     </Suspense>
   );
@@ -92,7 +103,7 @@ function RegisterContent() {
           activityLevel: form.activityLevel || undefined,
           dietPreference: form.dietPreference || undefined,
         },
-        { noAuth: true }
+        { noAuth: true },
       );
 
       const data = res.data;
@@ -100,154 +111,142 @@ function RegisterContent() {
       router.push(redirect);
     } catch (err: unknown) {
       const message =
-        err instanceof Error ? err.message : "Registration failed. Please try again.";
+        err instanceof Error
+          ? err.message
+          : "Registration failed. Please try again.";
       setError(message);
     } finally {
       setLoading(false);
     }
   };
 
+  const inputClass =
+    "w-full rounded-xl border border-border-subtle bg-background px-4 py-3.5 text-sm font-medium text-foreground placeholder:text-secondary-text/70 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-surface";
+
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center px-4 pt-24 pb-12">
-      <div className="w-full max-w-[480px]">
-        <div className="text-center mb-10">
-          <Link
-            href="/"
-            className="text-[#249B60] font-black text-[28px] tracking-[0.1em] uppercase inline-block mb-6"
-          >
-            NUTRICHEF
-          </Link>
-          <h1 className="text-[28px] font-extrabold text-[#2F3337] tracking-tight mb-2">
-            Complete your profile
-          </h1>
-          <p className="text-[#878E99] text-[15px] font-medium">
-            Tell us a bit about yourself to personalize your experience
-          </p>
+    <AuthPageShell
+      title="Complete your profile"
+      subtitle="Tell us a bit about yourself to personalize your experience"
+      maxWidthClass="max-w-[480px]"
+    >
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        <div>
+          <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-foreground">
+            Full name <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            value={form.name}
+            onChange={(e) => updateField("name", e.target.value)}
+            placeholder="Enter your name"
+            className={inputClass}
+            autoFocus
+          />
         </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-          <div>
-            <label className="block text-[13px] font-bold text-[#2F3337] mb-2">
-              Full Name <span className="text-red-400">*</span>
-            </label>
-            <input
-              type="text"
-              value={form.name}
-              onChange={(e) => updateField("name", e.target.value)}
-              placeholder="Enter your name"
-              className="w-full border border-gray-200 rounded-[14px] px-4 py-3.5 text-[14px] font-medium text-[#2F3337] placeholder:text-[#A0A5AE] focus:outline-none focus:ring-2 focus:ring-[#249B60]"
-              autoFocus
-            />
+        <div>
+          <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-foreground">
+            Email
+          </label>
+          <input
+            type="email"
+            value={form.email}
+            onChange={(e) => updateField("email", e.target.value)}
+            placeholder="your@email.com"
+            className={inputClass}
+          />
+        </div>
+
+        <div>
+          <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-foreground">
+            Gender
+          </label>
+          <div className="flex gap-3">
+            {["male", "female"].map((g) => (
+              <button
+                key={g}
+                type="button"
+                onClick={() => updateField("gender", g)}
+                className={`flex-1 rounded-xl border-2 py-3 text-sm font-semibold transition-colors ${
+                  form.gender === g ? chipOn : chipOff
+                }`}
+              >
+                {g.charAt(0).toUpperCase() + g.slice(1)}
+              </button>
+            ))}
           </div>
+        </div>
 
-          <div>
-            <label className="block text-[13px] font-bold text-[#2F3337] mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              value={form.email}
-              onChange={(e) => updateField("email", e.target.value)}
-              placeholder="your@email.com"
-              className="w-full border border-gray-200 rounded-[14px] px-4 py-3.5 text-[14px] font-medium text-[#2F3337] placeholder:text-[#A0A5AE] focus:outline-none focus:ring-2 focus:ring-[#249B60]"
-            />
+        <div>
+          <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-foreground">
+            What&apos;s your goal?
+          </label>
+          <div className="grid grid-cols-2 gap-3">
+            {GOALS.map((g) => (
+              <button
+                key={g.id}
+                type="button"
+                onClick={() => updateField("goal", g.id)}
+                className={`rounded-xl border-2 px-3 py-3 text-xs font-semibold transition-colors sm:text-[13px] ${
+                  form.goal === g.id ? chipOn : chipOff
+                }`}
+              >
+                {g.label}
+              </button>
+            ))}
           </div>
+        </div>
 
-          <div>
-            <label className="block text-[13px] font-bold text-[#2F3337] mb-2">
-              Gender
-            </label>
-            <div className="flex gap-3">
-              {["male", "female"].map((g) => (
-                <button
-                  key={g}
-                  type="button"
-                  onClick={() => updateField("gender", g)}
-                  className={`flex-1 py-3 rounded-[14px] text-[14px] font-bold border-2 transition-colors ${
-                    form.gender === g
-                      ? "border-[#249B60] bg-[#EEF3F0] text-[#249B60]"
-                      : "border-gray-200 text-[#2F3337] hover:border-gray-300"
-                  }`}
-                >
-                  {g.charAt(0).toUpperCase() + g.slice(1)}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-[13px] font-bold text-[#2F3337] mb-2">
-              What&apos;s your goal?
-            </label>
-            <div className="grid grid-cols-2 gap-3">
-              {GOALS.map((g) => (
-                <button
-                  key={g.id}
-                  type="button"
-                  onClick={() => updateField("goal", g.id)}
-                  className={`py-3 px-4 rounded-[14px] text-[13px] font-bold border-2 transition-colors ${
-                    form.goal === g.id
-                      ? "border-[#249B60] bg-[#EEF3F0] text-[#249B60]"
-                      : "border-gray-200 text-[#2F3337] hover:border-gray-300"
-                  }`}
-                >
-                  {g.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-[13px] font-bold text-[#2F3337] mb-2">
-              Activity Level
-            </label>
-            <select
-              value={form.activityLevel}
-              onChange={(e) => updateField("activityLevel", e.target.value)}
-              className="w-full border border-gray-200 rounded-[14px] px-4 py-3.5 text-[14px] font-medium text-[#2F3337] bg-white focus:outline-none focus:ring-2 focus:ring-[#249B60] appearance-none cursor-pointer"
-            >
-              <option value="">Select activity level</option>
-              {ACTIVITY_LEVELS.map((a) => (
-                <option key={a.id} value={a.id}>
-                  {a.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-[13px] font-bold text-[#2F3337] mb-2">
-              Diet Preference
-            </label>
-            <select
-              value={form.dietPreference}
-              onChange={(e) => updateField("dietPreference", e.target.value)}
-              className="w-full border border-gray-200 rounded-[14px] px-4 py-3.5 text-[14px] font-medium text-[#2F3337] bg-white focus:outline-none focus:ring-2 focus:ring-[#249B60] appearance-none cursor-pointer"
-            >
-              <option value="">Select preference</option>
-              {DIET_PREFERENCES.map((d) => (
-                <option key={d.id} value={d.id}>
-                  {d.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {error && (
-            <p className="text-red-500 text-[13px] font-medium bg-red-50 px-4 py-2.5 rounded-[12px]">
-              {error}
-            </p>
-          )}
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-[#249B60] hover:bg-[#1E8351] disabled:bg-[#249B60]/60 text-white font-extrabold text-[15px] py-4 rounded-full transition-colors shadow-[0_4px_14px_0_rgba(36,161,112,0.3)] mt-2"
+        <div>
+          <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-foreground">
+            Activity level
+          </label>
+          <select
+            value={form.activityLevel}
+            onChange={(e) => updateField("activityLevel", e.target.value)}
+            className={`${inputClass} cursor-pointer appearance-none bg-surface`}
           >
-            {loading ? "Creating account..." : "Get Started"}
-          </button>
-        </form>
-      </div>
-    </div>
+            <option value="">Select activity level</option>
+            {ACTIVITY_LEVELS.map((a) => (
+              <option key={a.id} value={a.id}>
+                {a.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-foreground">
+            Diet preference
+          </label>
+          <select
+            value={form.dietPreference}
+            onChange={(e) => updateField("dietPreference", e.target.value)}
+            className={`${inputClass} cursor-pointer appearance-none bg-surface`}
+          >
+            <option value="">Select preference</option>
+            {DIET_PREFERENCES.map((d) => (
+              <option key={d.id} value={d.id}>
+                {d.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {error ? (
+          <p className="rounded-xl bg-red-50 px-4 py-2.5 text-sm font-medium text-red-600">
+            {error}
+          </p>
+        ) : null}
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="mt-2 w-full rounded-xl bg-primary py-4 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-hover disabled:pointer-events-none disabled:opacity-50"
+        >
+          {loading ? "Creating account..." : "Get started"}
+        </button>
+      </form>
+    </AuthPageShell>
   );
 }

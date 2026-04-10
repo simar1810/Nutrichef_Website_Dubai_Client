@@ -2,47 +2,49 @@
 
 import React from "react";
 import Link from "next/link";
+import { AuthPageShell } from "@/components/AuthPageShell";
 
 export default function PaymentCancelPage() {
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center px-4 pt-24 pb-12">
-      <div className="w-full max-w-[480px] text-center">
-        <div className="w-[72px] h-[72px] bg-[#FFF4E5] rounded-full flex items-center justify-center mx-auto mb-6">
+    <AuthPageShell maxWidthClass="max-w-[480px]">
+      <div className="text-center">
+        <div className="mx-auto mb-6 flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-full bg-amber-50">
           <svg
-            className="w-8 h-8 text-[#F59E0B]"
+            className="h-8 w-8 text-amber-500"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
+            aria-hidden
           >
             <circle cx="12" cy="12" r="10" />
             <line x1="12" y1="8" x2="12" y2="12" />
             <line x1="12" y1="16" x2="12.01" y2="16" />
           </svg>
         </div>
-        <h1 className="text-[28px] font-extrabold text-[#2F3337] mb-3">
-          Payment Cancelled
+        <h1 className="font-heading mb-3 text-2xl font-semibold text-foreground">
+          Payment cancelled
         </h1>
-        <p className="text-[#878E99] text-[15px] font-medium mb-8">
+        <p className="mb-8 text-sm font-medium text-secondary-text">
           Your payment was not completed. No charges have been made.
         </p>
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        <div className="flex flex-col justify-center gap-3 sm:flex-row">
           <Link
             href="/plans"
-            className="bg-[#249B60] hover:bg-[#1E8351] text-white px-8 py-3.5 rounded-full font-bold text-[15px] transition-colors"
+            className="rounded-xl bg-primary px-8 py-3.5 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-primary-hover"
           >
-            Back to Plans
+            Back to plans
           </Link>
           <Link
             href="/"
-            className="bg-[#F2F4F7] hover:bg-gray-200 text-[#2F3337] px-8 py-3.5 rounded-full font-bold text-[15px] transition-colors"
+            className="rounded-xl border border-border-subtle bg-background px-8 py-3.5 text-center text-sm font-semibold text-foreground transition hover:bg-bg-light"
           >
-            Go to Home
+            Go to home
           </Link>
         </div>
       </div>
-    </div>
+    </AuthPageShell>
   );
 }
