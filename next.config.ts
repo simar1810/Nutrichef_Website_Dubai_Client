@@ -18,6 +18,10 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'calo.app',
+      },
+      {
+        protocol: 'https',
         hostname: 'cdncaloapp.com',
       },
       {
