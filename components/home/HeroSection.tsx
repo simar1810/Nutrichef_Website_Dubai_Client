@@ -5,8 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "../Button";
 
-const HERO_IMAGE =
-  "https://calo.app/_next/image?url=https%3A%2F%2Fcdncaloapp.com%2F28e125562515cd84cda748118c399f96ec409f93.webp&w=2048&q=75";
+const HERO_IMAGE = "/HeroSection.jpeg";
 
 function scrollToMenu() {
   document
