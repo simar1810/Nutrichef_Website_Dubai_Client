@@ -22,6 +22,9 @@ export const metadata: Metadata = {
   title: "Nutrichef | Meal plans for busy people",
   description:
     "Nutrichef provides meal plans tailored for busy people. It serves delicious food that's portioned to your requirements and fitness goals. You can choose your meals from the daily menu or build your own.",
+  icons: {
+    icon: "/Nutrichef_Icon.ico",
+  },
 };
 
 export const viewport: Viewport = {
