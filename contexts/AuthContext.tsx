@@ -1,6 +1,13 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+} from "react";
 import { api, clearTokens } from "@/lib/api";
 
 export interface UserProfile {
@@ -38,12 +45,17 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  /** Bumped on logout so a late /user/profile response cannot repopulate `user` after tokens were cleared. */
+  const authEpochRef = useRef(0);
 
   const fetchProfile = useCallback(async () => {
+    const epoch = authEpochRef.current;
     try {
       const res = await api.get<UserProfile>("/user/profile");
+      if (authEpochRef.current !== epoch) return;
       setUser(res.data);
     } catch {
+      if (authEpochRef.current !== epoch) return;
       setUser(null);
       clearTokens();
     }
@@ -59,6 +71,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 
   const logout = useCallback(() => {
+    authEpochRef.current += 1;
     clearTokens();
     setUser(null);
   }, []);

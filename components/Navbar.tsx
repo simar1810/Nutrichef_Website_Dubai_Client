@@ -17,13 +17,10 @@ const LG = "(min-width: 1024px)";
 
 const DRAWER_TOP = "calc(env(safe-area-inset-top, 0px) + 4.25rem)";
 
-export const Navbar = () => {
-  const [open, setOpen] = useState(false);
-  const [fullMenuOpen, setFullMenuOpen] = useState(false);
+/** One instance per mount: the same JSX was rendered twice (lg / not-lg) with a shared ref, so `ref` only attached to one hidden node and outside-click closed the visible menu before `click` fired — logout never ran. */
+function NavbarUserMenu() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const panelCloseRef = useRef<HTMLButtonElement>(null);
-  const menuId = useId();
   const { user, isAuthenticated, logout } = useAuth();
 
   const initials = user?.name
@@ -48,37 +45,7 @@ export const Navbar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [open]);
-
-  useEffect(() => {
-    const mq = window.matchMedia(LG);
-    const closeIfDesktop = () => {
-      if (mq.matches) setOpen(false);
-    };
-    closeIfDesktop();
-    mq.addEventListener("change", closeIfDesktop);
-    return () => mq.removeEventListener("change", closeIfDesktop);
-  }, []);
-
-  useEffect(() => {
-    if (!open) return;
-    const t = window.setTimeout(() => panelCloseRef.current?.focus(), 0);
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => {
-      window.clearTimeout(t);
-      window.removeEventListener("keydown", onKey);
-    };
-  }, [open]);
-
-  const authBlock = (
+  return (
     <div className="flex shrink-0 items-center gap-2">
       {isAuthenticated ? (
         <div className="relative" ref={dropdownRef}>
@@ -143,6 +110,43 @@ export const Navbar = () => {
       )}
     </div>
   );
+}
+
+export const Navbar = () => {
+  const [open, setOpen] = useState(false);
+  const [fullMenuOpen, setFullMenuOpen] = useState(false);
+  const panelCloseRef = useRef<HTMLButtonElement>(null);
+  const menuId = useId();
+
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  useEffect(() => {
+    const mq = window.matchMedia(LG);
+    const closeIfDesktop = () => {
+      if (mq.matches) setOpen(false);
+    };
+    closeIfDesktop();
+    mq.addEventListener("change", closeIfDesktop);
+    return () => mq.removeEventListener("change", closeIfDesktop);
+  }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    const t = window.setTimeout(() => panelCloseRef.current?.focus(), 0);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.clearTimeout(t);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
 
   return (
     <header className="fixed top-0 z-50 w-full pt-[env(safe-area-inset-top,0px)]">
@@ -261,11 +265,13 @@ export const Navbar = () => {
             >
               See plans
             </Link>
-            <div className="ml-2 pl-2">{authBlock}</div>
+            <div className="ml-2 pl-2">
+              <NavbarUserMenu />
+            </div>
           </div>
 
           <div className="flex items-center gap-2 lg:hidden">
-            {authBlock}
+            <NavbarUserMenu />
             <button
               type="button"
               className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-bg-light text-foreground transition hover:bg-bg-light/80"
