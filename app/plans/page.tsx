@@ -1,11 +1,21 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 import { useRequireAuth } from "@/lib/useRequireAuth";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTenant } from "@/contexts/TenantContext";
 import { formatMinorUnits, formatMajorUnits } from "@/lib/formatCurrency";
+import {
+  billingWeeksForDurationKey,
+  collectRawDurationKeysFromPricing,
+  isPlanDurationDayKey,
+  planDurationListTitle,
+  planDurationPeriodPhrase,
+  planDurationShortTitle,
+  supportedDurationKeysPresent,
+} from "@/lib/mealPlanDurationTiers";
 
 const GOAL_EMOJIS: Record<string, string> = {
   balanced: "⚖️",
@@ -22,6 +32,8 @@ const GOAL_EMOJIS: Record<string, string> = {
   keto: "🥑",
   lose_weight: "⚖️",
   gain_muscle: "🍗",
+  muscle_gain: "🍗",
+  high_protein: "🍗",
   maintain: "⚖️",
 };
 
@@ -68,56 +80,100 @@ const MEAL_TYPES = ["Breakfast", "Lunch", "Dinner", "Snack"];
 const DAYS = ["S", "M", "T", "W", "T", "F", "S"];
 
 const FALLBACK_CYCLES: Cycle[] = [
-  { id: "1 week", title: "Weekly", subtext: "Per week", priceDisplay: "/week", save: null, amount: 0 },
-  { id: "2 weeks", title: "2 Weeks", subtext: "Per 2 weeks", priceDisplay: "/2 weeks", save: null, amount: 0 },
-  { id: "4 weeks", title: "Monthly", subtext: "Per month", priceDisplay: "/month", save: null, amount: 0 },
+  { id: "7", title: "1 week", subtext: "Per week", priceDisplay: "/week", save: null, amount: 0 },
+  { id: "14", title: "2 weeks", subtext: "Per 2 weeks", priceDisplay: "/2 weeks", save: null, amount: 0 },
+  { id: "28", title: "4 weeks", subtext: "Per 4 weeks", priceDisplay: "/month", save: null, amount: 0 },
 ];
+
+const PLANS_SUB_BANNER_DISMISSED_KEY = "nutrichef_plans_sub_banner_dismissed";
+
+interface SubscriptionTemplateRef {
+  _id: string;
+  title?: string;
+  goalType?: string;
+  dietType?: string;
+}
+
+interface ActiveSubscriptionPayload {
+  _id?: string;
+  status?: string;
+  templateId?: string | SubscriptionTemplateRef;
+  amount?: number;
+  currency?: string;
+  type?: string;
+}
+
+function resolveSubscribedTemplateId(data: ActiveSubscriptionPayload | null): string | null {
+  if (!data?.templateId) return null;
+  const t = data.templateId;
+  if (typeof t === "string" && t.trim()) return t.trim();
+  if (typeof t === "object" && t != null && typeof t._id === "string" && t._id.trim()) return t._id.trim();
+  return null;
+}
+
+function resolveSubscriptionPlanTitle(data: ActiveSubscriptionPayload | null): string | null {
+  const t = data?.templateId;
+  if (t && typeof t === "object" && typeof t.title === "string" && t.title.trim()) {
+    return t.title.trim();
+  }
+  return null;
+}
+
+function isActiveSubscriptionStatus(status: string | undefined): boolean {
+  return typeof status === "string" && status.trim().toLowerCase() === "active";
+}
+
+function formatApiLabel(value: string | undefined): string {
+  if (!value?.trim()) return "";
+  return value
+    .replace(/[-_]+/g, " ")
+    .trim()
+    .split(/\s+/)
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+    .join(" ");
+}
+
+function buildPlanDescription(goalType?: string, dietType?: string): string {
+  const goal = formatApiLabel(goalType);
+  const diet = formatApiLabel(dietType);
+  if (goal && diet) return `${goal} • ${diet}`;
+  return goal || diet || "Customized meal plan";
+}
 
 function buildCycles(
   pricing: BackendPlan["pricing"],
   selectedMeals: string[],
   currency: string
-): Cycle[] {
-  if (!pricing) return FALLBACK_CYCLES;
-
-  const durationKeys = new Set<string>();
-  const mealKeys = selectedMeals.map((m) => m.toLowerCase() as keyof NonNullable<BackendPlan["pricing"]>);
-
-  for (const mk of mealKeys) {
-    const tierObj = pricing[mk];
-    if (tierObj) {
-      for (const k of Object.keys(tierObj)) {
-        durationKeys.add(k);
-      }
-    }
+): { cycles: Cycle[]; unsupportedLegacyOnly: boolean } {
+  if (!pricing) {
+    return { cycles: FALLBACK_CYCLES, unsupportedLegacyOnly: false };
   }
 
-  if (durationKeys.size === 0) return FALLBACK_CYCLES;
+  const mealKeys = selectedMeals.map((m) => m.toLowerCase());
+  const raw = collectRawDurationKeysFromPricing(pricing, mealKeys);
+  const sorted = supportedDurationKeysPresent(raw);
 
-  const sorted = [...durationKeys].sort((a, b) => {
-    const numA = parseInt(a) || 0;
-    const numB = parseInt(b) || 0;
-    return numA - numB;
-  });
+  if (sorted.length === 0) {
+    if (raw.size > 0) {
+      return { cycles: [], unsupportedLegacyOnly: true };
+    }
+    return { cycles: FALLBACK_CYCLES, unsupportedLegacyOnly: false };
+  }
 
-  let cheapestPerUnit = Infinity;
   const cycles: Cycle[] = sorted.map((dur) => {
     let total = 0;
     for (const mk of mealKeys) {
-      const tierObj = pricing[mk];
+      const tierObj = pricing[mk as keyof NonNullable<BackendPlan["pricing"]>];
       if (tierObj && tierObj[dur] != null) {
         total += tierObj[dur];
       }
     }
-    const weeks = parseInt(dur) || 1;
-    const perWeek = total / weeks;
-    if (perWeek < cheapestPerUnit) cheapestPerUnit = perWeek;
-
-    const perWeekRounded = Math.round(total / weeks);
+    const weeksInPeriod = billingWeeksForDurationKey(dur) ?? 1;
+    const perWeekRounded = Math.round(total / weeksInPeriod);
     return {
       id: dur,
-      title: dur.charAt(0).toUpperCase() + dur.slice(1),
-      subtext: `${formatMajorUnits(total, currency)} per ${dur}`,
+      title: planDurationListTitle(dur),
+      subtext: `${formatMajorUnits(total, currency)} ${planDurationPeriodPhrase(dur)}`,
       priceDisplay: `${formatMajorUnits(perWeekRounded, currency)}/week`,
       save: null,
       amount: Math.round(total * 100),
@@ -125,9 +181,10 @@ function buildCycles(
   });
 
   if (cycles.length > 1) {
-    const basePerWeek = cycles[0].amount / 100 / (parseInt(cycles[0].id) || 1);
+    const w0 = billingWeeksForDurationKey(cycles[0].id) ?? 1;
+    const basePerWeek = cycles[0].amount / 100 / w0;
     for (let i = 1; i < cycles.length; i++) {
-      const weeks = parseInt(cycles[i].id) || 1;
+      const weeks = billingWeeksForDurationKey(cycles[i].id) ?? 1;
       const thisPerWeek = cycles[i].amount / 100 / weeks;
       const saving = Math.round((basePerWeek - thisPerWeek) * weeks);
       if (saving > 0) {
@@ -139,7 +196,7 @@ function buildCycles(
     }
   }
 
-  return cycles;
+  return { cycles, unsupportedLegacyOnly: false };
 }
 
 export default function PlansPage() {
@@ -155,8 +212,12 @@ export default function PlansPage() {
   const [selectedDays, setSelectedDays] = useState<number[]>([0, 1, 2, 3, 4]);
   const [selectedCycle, setSelectedCycle] = useState("");
   const [cycles, setCycles] = useState<Cycle[]>(FALLBACK_CYCLES);
+  const [unsupportedDurationTiers, setUnsupportedDurationTiers] = useState(false);
   const [loading, setLoading] = useState(true);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [activeSubscription, setActiveSubscription] = useState<ActiveSubscriptionPayload | null>(null);
+  const [subscriptionFetched, setSubscriptionFetched] = useState(false);
+  const [subscriptionBannerDismissed, setSubscriptionBannerDismissed] = useState(false);
 
   const fetchPlans = useCallback(async () => {
     try {
@@ -169,9 +230,7 @@ export default function PlansPage() {
           return {
             id: p._id,
             title: p.title,
-            desc: p.goalType
-              ? `${p.goalType}${p.dietType ? ` - ${p.dietType}` : ""}`
-              : p.dietType || "Customized meal plan",
+            desc: buildPlanDescription(p.goalType, p.dietType),
             emoji: GOAL_EMOJIS[key] || "🍽️",
             style: key.includes("custom") ? "custom" : "default",
           };
@@ -195,13 +254,59 @@ export default function PlansPage() {
   }, [isAuthenticated, fetchPlans]);
 
   useEffect(() => {
-    const plan = backendPlans.find((p) => p._id === selectedPlan);
-    if (plan?.pricing) {
-      const c = buildCycles(plan.pricing, selectedMeals, currency);
-      setCycles(c);
-      if (c.length > 0 && !c.find((cy) => cy.id === selectedCycle)) {
-        setSelectedCycle(c[0].id);
+    if (typeof sessionStorage === "undefined") return;
+    if (sessionStorage.getItem(PLANS_SUB_BANNER_DISMISSED_KEY) === "1") {
+      setSubscriptionBannerDismissed(true);
+    }
+  }, []);
+
+  const fetchSubscription = useCallback(async () => {
+    try {
+      const res = await api.get<ActiveSubscriptionPayload>("/payment/subscription");
+      const data = res.data;
+      if (data && isActiveSubscriptionStatus(data.status)) {
+        setActiveSubscription(data);
+      } else {
+        setActiveSubscription(null);
       }
+    } catch {
+      setActiveSubscription(null);
+    } finally {
+      setSubscriptionFetched(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      void fetchSubscription();
+    }
+  }, [isAuthenticated, fetchSubscription]);
+
+  const dismissSubscriptionBanner = () => {
+    setSubscriptionBannerDismissed(true);
+    if (typeof sessionStorage !== "undefined") {
+      sessionStorage.setItem(PLANS_SUB_BANNER_DISMISSED_KEY, "1");
+    }
+  };
+
+  useEffect(() => {
+    const plan = backendPlans.find((p) => p._id === selectedPlan);
+    if (!plan?.pricing) {
+      setCycles(FALLBACK_CYCLES);
+      setUnsupportedDurationTiers(false);
+      if (!FALLBACK_CYCLES.find((cy) => cy.id === selectedCycle)) {
+        setSelectedCycle(FALLBACK_CYCLES[0]?.id ?? "");
+      }
+      return;
+    }
+    const { cycles: c, unsupportedLegacyOnly } = buildCycles(plan.pricing, selectedMeals, currency);
+    setCycles(c);
+    setUnsupportedDurationTiers(unsupportedLegacyOnly);
+    if (c.length > 0 && !c.find((cy) => cy.id === selectedCycle)) {
+      setSelectedCycle(c[0].id);
+    }
+    if (c.length === 0) {
+      setSelectedCycle("");
     }
   }, [selectedPlan, selectedMeals, backendPlans, selectedCycle, currency]);
 
@@ -234,15 +339,20 @@ export default function PlansPage() {
     setCheckoutLoading(true);
     try {
       const templateId = backendPlans.find((p) => p._id === selectedPlan)?._id || selectedPlan;
+      const durationLabel = isPlanDurationDayKey(cycle.id)
+        ? planDurationShortTitle(cycle.id)
+        : cycle.title;
       const res = await api.post<{ url: string; orderId: string }>(
         "/checkout/session",
         {
           templateId,
           amount: cycle.amount,
           currency: currency.toLowerCase(),
-          productName: `${getSelectedPlanTitle()} - ${cycle.title}`,
+          productName: `${getSelectedPlanTitle()} - ${durationLabel}`,
           successUrl: `${window.location.origin}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
           cancelUrl: `${window.location.origin}/payment/cancel`,
+          /** Ask Stripe to always attach a Customer so /payment/success can resolve stripeCustomerId. */
+          customer_creation: "always",
         },
         { noAuth: true }
       );
@@ -266,9 +376,69 @@ export default function PlansPage() {
     );
   }
 
+  const subscribedTemplateId = activeSubscription ? resolveSubscribedTemplateId(activeSubscription) : null;
+  const subscribedPlanTitle = activeSubscription ? resolveSubscriptionPlanTitle(activeSubscription) : null;
+  const showSubscriptionBanner =
+    subscriptionFetched &&
+    activeSubscription &&
+    !subscriptionBannerDismissed &&
+    isActiveSubscriptionStatus(activeSubscription.status);
+
   return (
     <div className="min-h-screen w-full bg-background pb-24 pt-28 sm:pt-32">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        {showSubscriptionBanner ? (
+          <div
+            className="relative mb-8 flex flex-col gap-4 rounded-2xl border-2 border-primary/30 bg-primary/10 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-5"
+            role="status"
+            aria-live="polite"
+          >
+            <button
+              type="button"
+              onClick={dismissSubscriptionBanner}
+              className="absolute right-3 top-3 rounded-lg p-1.5 text-secondary-text transition hover:bg-background/80 hover:text-foreground"
+              aria-label="Dismiss subscription notice"
+            >
+              <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" />
+              </svg>
+            </button>
+            <div className="pr-10 sm:pr-0">
+              <p className="font-heading text-base font-semibold text-foreground sm:text-lg">
+                {subscribedPlanTitle
+                  ? `You're subscribed to ${subscribedPlanTitle}.`
+                  : "You have an active meal plan subscription."}
+              </p>
+              {activeSubscription?.amount != null &&
+              activeSubscription.amount > 0 &&
+              typeof activeSubscription.currency === "string" &&
+              activeSubscription.currency.trim() ? (
+                <p className="mt-1.5 text-sm font-medium text-secondary-text">
+                  Current plan billing:{" "}
+                  {formatMinorUnits(activeSubscription.amount, activeSubscription.currency)}
+                </p>
+              ) : null}
+            </div>
+            <div className="flex shrink-0 flex-wrap gap-3 sm:pl-4">
+              {subscribedTemplateId ? (
+                <Link
+                  href={`/meal-plans/${subscribedTemplateId}`}
+                  className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-hover"
+                >
+                  View your meal plan
+                </Link>
+              ) : (
+                <Link
+                  href="/"
+                  className="inline-flex items-center justify-center rounded-full border border-border-subtle bg-background px-6 py-2.5 text-sm font-semibold text-foreground transition hover:bg-bg-light"
+                >
+                  Browse meal plans
+                </Link>
+              )}
+            </div>
+          </div>
+        ) : null}
+
         {/* Header */}
         <div className="mb-14">
           <h1 className="font-heading text-[34px] font-semibold leading-[1.05] tracking-tight text-foreground md:text-[44px]">
@@ -322,10 +492,14 @@ export default function PlansPage() {
                           <div className="text-[42px] leading-none">{plan.emoji}</div>
                         </div>
                         <div className="flex justify-between items-center mt-auto pt-2">
-                          <span className="flex items-center gap-1 text-[13px] font-semibold text-primary">
+                          <Link
+                            href={`/meal-plans/${plan.id}`}
+                            onClick={(e) => e.stopPropagation()}
+                            className="flex items-center gap-1 text-[13px] font-semibold text-primary underline-offset-2 hover:underline"
+                          >
                             Learn More{" "}
                             <span className="text-[12px] font-medium">&rarr;</span>
-                          </span>
+                          </Link>
                           {isActive ? (
                             <div className="flex items-center gap-1.5 rounded-full bg-primary-hover px-3 py-[7px] text-white shadow-sm">
                               <svg
@@ -444,11 +618,21 @@ export default function PlansPage() {
               </div>
             </section>
 
-            {/* Section 4: Payment Cycle */}
+            {/* Section 4: Plan duration (API tiers: 7 / 14 / 28 days) */}
             <section>
               <h2 className="font-heading mb-[26px] text-[26px] font-semibold tracking-tight text-foreground">
-                Payment cycle
+                Plan duration
               </h2>
+              {unsupportedDurationTiers ? (
+                <p
+                  className="mb-6 rounded-2xl border border-amber-200/80 bg-amber-50 px-4 py-3 text-[13px] font-medium leading-relaxed text-amber-950"
+                  role="status"
+                >
+                  This plan&apos;s pricing is still on an older format we no longer support here. Please refresh
+                  later or pick another plan. Once plans are re-saved in admin, 1, 2, and 4 week options
+                  (7, 14, and 28 days) will appear.
+                </p>
+              ) : null}
               <div className="flex flex-col gap-[18px] mb-[24px]">
                 {cycles.map((cycle) => {
                   const isActive = selectedCycle === cycle.id;

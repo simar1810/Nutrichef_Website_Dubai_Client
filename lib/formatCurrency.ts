@@ -5,9 +5,6 @@ function normalizeCurrency(currency: string): string {
   return currency.trim().toUpperCase();
 }
 
-/**
- * Format an amount in the smallest currency unit (e.g. paise, cents, fils).
- */
 export function formatMinorUnits(amountMinor: number, currency: string): string {
   const code = normalizeCurrency(currency);
   const major = amountMinor / 100;
@@ -22,9 +19,6 @@ export interface FormatMajorUnitsOptions {
   maximumFractionDigits?: number;
 }
 
-/**
- * Format an amount in major units (e.g. 2.5 AED per meal).
- */
 export function formatMajorUnits(
   amountMajor: number,
   currency: string,
