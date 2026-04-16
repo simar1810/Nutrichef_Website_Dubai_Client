@@ -6,6 +6,8 @@ import { FilterBar } from "../../components/menu/FilterBar";
 import { MenuCard } from "../../components/menu/MenuCard";
 import { fallbackMenuItems, type MenuItem } from "./data";
 import { api } from "@/lib/api";
+import { menuItemMatchesFilter } from "@/lib/menuFilterMatch";
+import { derivePlanFilterIdFromMacros } from "@/lib/planFromMacros";
 
 interface BackendRecipe {
   _id: string;
@@ -23,15 +25,19 @@ interface BackendRecipe {
 }
 
 function mapRecipeToMenuItem(recipe: BackendRecipe): MenuItem {
+  const calories = recipe.nutrition?.calories ?? 0;
+  const protein = recipe.nutrition?.protein ?? 0;
+  const carbs = recipe.nutrition?.carbs ?? 0;
+  const fat = recipe.nutrition?.fat ?? 0;
   return {
     id: recipe._id,
     title: recipe.title,
     description: recipe.category || "",
-    calories: recipe.nutrition?.calories || 0,
+    calories,
     macros: {
-      protein: recipe.nutrition?.protein || 0,
-      carbs: recipe.nutrition?.carbs || 0,
-      fat: recipe.nutrition?.fat || 0,
+      protein,
+      carbs,
+      fat,
     },
     isNew: recipe.tags?.includes("new") || false,
     imageUrl:
@@ -39,6 +45,7 @@ function mapRecipeToMenuItem(recipe: BackendRecipe): MenuItem {
       "https://cdn.calo.app/food/46cfb754-32c1-4f59-93fa-026430ae9918/square@3x.jpg",
     category: recipe.category,
     tags: recipe.tags,
+    planFilterId: derivePlanFilterIdFromMacros({ calories, protein, carbs, fat }),
   };
 }
 
@@ -47,7 +54,6 @@ export default function MenuPage() {
   const [filteredItems, setFilteredItems] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState("all");
-  const [categories, setCategories] = useState<string[]>([]);
 
   const fetchMenu = useCallback(async () => {
     try {
@@ -58,9 +64,6 @@ export default function MenuPage() {
       if (recipes.length > 0) {
         const items = recipes.map(mapRecipeToMenuItem);
         setMenuItems(items);
-
-        const cats = [...new Set(items.map((i) => i.category).filter(Boolean))] as string[];
-        setCategories(cats);
       } else {
         setMenuItems(fallbackMenuItems);
       }
@@ -79,13 +82,7 @@ export default function MenuPage() {
     if (activeFilter === "all") {
       setFilteredItems(menuItems);
     } else {
-      setFilteredItems(
-        menuItems.filter(
-          (item) =>
-            item.category?.toLowerCase() === activeFilter.toLowerCase() ||
-            item.tags?.some((t) => t.toLowerCase() === activeFilter.toLowerCase())
-        )
-      );
+      setFilteredItems(menuItems.filter((item) => menuItemMatchesFilter(item, activeFilter)));
     }
   }, [activeFilter, menuItems]);
 
@@ -116,11 +113,7 @@ export default function MenuPage() {
         </div>
 
         {/* Filter Bar */}
-        <FilterBar
-          categories={categories}
-          activeFilter={activeFilter}
-          onFilterChange={setActiveFilter}
-        />
+        <FilterBar activeFilter={activeFilter} onFilterChange={setActiveFilter} />
 
         {/* Menu Grid */}
         {loading ? (

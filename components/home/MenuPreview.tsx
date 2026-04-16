@@ -4,17 +4,10 @@ import React, { useState, useEffect, useMemo, useCallback } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "../Button";
+import { MENU_FILTERS } from "@/components/menu/FilterBar";
 import { api } from "@/lib/api";
-
-const tabs = [
-  { id: "All", label: "All", icon: null },
-  { id: "High Protein", label: "High Protein", icon: "🍗" },
-  { id: "Balanced", label: "Balanced", icon: "⚖️" },
-  { id: "Vegetarian", label: "Vegetarian", icon: "🥦" },
-  { id: "Chef's Picks", label: "Chef's Picks", icon: "👨‍🍳" },
-  { id: "Custom Macros", label: "Custom Macros", icon: "🧮" },
-  { id: "Low Carb", label: "Low Carb", icon: "🥑" },
-] as const;
+import type { PlanFilterId } from "@/lib/planFromMacros";
+import { derivePlanFilterIdFromMacros } from "@/lib/planFromMacros";
 
 const chips = [
   "NATURAL INGREDIENTS",
@@ -47,7 +40,7 @@ interface PreviewMeal {
   carbs?: number;
   fat?: number;
   customText?: string;
-  tags: string[];
+  planFilterId: PlanFilterId;
 }
 
 function mapRecipeToMeal(recipe: ApiRecipe): PreviewMeal {
@@ -60,43 +53,30 @@ function mapRecipeToMeal(recipe: ApiRecipe): PreviewMeal {
   const hasC = c != null && Number.isFinite(c);
   const hasF = f != null && Number.isFinite(f);
   const hasAnyMacro = hasP || hasC || hasF;
+  const caloriesNum = hasCalories ? Math.round(n!.calories!) : 0;
+  const planFilterId = derivePlanFilterIdFromMacros({
+    calories: caloriesNum,
+    protein: hasP ? (p as number) : 0,
+    carbs: hasC ? (c as number) : 0,
+    fat: hasF ? (f as number) : 0,
+  });
 
   return {
     id: recipe._id,
     title: recipe.title,
     image: recipe.media?.[0] || FALLBACK_IMAGE,
-    calories: hasCalories ? `${Math.round(n!.calories!)} Cal` : null,
+    calories: hasCalories ? `${caloriesNum} Cal` : null,
     protein: hasP ? p : undefined,
     carbs: hasC ? c : undefined,
     fat: hasF ? f : undefined,
     customText: !hasAnyMacro ? "Macros on request" : undefined,
-    tags: recipe.tags ?? [],
+    planFilterId,
   };
 }
 
 function mealMatchesTab(meal: PreviewMeal, tabId: string): boolean {
-  if (tabId === "All") return true;
-  const tags = meal.tags.map((t) => t.toLowerCase().replace(/\s+/g, "-"));
-  switch (tabId) {
-    case "High Protein":
-      return tags.some((t) => t === "high-protein" || t.includes("high-protein"));
-    case "Balanced":
-      return tags.includes("balanced");
-    case "Vegetarian":
-      return tags.includes("vegetarian") || tags.includes("veggie");
-    case "Chef's Picks":
-      return (
-        tags.includes("chefs-pick") ||
-        tags.includes("chef-pick") ||
-        tags.includes("chefs-picks")
-      );
-    case "Custom Macros":
-      return tags.includes("custom-macros") || tags.includes("custom");
-    case "Low Carb":
-      return tags.includes("low-carb") || tags.includes("lowcarb");
-    default:
-      return true;
-  }
+  if (tabId === "all") return true;
+  return meal.planFilterId === tabId;
 }
 
 function macroLine(meal: PreviewMeal): string | null {
@@ -109,7 +89,7 @@ function macroLine(meal: PreviewMeal): string | null {
 
 export const MenuPreview = () => {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<string>("All");
+  const [activeTab, setActiveTab] = useState<string>("all");
   const [meals, setMeals] = useState<PreviewMeal[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -181,7 +161,7 @@ export const MenuPreview = () => {
             aria-label="Menu categories"
             className="flex w-max gap-1 rounded-xl border border-background/15 bg-background/[0.06] p-1"
           >
-            {tabs.map((tab) => {
+            {MENU_FILTERS.map((tab) => {
               const selected = activeTab === tab.id;
               return (
                 <button
