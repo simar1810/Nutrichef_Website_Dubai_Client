@@ -77,10 +77,12 @@ export default function PaymentSuccessPage() {
 function PaymentSuccessContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
+  const isAppSource = searchParams.get("source") === "app";
   const [session, setSession] = useState<SessionData | null>(null);
   const [loading, setLoading] = useState(true);
   const [loadingStep, setLoadingStep] = useState<"verify" | "activate">("verify");
   const [error, setError] = useState("");
+  const [appRedirected, setAppRedirected] = useState(false);
 
   useEffect(() => {
     if (!sessionId) {
@@ -137,6 +139,15 @@ function PaymentSuccessContent() {
         setError(
           "We could not link this payment to a Stripe customer or your order. Please contact support.",
         );
+        return;
+      }
+
+      // Mobile app flow: skip web subscription activation, redirect back to app
+      if (isAppSource) {
+        const deepLink = `nutrichef://payment/success?session_id=${encodeURIComponent(sessionId!)}`;
+        setAppRedirected(true);
+        setSession(verified);
+        window.location.href = deepLink;
         return;
       }
 
@@ -227,6 +238,39 @@ function PaymentSuccessContent() {
             >
               Back to plans
             </Link>
+          </>
+        ) : appRedirected ? (
+          <>
+            <div className="mx-auto mb-6 flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-full bg-primary/15">
+              <svg
+                className="h-8 w-8 text-primary"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                <polyline points="22 4 12 14.01 9 11.01" />
+              </svg>
+            </div>
+            <h1 className="font-heading mb-3 text-2xl font-semibold text-foreground">
+              Payment successful
+            </h1>
+            <p className="mb-2 text-sm font-medium text-secondary-text">
+              Redirecting you back to the NutriChef app...
+            </p>
+            <p className="mb-8 text-xs text-secondary-text">
+              If the app doesn&apos;t open automatically, tap the button below.
+            </p>
+            <a
+              href={`nutrichef://payment/success?session_id=${encodeURIComponent(sessionId ?? "")}`}
+              className="inline-block rounded-xl bg-primary px-8 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-hover"
+            >
+              Open NutriChef
+            </a>
           </>
         ) : (
           <>
