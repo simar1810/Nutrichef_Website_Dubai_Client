@@ -20,7 +20,7 @@ export function AuthPageShell({
   const showHeader = title != null || subtitle != null;
 
   return (
-    <div className="relative min-h-screen bg-background px-4 pb-16 pt-28 sm:pt-32">
+    <div className="relative min-h-screen overflow-x-hidden bg-background px-4 pb-16 pt-28 sm:pt-32">
       <div
         className="pointer-events-none absolute -right-40 top-24 h-80 w-80 rounded-full bg-primary/10 blur-3xl"
         aria-hidden
