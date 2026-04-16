@@ -1,7 +1,10 @@
 "use client";
 
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { kgToLb, lbToKg } from "@/lib/registerApiMapping";
+
+const WEIGHT_FRAME_SRC = "/weight_selector_container.png";
 
 const KG_MIN = 40;
 const KG_MAX = 160;
@@ -45,14 +48,16 @@ function drawCurvedGauge(
   const dpr = window.devicePixelRatio || 1;
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.clearRect(0, 0, w, h);
+  ctx.imageSmoothingEnabled = true;
 
   const scale = Math.min(w / 320, h / 200) || 1;
   const radius = 290 * scale;
-  const centerX = w / 2;
+  const centerX = (w % 2 === 1 ? 0.5 : 0) + Math.floor(w / 2);
   const centerY = h + radius - 20 * scale - 110 * scale;
 
   const activeColor = "#4C8548";
-  const inactiveColor = "#CCCCCC";
+  const inactiveColor = "#b8c4bc";
+  const labelPx = Math.max(11, Math.round(15 * scale));
 
   const start = Math.floor(currentValue - VISIBLE_RANGE);
   const end = Math.ceil(currentValue + VISIBLE_RANGE);
@@ -67,7 +72,7 @@ function drawCurvedGauge(
 
     const tickLen = isMajor ? 30 : 20;
     ctx.strokeStyle = isMajor ? activeColor : inactiveColor;
-    ctx.lineWidth = isMajor ? 3 : 2;
+    ctx.lineWidth = isMajor ? 2 : 1.5;
     ctx.lineCap = "round";
 
     const fixedOuterRadius = radius + 30 * scale;
@@ -92,10 +97,10 @@ function drawCurvedGauge(
         const tx = centerX + textRadius * Math.cos(angleRad);
         const ty = centerY + textRadius * Math.sin(angleRad);
         ctx.save();
-        ctx.translate(tx, ty);
+        ctx.translate(Math.round(tx * 10) / 10, Math.round(ty * 10) / 10);
         ctx.rotate(angleRad + Math.PI / 2);
-        ctx.fillStyle = `rgba(120, 120, 120, ${opacity})`;
-        ctx.font = `bold ${16 * scale}px system-ui, sans-serif`;
+        ctx.fillStyle = `rgba(90, 107, 98, ${opacity})`;
+        ctx.font = `600 ${labelPx}px ui-sans-serif, system-ui, sans-serif`;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText(String(i), 0, 0);
@@ -104,21 +109,25 @@ function drawCurvedGauge(
     }
   }
 
-  drawNeedle(ctx, w, scale);
+  drawNeedle(ctx, scale, centerX, centerY, radius);
 }
 
-function drawNeedle(ctx: CanvasRenderingContext2D, w: number, scale: number) {
-  const centerX = w / 2;
-  const topY = 0;
-  const tipPeakY = topY - 10 * scale;
-  const baseY = topY + 40 * scale;
-  const baseHalfWidth = 6 * scale;
+function drawNeedle(
+  ctx: CanvasRenderingContext2D,
+  scale: number,
+  centerX: number,
+  centerY: number,
+  radius: number,
+) {
+  const outerR = radius + 30 * scale;
+  const tipY = centerY - outerR;
+  const baseY = tipY + Math.max(20, Math.round(26 * scale));
+  const baseHalfWidth = Math.max(5, Math.round(6 * scale));
 
   ctx.fillStyle = "#13692F";
   ctx.beginPath();
   ctx.moveTo(centerX - baseHalfWidth, baseY);
-  ctx.lineTo(centerX - 1.5 * scale, tipPeakY + 4 * scale);
-  ctx.quadraticCurveTo(centerX, tipPeakY - 2 * scale, centerX + 1.5 * scale, tipPeakY + 4 * scale);
+  ctx.lineTo(centerX, tipY);
   ctx.lineTo(centerX + baseHalfWidth, baseY);
   ctx.closePath();
   ctx.fill();
@@ -158,16 +167,18 @@ export function WeightDialScrollPicker({
     const wrap = wrapRef.current;
     if (!canvas || !wrap) return;
     const rect = wrap.getBoundingClientRect();
-    const w = Math.floor(rect.width);
-    const h = Math.floor(rect.height);
+    const displayW = Math.max(1, Math.round(rect.width));
+    const displayH = Math.max(1, Math.round(rect.height));
     const dpr = window.devicePixelRatio || 1;
-    canvas.width = w * dpr;
-    canvas.height = h * dpr;
-    canvas.style.width = `${w}px`;
-    canvas.style.height = `${h}px`;
-    const ctx = canvas.getContext("2d");
+    const bw = Math.max(1, Math.round(displayW * dpr));
+    const bh = Math.max(1, Math.round(displayH * dpr));
+    canvas.width = bw;
+    canvas.height = bh;
+    canvas.style.width = `${displayW}px`;
+    canvas.style.height = `${displayH}px`;
+    const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
-    drawCurvedGauge(ctx, w, h, displayRef.current, minV, maxV);
+    drawCurvedGauge(ctx, displayW, displayH, displayRef.current, minV, maxV);
   }, [minV, maxV]);
 
   useLayoutEffect(() => {
@@ -308,34 +319,36 @@ export function WeightDialScrollPicker({
       </div>
 
       <div
-        className="mx-auto flex max-w-[330px] justify-center pt-2"
+        className="mx-auto max-w-[330px] pt-2"
         style={{
-          height: 200,
-          backgroundImage: `radial-gradient(ellipse 120% 80% at 50% 0%, rgba(125,177,70,0.12) 0%, transparent 55%)`,
+          backgroundImage:
+            "radial-gradient(ellipse 118% 72% at 50% -8%, rgba(125,177,70,0.12) 0%, rgba(125,177,70,0.03) 45%, transparent 62%)",
         }}
       >
-        <div
-          className="relative w-full rounded-2xl bg-gradient-to-b from-[#7db146] via-[#4a7c38] to-[#1b3022] p-[3px] shadow-inner"
-          style={{
-            clipPath: "polygon(6% 0%, 50% 5%, 94% 0%, 100% 14%, 100% 100%, 0% 100%, 0% 14%)",
-          }}
-        >
+        <div className="overflow-hidden rounded-2xl border border-border-subtle bg-white shadow-[0_1px_0_rgba(27,48,34,0.04)]">
+          <div className="relative isolate h-[60px] w-full shrink-0 overflow-hidden border-b border-border-subtle/60">
+            <Image
+              src={WEIGHT_FRAME_SRC}
+              alt=""
+              fill
+              className="pointer-events-none select-none object-cover object-top"
+              sizes="330px"
+              draggable={false}
+              priority={false}
+            />
+          </div>
           <div
-            className="h-full w-full overflow-hidden bg-white"
-            style={{
-              clipPath: "polygon(6% 0%, 50% 4%, 94% 0%, 100% 12%, 100% 100%, 0% 100%, 0% 12%)",
-            }}
+            ref={wrapRef}
+            className="relative h-[180px] w-full touch-none select-none bg-gradient-to-b from-[#f6faf5] to-white"
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={endDrag}
+            onPointerCancel={endDrag}
           >
-            <div
-              ref={wrapRef}
-              className="relative h-[200px] w-full touch-none select-none"
-              onPointerDown={onPointerDown}
-              onPointerMove={onPointerMove}
-              onPointerUp={endDrag}
-              onPointerCancel={endDrag}
-            >
-              <canvas ref={canvasRef} className="absolute inset-0 h-full w-full cursor-ew-resize" />
-            </div>
+            <canvas
+              ref={canvasRef}
+              className="absolute inset-0 block h-full w-full cursor-ew-resize"
+            />
           </div>
         </div>
       </div>
