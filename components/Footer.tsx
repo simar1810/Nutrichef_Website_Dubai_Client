@@ -1,8 +1,12 @@
 import React from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { NutrichefLogo } from "@/components/NutrichefLogo";
 import { GoogleTranslate } from "@/components/GoogleTranslate";
+
+const companyLinks = [
+  { href: "/plans", label: "Plans & Packages" },
+  { href: "/menu", label: "Menu" },
+] as const;
 
 export const Footer = () => {
   return (
@@ -18,17 +22,6 @@ export const Footer = () => {
               delicious food that&apos;s portioned to your requirements and
               fitness goals.
             </p>
-            <div className="mt-8 flex flex-wrap gap-2">
-              {["TikTok", "Insta", "X", "In"].map((social) => (
-                <a
-                  key={social}
-                  href="#"
-                  className="rounded-lg border border-background/15 px-3 py-2 text-xs font-medium text-background/80 transition hover:border-primary hover:text-background"
-                >
-                  {social}
-                </a>
-              ))}
-            </div>
             <div className="mt-8 max-w-[280px] rounded-xl border border-background/15 bg-background/[0.06] p-4">
               <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-background/50">
                 Language
@@ -37,22 +30,16 @@ export const Footer = () => {
             </div>
           </div>
 
-          <div className="grid gap-10 sm:grid-cols-3 lg:col-span-8 lg:grid-cols-3">
+          <div className="grid gap-10 sm:grid-cols-2 lg:col-span-8 lg:max-w-xl lg:grid-cols-2">
             <div>
               <h3 className="font-heading mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-background/50">
                 Company
               </h3>
               <ul className="space-y-3 text-sm">
-                {[
-                  "Plans & Packages",
-                  "Menu",
-                  "The Cafe",
-                  "Careers",
-                  "Blog",
-                ].map((label) => (
+                {companyLinks.map(({ href, label }) => (
                   <li key={label}>
                     <Link
-                      href="#"
+                      href={href}
                       className="text-background/75 transition hover:text-primary"
                     >
                       {label}
@@ -68,57 +55,19 @@ export const Footer = () => {
               <ul className="space-y-3 text-sm">
                 <li>
                   <Link
-                    href="#"
+                    href="/#faq"
                     className="text-background/75 transition hover:text-primary"
                   >
                     FAQ
                   </Link>
                 </li>
-                <li>
-                  <Link
-                    href="#"
-                    className="text-background/75 transition hover:text-primary"
-                  >
-                    Contact Us
-                  </Link>
-                </li>
               </ul>
-            </div>
-            <div>
-              <h3 className="font-heading mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-background/50">
-                Download the App
-              </h3>
-              <div className="flex items-start gap-4 rounded-2xl border border-background/10 bg-background/[0.06] p-4">
-                <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-background">
-                  <Image
-                    src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://nutrichef.com&color=1b3022"
-                    alt="Download app QR code"
-                    width={64}
-                    height={64}
-                    className="h-full w-full object-contain p-1"
-                  />
-                </div>
-                <p className="pt-1 text-sm leading-relaxed text-background/70">
-                  Scan to download the Nutrichef app
-                </p>
-              </div>
             </div>
           </div>
         </div>
 
         <div className="mt-14 flex flex-col gap-6 border-t border-background/10 pt-10 text-sm text-background/55 md:flex-row md:items-center md:justify-between">
           <p>© {new Date().getFullYear()} Nutrichef. All rights reserved.</p>
-          <div className="flex flex-wrap gap-x-8 gap-y-2">
-            <Link href="#" className="transition hover:text-background">
-              Privacy Policy
-            </Link>
-            <Link href="#" className="transition hover:text-background">
-              Terms & Conditions
-            </Link>
-            <Link href="#" className="transition hover:text-background">
-              Cookies
-            </Link>
-          </div>
         </div>
       </div>
     </footer>
