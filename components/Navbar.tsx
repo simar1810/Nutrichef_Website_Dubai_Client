@@ -210,7 +210,7 @@ export const Navbar = () => {
                 </Link>
               ))}
               <Link
-                href="/#menu"
+                href="/plans"
                 className="mt-4 flex min-h-11 items-center justify-center rounded-full bg-primary px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-hover"
                 onClick={() => setOpen(false)}
               >
@@ -260,7 +260,7 @@ export const Navbar = () => {
               </Link>
             ))}
             <Link
-              href="/#menu"
+              href="/plans"
               className="ml-1 inline-flex h-10 items-center justify-center rounded-full bg-primary px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-hover"
             >
               See plans
