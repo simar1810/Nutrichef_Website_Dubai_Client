@@ -19,11 +19,16 @@ const fontDisplay = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: "Nutrichef | Meal plans for busy people",
+  title: "Nutrichef",
   description:
     "Nutrichef provides meal plans tailored for busy people. It serves delicious food that's portioned to your requirements and fitness goals. You can choose your meals from the daily menu or build your own.",
   icons: {
-    icon: "/Nutrichef_Icon.ico",
+    icon: [
+      { url: "/fav/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/fav/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    shortcut: "/fav/favicon.ico",
+    apple: "/fav/apple-touch-icon.png",
   },
 };
 
