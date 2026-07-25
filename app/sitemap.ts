@@ -19,6 +19,7 @@ const staticRoutes = [
   { path: "/contact-us", priority: 0.8, changeFrequency: "monthly" as const },
   { path: "/healthy-meal-delivery-dubai", priority: 0.9, changeFrequency: "weekly" as const },
   { path: "/best-healthy-meal-subscription-dubai", priority: 0.9, changeFrequency: "weekly" as const },
+  { path: "/healthy-food-delivery-dubai", priority: 0.9, changeFrequency: "weekly" as const },
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
