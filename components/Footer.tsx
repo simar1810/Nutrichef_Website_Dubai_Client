@@ -39,6 +39,10 @@ const resourceLinks = [
     href: "/blogs/Office-Meal-Delivery-Dubai",
     label: "Office Meal Delivery Dubai",
   },
+  {
+    href: "/best-alternative-to-kcal-dubai",
+    label: "Best Alternative to Kcal Dubai",
+  },
 ] as const;
 
 export const Footer = () => {
