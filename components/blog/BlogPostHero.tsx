@@ -5,9 +5,11 @@ import { formatBlogDate } from "@/lib/blog/utils";
 
 interface BlogPostHeroProps {
   post: BlogPost;
+  /** When false, omit the Blog breadcrumb (for standalone article pages). */
+  showBlogCrumb?: boolean;
 }
 
-export function BlogPostHero({ post }: BlogPostHeroProps) {
+export function BlogPostHero({ post, showBlogCrumb = true }: BlogPostHeroProps) {
   return (
     <section className="border-b border-border-subtle bg-bg-light pt-28 pb-10 sm:pt-32 sm:pb-14">
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
@@ -18,14 +20,18 @@ export function BlogPostHero({ post }: BlogPostHeroProps) {
                 Home
               </Link>
             </li>
-            <li aria-hidden className="text-secondary-text/50">
-              /
-            </li>
-            <li>
-              <Link href={`/blogs/${post.slug}`} className="transition hover:text-primary">
-                Blog
-              </Link>
-            </li>
+            {showBlogCrumb ? (
+              <>
+                <li aria-hidden className="text-secondary-text/50">
+                  /
+                </li>
+                <li>
+                  <Link href={`/blogs/${post.slug}`} className="transition hover:text-primary">
+                    Blog
+                  </Link>
+                </li>
+              </>
+            ) : null}
             <li aria-hidden className="text-secondary-text/50">
               /
             </li>

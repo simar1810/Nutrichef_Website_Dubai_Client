@@ -24,6 +24,10 @@ const companyLinks = [
 const resourceLinks = [
   { href: "/healthy-meal-delivery-dubai", label: "Healthy Meal Delivery Dubai" },
   {
+    href: "/healthy-food-delivery-dubai",
+    label: "Healthy Food Delivery Dubai",
+  },
+  {
     href: "/best-healthy-meal-subscription-dubai",
     label: "Best Healthy Meal Subscription Dubai",
   },
@@ -34,6 +38,10 @@ const resourceLinks = [
   {
     href: "/blogs/Office-Meal-Delivery-Dubai",
     label: "Office Meal Delivery Dubai",
+  },
+  {
+    href: "/best-alternative-to-kcal-dubai",
+    label: "Best Alternative to Kcal Dubai",
   },
 ] as const;
 

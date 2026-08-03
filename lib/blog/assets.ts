@@ -26,3 +26,22 @@ export const OFFICE_BLOG_ASSETS = {
   slugFolder: "office-meal-delivery-dubai",
   hero: "/HeroSection.jpeg",
 } as const;
+
+export const KCAL_ALTERNATIVE_BLOG_ASSETS = {
+  slugFolder: "best-alternative-to-kcal-dubai",
+  /** H1 / title */
+  hero: blogImagePath(
+    "best-alternative-to-kcal-dubai",
+    "best-alternative-to-kcal-in-dubai-why-more-people-are-switching-to-nutrichef.webp",
+  ),
+  /** H2 — What to Actually Look for in a Kcal Alternative */
+  lookFor: blogImagePath(
+    "best-alternative-to-kcal-dubai",
+    "what-to-actually-look-for-in-a-kcal-alternative.webp",
+  ),
+  /** H2 — Real Cost Comparison */
+  costComparison: blogImagePath(
+    "best-alternative-to-kcal-dubai",
+    "real-cost-comparison.webp",
+  ),
+} as const;
