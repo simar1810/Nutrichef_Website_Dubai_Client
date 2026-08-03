@@ -222,9 +222,17 @@ export const Footer = () => {
             © {new Date().getFullYear()} NutriChef. Private-chef nutrition,
             delivered across the GCC. All rights reserved.
           </p>
-          <p className="text-xs text-background/40">
-            🇦🇪 UAE · 🇸🇦 KSA · 🇶🇦 Qatar · 🇰🇼 Kuwait
-          </p>
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs">
+            <Link href="/privacy-policy" className="text-background/55 transition hover:text-gold-soft">
+              Privacy Policy
+            </Link>
+            <Link href="/terms-and-conditions" className="text-background/55 transition hover:text-gold-soft">
+              Terms &amp; Conditions
+            </Link>
+            <span className="text-background/40">
+              🇦🇪 UAE · 🇸🇦 KSA · 🇶🇦 Qatar · 🇰🇼 Kuwait
+            </span>
+          </div>
         </div>
       </div>
     </footer>
