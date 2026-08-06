@@ -50,6 +50,19 @@ export function dialCodeForApi(dialCode: string): string {
   return dialCode.replace(/^\+/, "");
 }
 
+/**
+ * National mobile digits for OTP APIs.
+ * Strips spaces/symbols, drops a local trunk "0", and removes a pasted country code prefix.
+ */
+export function nationalPhoneForApi(phone: string, countryCodeDigits: string): string {
+  let national = String(phone ?? "").replace(/\D/g, "");
+  const cc = String(countryCodeDigits ?? "").replace(/\D/g, "");
+  if (cc && national.startsWith(cc) && national.length - cc.length >= 6) {
+    national = national.slice(cc.length);
+  }
+  return national.replace(/^0+/, "");
+}
+
 export function getCountryByIso(iso: string): CountryCodeRow | undefined {
   return countryCodesForPhone.find((c) => c.isoCode === iso);
 }
