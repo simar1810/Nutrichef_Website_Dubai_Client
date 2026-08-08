@@ -25,7 +25,7 @@ const staticRoutes = [
 
   { path: "/healthy-food-delivery-dubai", priority: 0.9, changeFrequency: "weekly" as const },
   { path: "/best-alternative-to-kcal-dubai", priority: 0.9, changeFrequency: "weekly" as const },
-
+  { path: "/ramadan-meal-delivery-dubai-uae", priority: 0.9, changeFrequency: "weekly" as const },
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

@@ -43,6 +43,10 @@ const resourceLinks = [
     href: "/best-alternative-to-kcal-dubai",
     label: "Best Alternative to Kcal Dubai",
   },
+  {
+    href: "/ramadan-meal-delivery-dubai-uae",
+    label: "Ramadan Meal Delivery Dubai & UAE",
+  },
 ] as const;
 
 export const Footer = () => {
