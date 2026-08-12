@@ -315,7 +315,23 @@ export function displayMealDescription(
   return bits.length ? bits.join(" · ") : null;
 }
 
-const SLOT_ORDER = ["breakfast", "lunch", "dinner", "snack"] as const;
+const SLOT_ORDER = [
+  "breakfast",
+  "lunch",
+  "dinner",
+  "am_meal",
+  "pm_meal",
+  "snack",
+] as const;
+
+const SLOT_LABELS: Record<string, string> = {
+  breakfast: "Breakfast",
+  lunch: "Lunch",
+  dinner: "Dinner",
+  am_meal: "AM Meal",
+  pm_meal: "PM Meal",
+  snack: "AM Meal",
+};
 
 export function slotSortIndex(slot: unknown): number {
   const s = typeof slot === "string" ? slot.toLowerCase().trim() : "";
@@ -329,6 +345,8 @@ export function sortMealsBySlot(meals: Record<string, unknown>[]): Record<string
 
 export function formatSlotLabel(slot: unknown): string | null {
   if (typeof slot !== "string" || !slot.trim()) return null;
+  const key = slot.trim().toLowerCase();
+  if (SLOT_LABELS[key]) return SLOT_LABELS[key];
   return formatLabelPart(slot.trim());
 }
 
