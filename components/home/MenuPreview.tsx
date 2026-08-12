@@ -243,37 +243,45 @@ export const MenuPreview = () => {
             </span>
           </h2>
 
-          <div data-menu-fade className="overflow-x-auto pb-1 hide-scrollbar">
-            <div
-              role="tablist"
-              aria-label="Menu categories"
-              className="flex w-max gap-1.5 rounded-full border border-white/12 bg-white/[0.05] p-1.5 backdrop-blur"
-            >
-              {MENU_FILTERS.map((tab) => {
-                const selected = activeTab === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    role="tab"
-                    aria-selected={selected}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-all duration-300 sm:px-5 ${
-                      selected
-                        ? "bg-gold-soft text-emerald-deep shadow-[0_6px_20px_-6px_rgba(230,217,184,0.5)]"
-                        : "text-white/55 hover:bg-white/[0.06] hover:text-white"
-                    }`}
-                  >
-                    {tab.icon ? (
-                      <span className="text-base" aria-hidden>
-                        {tab.icon}
-                      </span>
-                    ) : null}
-                    {tab.label}
-                  </button>
-                );
-              })}
+          <div data-menu-fade className="flex flex-col items-start gap-3 sm:items-end">
+            <div className="overflow-x-auto pb-1 hide-scrollbar">
+              <div
+                role="tablist"
+                aria-label="Menu categories"
+                className="flex w-max gap-1.5 rounded-full border border-white/12 bg-white/[0.05] p-1.5 backdrop-blur"
+              >
+                {MENU_FILTERS.map((tab) => {
+                  const selected = activeTab === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      type="button"
+                      role="tab"
+                      aria-selected={selected}
+                      onClick={() => setActiveTab(tab.id)}
+                      className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-all duration-300 sm:px-5 ${
+                        selected
+                          ? "bg-gold-soft text-emerald-deep shadow-[0_6px_20px_-6px_rgba(230,217,184,0.5)]"
+                          : "text-white/55 hover:bg-white/[0.06] hover:text-white"
+                      }`}
+                    >
+                      {tab.icon ? (
+                        <span className="text-base" aria-hidden>
+                          {tab.icon}
+                        </span>
+                      ) : null}
+                      {tab.label}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
+            <Link
+              href="/vegetarian-meal-plan-dubai"
+              className="text-sm font-semibold text-gold-soft underline-offset-4 hover:underline"
+            >
+              🌱 Vegetarian only? See the plan →
+            </Link>
           </div>
         </div>
 

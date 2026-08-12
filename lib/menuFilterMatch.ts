@@ -3,6 +3,7 @@ import { derivePlanFilterIdFromMacros } from "@/lib/planFromMacros";
 
 export function menuItemMatchesFilter(item: MenuItem, filterId: string): boolean {
   if (filterId === "all") return true;
+  if (filterId === "vegetarian") return item.tags?.includes("vegetarian") ?? false;
   const plan =
     item.planFilterId ??
     derivePlanFilterIdFromMacros({

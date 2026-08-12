@@ -56,3 +56,31 @@ export const FAQ_ITEMS: FaqItem[] = [
       "Design your plan at nutrichef.ae/plans — goal, meals per day, delivery days — in about two minutes. Check out securely with Stripe, and your first delivery typically arrives the next morning. Prefer a human? Our nutrition concierge will build the entire plan for you over WhatsApp.",
   },
 ];
+
+export const VEGETARIAN_FAQ_ITEMS: FaqItem[] = [
+  {
+    question: "Does NutriChef have a dedicated vegetarian meal plan in Dubai?",
+    answer:
+      "Yes — a genuine vegetarian rotation, not a single fallback dish repeated all week. Every NutriChef programme (Fat Loss, Muscle Gain, Balanced Diet, and the rest) includes a dedicated plant-based menu with dairy, no meat, fish, or eggs, so you choose your goal and eat vegetarian throughout, without a separate, more limited \"veg plan\" menu.",
+  },
+  {
+    question: "How many calories are in each vegetarian meal?",
+    answer:
+      "Most vegetarian meals fall between 350 and 450 calories, macro-balanced by our Head Nutritionist to fit whichever programme you're on. Exact calories and macros are shown on every dish before you subscribe.",
+  },
+  {
+    question: "Can I customize the vegetarian plan for allergies or dislikes?",
+    answer:
+      "Yes. Tell us about any allergies, intolerances, or disliked ingredients when you set up your plan, and our kitchen adjusts your rotation accordingly. Message our concierge on WhatsApp any time to fine-tune it further.",
+  },
+  {
+    question: "Can I pause or freeze my vegetarian plan?",
+    answer:
+      "Anytime, with no penalties. Pause, skip a day, or redirect a delivery in seconds from your dashboard or over WhatsApp — your remaining days simply wait for you.",
+  },
+  {
+    question: "Is the vegetarian plan available in Abu Dhabi and Sharjah?",
+    answer:
+      "Yes — the full vegetarian rotation delivers daily across Dubai, Abu Dhabi, and Sharjah before 10 AM, on every programme. Saudi Arabia, Qatar, and Kuwait are next.",
+  },
+];

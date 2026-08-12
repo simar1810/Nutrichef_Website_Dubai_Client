@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, Suspense } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { FilterBar } from "../../components/menu/FilterBar";
 import { MenuCard } from "../../components/menu/MenuCard";
 import { fallbackMenuItems, type MenuItem } from "./data";
@@ -50,10 +51,21 @@ function mapRecipeToMenuItem(recipe: BackendRecipe): MenuItem {
 }
 
 export default function MenuPage() {
+  return (
+    <Suspense fallback={null}>
+      <MenuPageContent />
+    </Suspense>
+  );
+}
+
+function MenuPageContent() {
+  const searchParams = useSearchParams();
+  const deepLinkFilter = searchParams.get("filter") === "vegetarian" ? "vegetarian" : "all";
+
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [filteredItems, setFilteredItems] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeFilter, setActiveFilter] = useState("all");
+  const [activeFilter, setActiveFilter] = useState(deepLinkFilter);
 
   const fetchMenu = useCallback(async () => {
     try {
@@ -111,6 +123,21 @@ export default function MenuPage() {
             </Link>
           </div>
         </div>
+
+        {activeFilter === "vegetarian" ? (
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-primary/20 bg-primary/10 px-5 py-4">
+            <p className="text-sm font-semibold text-foreground">
+              🌱 Showing this week&apos;s vegetarian rotation only
+            </p>
+            <button
+              type="button"
+              onClick={() => setActiveFilter("all")}
+              className="text-sm font-semibold text-primary underline-offset-4 hover:underline"
+            >
+              View full menu
+            </button>
+          </div>
+        ) : null}
 
         {/* Filter Bar */}
         <FilterBar activeFilter={activeFilter} onFilterChange={setActiveFilter} />
