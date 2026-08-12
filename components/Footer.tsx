@@ -31,6 +31,7 @@ const resourceLinks = [
     href: "/best-healthy-meal-subscription-dubai",
     label: "Best Healthy Meal Subscription Dubai",
   },
+  { href: "/vegetarian-meal-plan-dubai", label: "Vegetarian Meal Plan Dubai" },
   {
     href: "/blogs/Top-5-Healthy-Meal-Delivery-Services-in-Dubai",
     label: "Top 5 Meal Delivery Services in Dubai",

@@ -588,6 +588,21 @@ export default function PlansPage() {
           </div>
         </section>
 
+        <div className="mb-6 flex flex-wrap items-center gap-2 rounded-2xl border border-primary/20 bg-primary/10 px-5 py-3.5 text-sm text-foreground">
+          <span aria-hidden>🌱</span>
+          <span>
+            Following a vegetarian diet? Every plan below includes a dedicated
+            vegetarian rotation —{" "}
+            <Link
+              href="/vegetarian-meal-plan-dubai"
+              className="font-semibold text-primary underline-offset-4 hover:underline"
+            >
+              see this week&rsquo;s vegetarian menu
+            </Link>
+            .
+          </span>
+        </div>
+
         {/* Plan preference heading sits above the two-column row so the
             pricing card aligns with the first row of plan cards. */}
         <h2 className="font-heading mb-6 text-[26px] font-semibold tracking-tight text-foreground">
