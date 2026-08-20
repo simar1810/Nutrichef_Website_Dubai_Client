@@ -48,6 +48,10 @@ const resourceLinks = [
     href: "/ramadan-meal-delivery-dubai-uae",
     label: "Ramadan Meal Delivery Dubai & UAE",
   },
+  {
+    href: "/franchise-opportunity-uae",
+    label: "Franchise Opportunity UAE",
+  },
 ] as const;
 
 export const Footer = () => {
