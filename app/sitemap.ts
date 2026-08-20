@@ -26,11 +26,8 @@ const staticRoutes = [
   { path: "/healthy-food-delivery-dubai", priority: 0.9, changeFrequency: "weekly" as const },
   { path: "/best-alternative-to-kcal-dubai", priority: 0.9, changeFrequency: "weekly" as const },
   { path: "/ramadan-meal-delivery-dubai-uae", priority: 0.9, changeFrequency: "weekly" as const },
-<<<<<<< HEAD
   { path: "/vegetarian-meal-plan-dubai", priority: 0.9, changeFrequency: "weekly" as const },
-=======
   { path: "/franchise-opportunity-uae", priority: 0.85, changeFrequency: "monthly" as const },
->>>>>>> 512da99 (Add NutriChef UAE franchise opportunity guide page.)
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
