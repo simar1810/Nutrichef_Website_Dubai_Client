@@ -52,6 +52,10 @@ const resourceLinks = [
     href: "/franchise-opportunity-uae",
     label: "Franchise Opportunity UAE",
   },
+  {
+    href: "/franchise-opportunity-saudi-arabia",
+    label: "Franchise Opportunity Saudi Arabia",
+  },
 ] as const;
 
 export const Footer = () => {
