@@ -1,4 +1,6 @@
-export const WHATSAPP_URL = "https://wa.me/971XXXXXXXXX";
+import { CONTACT } from "@/lib/site-config";
+
+export const WHATSAPP_URL = `https://wa.me/${CONTACT.whatsapp.replace(/\D/g, "")}`;
 
 export const hero = {
   eyebrow: "Fresh daily · Macro tracked",
