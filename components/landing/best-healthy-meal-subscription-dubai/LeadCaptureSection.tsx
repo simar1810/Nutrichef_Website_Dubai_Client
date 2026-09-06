@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { leadCapture } from "@/content/best-healthy-meal-subscription-dubai";
-import { whatsappLink } from "@/lib/site-config";
+import { leadPhoneForContract, whatsappLink } from "@/lib/site-config";
 
 export function LeadCaptureSection() {
   const router = useRouter();
@@ -11,14 +11,34 @@ export function LeadCaptureSection() {
   const [goal, setGoal] = useState(leadCapture.goalOptions[0]);
   const [mealsPerWeek, setMealsPerWeek] = useState("10");
   const [phone, setPhone] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const trimmedName = name.trim();
+    const trimmedPhone = phone.trim();
+    if (!trimmedName || !trimmedPhone) {
+      setError("Please enter your name and WhatsApp number.");
+      return;
+    }
+    setError("");
+
+    const contractPhone = leadPhoneForContract(trimmedPhone);
+    const message = [
+      "Hi NutriChef, I'd like a meal plan quote.",
+      `Name: ${trimmedName}`,
+      `WhatsApp: ${contractPhone}`,
+      `Goal: ${goal}`,
+      `Meals per week: ${mealsPerWeek}`,
+    ].join("\n");
+
+    window.open(whatsappLink(message), "_blank", "noopener,noreferrer");
+
     const params = new URLSearchParams({
       goal: goal.toLowerCase().replace(/\s+/g, "-"),
       meals: mealsPerWeek,
     });
-    if (name.trim()) params.set("name", name.trim());
+    params.set("name", trimmedName);
     router.push(`/plans?${params.toString()}`);
   };
 
@@ -110,6 +130,12 @@ export function LeadCaptureSection() {
                 />
               </label>
             </div>
+
+            {error ? (
+              <p className="mt-4 rounded-xl bg-red-50 px-4 py-2.5 text-sm font-medium text-red-600">
+                {error}
+              </p>
+            ) : null}
 
             <button
               type="submit"

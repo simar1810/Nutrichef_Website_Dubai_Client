@@ -38,5 +38,5 @@ export const OFFICE_BLOG_LINKS = [
   { anchor: "Individual plans", url: "https://www.nutrichef.ae/plans" },
   { anchor: "nutrichef.ae", url: "https://www.nutrichef.ae/" },
   { anchor: "wa.me/971501234567", url: OFFICE_WHATSAPP_URL },
-  { anchor: "wa.me/971585831374", url: OFFICE_WHATSAPP_URL },
+  { anchor: "wa.me/971586072720", url: OFFICE_WHATSAPP_URL },
 ] as const;

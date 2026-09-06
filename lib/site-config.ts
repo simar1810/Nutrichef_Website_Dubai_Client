@@ -14,9 +14,9 @@ export const STARTING_PRICE_PER_DAY_AED = 90;
 export const CONTACT = {
   /** Registered contact entity for the brand. */
   name: "MBR NutriChef Cafe",
-  phone: "+971 58 583 1374",
-  phoneTel: "+971585831374",
-  whatsapp: "+971585831374",
+  phone: "+971 58 607 2720",
+  phoneTel: "+971586072720",
+  whatsapp: "+971586072720",
   email: "hello@nutrichef.ae",
   address: "Al Safa park complex - Al Safa 1 - Al Safa - Dubai - United Arab Emirates",
   addressShort: "Dubai, United Arab Emirates",
@@ -50,4 +50,22 @@ export const HOME_META = {
 /** Concierge WhatsApp deep-link with a pre-filled message. */
 export function whatsappLink(message: string): string {
   return `https://wa.me/${CONTACT.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`;
+}
+
+/**
+ * Phone line in the lead WhatsApp contract. Prefixes +971 when the user
+ * typed a national number. Does not change login/OTP storage.
+ */
+export function leadPhoneForContract(raw: string, defaultCc = "971"): string {
+  const trimmed = String(raw ?? "").trim();
+  if (!trimmed) return "";
+  let digits = trimmed.replace(/\D/g, "");
+  if (!digits) return "";
+  if (digits.startsWith("00")) digits = digits.slice(2);
+  const cc = defaultCc.replace(/\D/g, "") || "971";
+  const looksInternational = trimmed.startsWith("+") || trimmed.startsWith("00");
+  if (looksInternational) return `+${digits}`;
+  if (digits.startsWith(cc) && digits.length >= cc.length + 6) return `+${digits}`;
+  digits = digits.replace(/^0+/, "");
+  return `+${cc}${digits}`;
 }
